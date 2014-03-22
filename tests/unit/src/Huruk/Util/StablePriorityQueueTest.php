@@ -15,7 +15,7 @@ class StablePriorityQueueTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers StablePriorityQueue::insert
+     * @cover StablePriorityQueue::insert
      */
     public function testPriority()
     {
@@ -31,7 +31,7 @@ class StablePriorityQueueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers StablePriorityQueue::insert
+     * @cover StablePriorityQueue::insert
      */
     public function testEqualPriority()
     {
