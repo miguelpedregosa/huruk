@@ -8,10 +8,6 @@
 
 namespace Huruk\Application;
 
-use Assetic\AssetManager;
-use Assetic\Factory\AssetFactory;
-use Assetic\Factory\Worker\CacheBustingWorker;
-use Assetic\FilterManager;
 use DebugBar\Bridge\MonologCollector;
 use DebugBar\Bridge\SwiftMailer\SwiftLogCollector;
 use DebugBar\Bridge\SwiftMailer\SwiftMailCollector;
@@ -316,37 +312,6 @@ abstract class Application implements ApplicationInterface
     abstract protected function isDebugOn();
 
 
-    /**
-     * @param array $inputs
-     * @param array $filters
-     * @param array $options
-     * @return \Assetic\Asset\AssetCollection
-     */
-    public static function createAsset($inputs = array(), $filters = array(), array $options = array())
-    {
-        return static::getInstance()->getAssetsFactoryService()->createAsset($inputs, $filters, $options);
-    }
-
-    /**
-     * @return AssetFactory
-     */
-    private function getAssetsFactoryService()
-    {
-        if (!isset($this->services_container[self::ASSETS_FACTORY_SERVICE])
-            || !$this->services_container[self::ASSETS_FACTORY_SERVICE] instanceof AssetFactory
-        ) {
-            $asset_factory = new AssetFactory($this->getWebRootPath(), $this->isDebugOn());
-            $asset_factory->setDefaultOutput('ac/*');
-            $asset_manager = new AssetManager();
-            $asset_factory->setAssetManager($asset_manager);
-            $filter_manager = new FilterManager();
-            $asset_factory->setFilterManager($filter_manager);
-            $asset_factory->addWorker(new CacheBustingWorker());
-
-            $this->services_container[self::ASSETS_FACTORY_SERVICE] = $asset_factory;
-        }
-        return $this->services_container[self::ASSETS_FACTORY_SERVICE];
-    }
 
     /**
      * Devuelve el directorio raiz de los recursos (js, css, ...) de la aplicacion

@@ -17,11 +17,8 @@
         "symfony/http-foundation": "2.4.*@dev",
         "symfony/event-dispatcher": "2.4.*@dev",
         "monolog/monolog": "1.7.*@dev",
-        "kriswallsmith/assetic": "1.2.*@dev",
         "maximebf/debugbar": "1.*",
-        "swiftmailer/swiftmailer": "5.1.*@dev",
-        "linkorb/jsmin-php": "dev-master",
-        "natxet/CssMin": "dev-master"
+        "swiftmailer/swiftmailer": "5.1.*@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",

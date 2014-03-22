@@ -108,12 +108,4 @@ interface ApplicationInterface
      */
     public static function getDispatcher();
 
-    /**
-     * @param array $inputs
-     * @param array $filters
-     * @param array $options
-     * @return AssetCollection
-     */
-    public static function createAsset($inputs = array(), $filters = array(), array $options = array());
-
 }
