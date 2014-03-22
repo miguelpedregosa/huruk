@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpdox xmlns="http://phpdox.net/config">
+    <project name="Tubus" source="${basedir}/src" workdir="${basedir}/build/phpdox">
+        <collector publiconly="false">
+            <include mask="*.php" />
+            <exclude mask="*autoload.php" />
+        </collector>
+
+        <generator output="${basedir}/build">
+            <build engine="html" enabled="true" output="${basedir}/api"/>
+        </generator>
+    </project>
+</phpdox>
