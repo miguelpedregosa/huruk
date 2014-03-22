@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html{% if language %} lang="{{ language }}"{% endif %}>
 <head>
-    {# Titulo #}
-    {% if title %}<title>{{ title }}</title>{% endif %}
-    {# Metas #}
-    {% include 'metas.twig' %}
-    {# Links #}
-    {% include 'links.twig' %}
+{# Titulo #}
+{% if title %}<title>{{ title }}</title>{% endif %}
+{# Metas #}
+{% include 'metas.twig' %}
+{# Links #}
+{% include 'links.twig' %}
+
 </head>
 {# Body #}
 <body{% include 'body_attributes.twig' %}>
 {#Contenido del body#}
 {{ body | raw }}
 {% for js in js_files %}
-    <script src="{{ js }}"></script>
+<script src="{{ js }}"></script>
 {% endfor %}
-{# Barra de depuracion #}
-{% if debug_data %}
-    {{ debug_data | raw }}
-{% endif %}
 </body>
 </html>

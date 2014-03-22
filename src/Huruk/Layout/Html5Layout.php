@@ -141,29 +141,6 @@ class Html5Layout implements LayoutInterface
     }
 
     /**
-     * @param AssetInterface $asset
-     * @param int $priority
-     * @return Html5Layout
-     */
-    public function addJsAsset(AssetInterface $asset, $priority = self::PRIORITY_LOW)
-    {
-        $this->getJsAssetsContainer()->insert($asset, $priority);
-        return $this;
-    }
-
-    /**
-     * @return StablePriorityQueue
-     */
-    private function getJsAssetsContainer()
-    {
-        if (!$this->js_assets instanceof StablePriorityQueue) {
-            $this->js_assets = new StablePriorityQueue();
-        }
-
-        return $this->js_assets;
-    }
-
-    /**
      * Renderiza un documento Html 5 con el contenido del body que se le pasa
      * @param $body_contents
      * @return string
@@ -176,20 +153,8 @@ class Html5Layout implements LayoutInterface
         //Links comunes
         $this->addCommonLinkTags();
 
-        $debug_data = false;
-        if (DebugWebBar::isEnabled()) {
-            list ($css_assets, $js_assets) = DebugWebBar::getInstance()->getJavascriptRenderer(null, '')->getAssets();
-            foreach ($css_assets as $css) {
-                $this->addCss('/debugbar'.$css);
-            }
-            foreach ($js_assets as $js) {
-                $this->addJs('/debugbar'.$js);
-            }
-            $debug_data = DebugWebBar::getInstance()->getJavascriptRenderer()->render();
-        }
-
         //Archivos Js a incluir en el documento
-        $js_files = $this->processJsAssets();
+        $js_files = $this->getJsAssetsContainer();
 
         //Archivos Css a incluir en el documento
         $this->processCssAssets();
@@ -201,8 +166,7 @@ class Html5Layout implements LayoutInterface
             'links' => $this->getLinksContainer(),
             'body' => $body_contents,
             'js_files' => $js_files,
-            'body_attributes' => $this->body_attributes,
-            'debug_data' => $debug_data
+            'body_attributes' => $this->body_attributes
         );
 
         return $this->getTwigEnvironment()->render('html5.twig', $context);
@@ -282,15 +246,15 @@ class Html5Layout implements LayoutInterface
     }
 
     /**
-     * @param $asset_path
+     * @param $path
      * @param string $media
      * @param int $priority
      * @return Html5Layout
      */
-    public function addCss($asset_path, $media = '', $priority = self::PRIORITY_HIGH)
+    public function addCss($path, $media = '', $priority = self::PRIORITY_HIGH)
     {
         $css = array(
-            'asset' => $asset_path,
+            'asset' => $path,
             'media' => $media
         );
         $this->getCssAssetsContainer()->insert($css, $priority);
@@ -310,75 +274,43 @@ class Html5Layout implements LayoutInterface
     }
 
     /**
-     * @param $asset_path
+     * @param $path
      * @param int $priority
      * @return Html5Layout
      */
-    public function addJs($asset_path, $priority = self::PRIORITY_LOW)
+    public function addJs($path, $priority = self::PRIORITY_LOW)
     {
-        $this->getJsAssetsContainer()->insert($asset_path, $priority);
+        $this->getJsAssetsContainer()->insert($path, $priority);
         return $this;
     }
 
     /**
-     * Procesa los recursos Javascript a incluir en el documento
-     * @return array
+     * @return StablePriorityQueue
      */
-    private function processJsAssets()
+    private function getJsAssetsContainer()
     {
-        $js_files = array();
-
-        while (!$this->js_assets->isEmpty()) {
-            $asset = $this->js_assets->extract();
-            if ($asset instanceof AssetInterface) {
-                $this->getAssetWriter()->writeAsset($asset);
-                $js_files[] = $asset->getTargetPath();
-            } else {
-                $js_files[] = $asset;
-            }
+        if (!$this->js_assets instanceof StablePriorityQueue) {
+            $this->js_assets = new StablePriorityQueue();
         }
 
-        return $js_files;
+        return $this->js_assets;
     }
 
-    /**
-     * @return AssetWriter
-     */
-    private function getAssetWriter()
-    {
-        if (!$this->asset_writer instanceof AssetWriter) {
-            $this->asset_writer = new AssetWriter($this->getPathToWebDir());
-        }
-        return $this->asset_writer;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getPathToWebDir()
-    {
-        return '';
-    }
 
     /**
      * Procesa los recursos CSS a incluir en el documento
      */
     private function processCssAssets()
     {
-        while (!$this->css_assets->isEmpty()) {
-            $asset = $this->css_assets->extract();
+        /** @var StablePriorityQueue $css_assets */
+        $css_assets = $this->getCssAssetsContainer();
+        while (!$css_assets->isEmpty()) {
+            $asset = $css_assets->extract();
             $link = new Link();
             $link->setMedia($asset['media'])->setType('text/css')->setRel('stylesheet');
 
             $asset_resource = $asset['asset'];
-            if ($asset_resource instanceof AssetInterface) {
-                $asset_resource->ensureFilter(new CssRewriteFilter());
-                $this->getAssetWriter()->writeAsset($asset_resource);
-                $link->setHref($asset_resource->getTargetPath());
-            } else {
-                $link->setHref($asset_resource);
-            }
-
+            $link->setHref($asset_resource);
             $this->addLink($link, 0);
         }
     }
@@ -416,21 +348,6 @@ class Html5Layout implements LayoutInterface
         return $this->twig_environment;
     }
 
-    /**
-     * @param AssetInterface $asset
-     * @param string $media
-     * @param int $priority
-     * @return Html5Layout
-     */
-    public function addCssAsset(AssetInterface $asset, $media = '', $priority = self::PRIORITY_HIGH)
-    {
-        $css = array(
-            'asset' => $asset,
-            'media' => $media
-        );
-        $this->getCssAssetsContainer()->insert($css, $priority);
-        return $this;
-    }
 
     /**
      * @param $title
@@ -530,6 +447,25 @@ class Html5Layout implements LayoutInterface
     {
         $this->canonical = $canonical;
         return $this;
+    }
+
+    /**
+     * @return AssetWriter
+     */
+    private function getAssetWriter()
+    {
+        if (!$this->asset_writer instanceof AssetWriter) {
+            $this->asset_writer = new AssetWriter($this->getPathToWebDir());
+        }
+        return $this->asset_writer;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPathToWebDir()
+    {
+        return '';
     }
 }
 

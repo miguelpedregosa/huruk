@@ -1,6 +1,6 @@
 {# Pinta los enlementos links del docuemnto #}
 {% for link in links %}
-    {% if link.getHref and link.getRel %}
-        <link rel="{{link.getRel}}" href="{{link.getHref}}"{% if link.getType %} type="{{link.getType}}"{% endif %}{% if link.getHrefLang %} hreflang="{{link.getHrefLang}}"{% endif %}{% if link.getSizes %} sizes="{{link.getSizes}}"{% endif %}>
-    {% endif %}
+{% if link.getHref and link.getRel %}
+<link rel="{{link.getRel}}" href="{{link.getHref}}"{% if link.getType %} type="{{link.getType}}"{% endif %}{% if link.getHrefLang %} hreflang="{{link.getHrefLang}}"{% endif %}{% if link.getSizes %} sizes="{{link.getSizes}}"{% endif %}>
+{% endif %}
 {% endfor %}
