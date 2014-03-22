@@ -76,7 +76,7 @@
 
     <target name="phpmd"
             description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="${basedir}/build/tools/phpmd.phar">
+        <exec executable="phpmd">
             <arg path="${basedir}/src"/>
             <arg value="text"/>
             <arg value="${basedir}/build/phpmd.xml"/>
@@ -85,7 +85,7 @@
 
     <target name="phpmd-ci"
             description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
-        <exec executable="${basedir}/build/tools/phpmd.phar">
+        <exec executable="phpmd">
             <arg path="${basedir}/src"/>
             <arg value="xml"/>
             <arg value="${basedir}/build/phpmd.xml"/>
