@@ -2,10 +2,10 @@
 
 <project name="Tubus" default="build">
     <target name="build"
-            depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit"/>
+            depends="prepare,vendors,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit"/>
 
     <target name="build-parallel"
-            depends="prepare,lint,tools-parallel,phpunit"/>
+            depends="prepare,vendors,lint,tools-parallel,phpunit"/>
 
     <target name="tools-parallel" description="Run tools in parallel">
         <parallel threadCount="2">
@@ -34,12 +34,11 @@
         <mkdir dir="${basedir}/build/logs"/>
         <mkdir dir="${basedir}/build/pdepend"/>
         <mkdir dir="${basedir}/build/phpdox"/>
-        <chmod file="${basedir}/build/tools/pdepend.phar" perm="777"/>
-        <chmod file="${basedir}/build/tools/composer.phar" perm="777"/>
-        <exec executable="${basedir}/build/tools/composer.phar">
-            <arg value="--working-dir"/>
-            <arg value="${basedir}/"/>
-            <arg value=" install"/>
+    </target>
+
+    <target name="vendors" depends="clean" description="Add Vendors">
+        <exec executable="${basedir}/build/tools/composer.phar" failonerror="true">
+            <arg value='install' />
         </exec>
     </target>
 
