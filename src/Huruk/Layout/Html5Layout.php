@@ -246,45 +246,6 @@ class Html5Layout implements LayoutInterface
     }
 
     /**
-     * @param $path
-     * @param string $media
-     * @param int $priority
-     * @return Html5Layout
-     */
-    public function addCss($path, $media = '', $priority = self::PRIORITY_HIGH)
-    {
-        $css = array(
-            'asset' => $path,
-            'media' => $media
-        );
-        $this->getCssAssetsContainer()->insert($css, $priority);
-        return $this;
-    }
-
-    /**
-     * @return StablePriorityQueue
-     */
-    private function getCssAssetsContainer()
-    {
-        if (!$this->css_assets instanceof StablePriorityQueue) {
-            $this->css_assets = new StablePriorityQueue();
-        }
-
-        return $this->css_assets;
-    }
-
-    /**
-     * @param $path
-     * @param int $priority
-     * @return Html5Layout
-     */
-    public function addJs($path, $priority = self::PRIORITY_LOW)
-    {
-        $this->getJsAssetsContainer()->insert($path, $priority);
-        return $this;
-    }
-
-    /**
      * @return StablePriorityQueue
      */
     private function getJsAssetsContainer()
@@ -295,7 +256,6 @@ class Html5Layout implements LayoutInterface
 
         return $this->js_assets;
     }
-
 
     /**
      * Procesa los recursos CSS a incluir en el documento
@@ -313,6 +273,18 @@ class Html5Layout implements LayoutInterface
             $link->setHref($asset_resource);
             $this->addLink($link, 0);
         }
+    }
+
+    /**
+     * @return StablePriorityQueue
+     */
+    private function getCssAssetsContainer()
+    {
+        if (!$this->css_assets instanceof StablePriorityQueue) {
+            $this->css_assets = new StablePriorityQueue();
+        }
+
+        return $this->css_assets;
     }
 
     /**
@@ -348,6 +320,32 @@ class Html5Layout implements LayoutInterface
         return $this->twig_environment;
     }
 
+    /**
+     * @param $path
+     * @param string $media
+     * @param int $priority
+     * @return Html5Layout
+     */
+    public function addCss($path, $media = '', $priority = self::PRIORITY_HIGH)
+    {
+        $css = array(
+            'asset' => $path,
+            'media' => $media
+        );
+        $this->getCssAssetsContainer()->insert($css, $priority);
+        return $this;
+    }
+
+    /**
+     * @param $path
+     * @param int $priority
+     * @return Html5Layout
+     */
+    public function addJs($path, $priority = self::PRIORITY_LOW)
+    {
+        $this->getJsAssetsContainer()->insert($path, $priority);
+        return $this;
+    }
 
     /**
      * @param $title
