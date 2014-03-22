@@ -58,7 +58,7 @@
     </target>
 
     <target name="phploc" description="Measure project size using PHPLOC">
-        <exec executable="${basedir}/build/tools/phploc.phar">
+        <exec executable="phploc">
             <arg value="--log-csv"/>
             <arg value="${basedir}/build/logs/phploc.csv"/>
             <arg path="${basedir}/src"/>
