@@ -36,7 +36,7 @@
     </target>
 
     <target name="vendors" depends="clean" description="Add Vendors">
-        <exec executable="${basedir}/build/tools/composer.phar" failonerror="true">
+        <exec executable="composer.phar" failonerror="true">
             <arg value='update' />
         </exec>
     </target>
@@ -121,7 +121,7 @@
     </target>
 
     <target name="phpdox" description="Generate API documentation using phpDox">
-        <exec executable="${basedir}/build/tools/phpdox.phar"/>
+        <exec executable="phpdox"/>
     </target>
 
     <target name="phpunit" description="Run unit tests with PHPUnit">
