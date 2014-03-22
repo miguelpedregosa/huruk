@@ -54,9 +54,6 @@ class Html5Layout implements LayoutInterface
     /** @var bool */
     protected $debug = false;
 
-    /** @var */
-    private $asset_writer;
-
     /** @var  StablePriorityQueue */
     private $metas;
     /** @var  StablePriorityQueue */
