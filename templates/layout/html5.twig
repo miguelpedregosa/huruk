@@ -2,12 +2,13 @@
 <html{% if language %} lang="{{ language }}"{% endif %}>
 <head>
 {# Titulo #}
-{% if title %}<title>{{ title }}</title>{% endif %}
+{% if title %}
+<title>{{ title }}</title>
+{% endif %}
 {# Metas #}
 {% include 'metas.twig' %}
 {# Links #}
 {% include 'links.twig' %}
-
 </head>
 {# Body #}
 <body{% include 'body_attributes.twig' %}>

@@ -10,12 +10,14 @@ namespace unit\src\Huruk\Layout;
 
 
 use Huruk\Layout\Html5Layout;
+use Huruk\Layout\Meta;
 use W3C\HtmlValidator;
 
 class Html5LayoutTest extends \PHPUnit_Framework_TestCase
 {
     /** @var  Html5Layout */
     private $layout;
+    private $title = 'Hello world';
 
     /**
      *
@@ -23,6 +25,7 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->layout = new Html5Layout();
+        $this->layout->setTitle($this->title);
     }
 
     /**
@@ -30,13 +33,11 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateSimpleDocument()
     {
-        $title = 'Hello world';
-        $this->layout->setTitle($title);
         $html = $this->layout->render(' ');
 
         $this->assertContains('<!DOCTYPE html>', $html);
         $this->assertHtmlValidates($html);
-        $this->assertContains('<title>' . $title . '</title>', $html);
+        $this->assertContains('<title>' . $this->title . '</title>', $html);
     }
 
     /**
@@ -47,9 +48,28 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
     {
         $validator = new HtmlValidator();
         $validation = $validator->validateInput($html);
-        $this->assertTrue($validation->isValid());
+        $res = $validation->isValid();
+        $msg = '';
+        if (!$res) {
+            $errors = $validation->getErrors();
+            $msg = '';
+            foreach ($errors as $error) {
+                $msg .= $error->getMessage();
+            }
+        }
+        $this->assertTrue($res, $msg);
 
     }
 
+    /**
+     * @cover Html5Layout::addMeta
+     */
+    public function testMeta()
+    {
+        $this->layout->addMeta(Meta::make('author', 'Miguel Pedregosa'));
+        $html = $this->layout->render('');
+        $this->assertHtmlValidates($html);
+        $this->assertContains('<meta name="author" content="Miguel Pedregosa">', $html);
+    }
 
 }
