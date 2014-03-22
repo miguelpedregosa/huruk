@@ -446,24 +446,5 @@ class Html5Layout implements LayoutInterface
         $this->canonical = $canonical;
         return $this;
     }
-
-    /**
-     * @return AssetWriter
-     */
-    private function getAssetWriter()
-    {
-        if (!$this->asset_writer instanceof AssetWriter) {
-            $this->asset_writer = new AssetWriter($this->getPathToWebDir());
-        }
-        return $this->asset_writer;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getPathToWebDir()
-    {
-        return '';
-    }
 }
 
