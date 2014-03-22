@@ -25,6 +25,7 @@
         <delete dir="${basedir}/build/coverage"/>
         <delete dir="${basedir}/build/logs"/>
         <delete dir="${basedir}/build/pdepend"/>
+        <delete dir="${basedir}/vendor"/>
     </target>
 
     <target name="prepare" depends="clean" description="Prepare for build">
@@ -34,6 +35,11 @@
         <mkdir dir="${basedir}/build/pdepend"/>
         <mkdir dir="${basedir}/build/phpdox"/>
         <chmod file="${basedir}/build/tools/pdepend.phar" perm="777"/>
+        <exec executable="${basedir}/build/tools/composer.phar">
+            <arg value="--working-dir"/>
+            <arg value="${basedir}/"/>
+            <arg value=" install"/>
+        </exec>
     </target>
 
     <target name="lint" description="Perform syntax check of sourcecode files">
