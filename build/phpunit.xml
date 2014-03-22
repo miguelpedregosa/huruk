@@ -29,5 +29,7 @@
             </exclude>
         </whitelist>
     </filter>
-
+    <blacklist>
+        <directory>../vendor</directory>
+    </blacklist>
 </phpunit>
