@@ -225,7 +225,9 @@ abstract class Application implements ApplicationInterface
      */
     private function getRequestFromContainer()
     {
-        if (!isset($this->services_container[self::REQUEST]) || !$this->services_container[self::REQUEST] instanceof Request) {
+        if (!isset($this->services_container[self::REQUEST])
+            || !$this->services_container[self::REQUEST] instanceof Request
+        ) {
             $this->services_container[self::REQUEST] = Request::createFromGlobals();
         }
         return $this->services_container[self::REQUEST];
@@ -410,12 +412,13 @@ abstract class Application implements ApplicationInterface
             $timer = $debug_bar->startMeasure('Dispatch de la petición');
             static::getDispatcher()->dispatch($route_info);
             $debug_bar->stopMeasure($timer);
+            $debug_bar->stopMeasure($time_id);
         } catch (PageNotFoundException $e) {
             //Dejamos a la aplicacion que haga lo que quiera si detectamos un error 404
             $application->handlePageNotFoundException($e);
+            $debug_bar->stopMeasure($time_id);
         } catch (\Exception $e) {
             $application->handleException($e);
-        } finally {
             $debug_bar->stopMeasure($time_id);
         }
     }
