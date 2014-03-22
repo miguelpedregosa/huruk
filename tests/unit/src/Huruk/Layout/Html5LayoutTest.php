@@ -189,6 +189,25 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @cover Html5Layout::setBodyAttribute
+     * @cover Html5Layout::unsetBodyAttribute
+     * @cover Html5Layout::cleanBodyAttributes
+     */
+    public function testBodyAttributes()
+    {
+        $this->layout->setBodyAttribute('class', 'foo');
+        $this->layout->setBodyAttribute('id', 'body');
+        $html = $this->layout->render();
+        $this->assertContains('<body class="foo" id="body">', $html);
+        $this->layout->unsetBodyAttribute('id');
+        $html = $this->layout->render();
+        $this->assertContains('<body class="foo">', $html);
+        $this->layout->cleanBodyAttributes();
+        $html = $this->layout->render();
+        $this->assertContains('<body>', $html);
+    }
+
+    /**
      *
      */
     public function testHtmlDocumentValidates()
@@ -200,6 +219,10 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->layout->setDescription('Lorem ipsum');
         $this->layout->setGenerator('Huruk');
         $this->layout->setLanguage('en');
+        $this->layout->addCss('theme.css', 'screen');
+        $this->layout->addJs('script.js');
+        $this->layout->setBodyAttribute('class', 'foo');
+        $this->layout->setBodyAttribute('id', 'body');
         $this->assertHtmlValidates($this->layout->render());
     }
 
