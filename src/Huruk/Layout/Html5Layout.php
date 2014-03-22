@@ -145,7 +145,7 @@ class Html5Layout implements LayoutInterface
      * @param $body_contents
      * @return string
      */
-    public function render($body_contents)
+    public function render($body_contents = '')
     {
         //Metas comunes
         $this->addCommonMetaTags();
@@ -391,7 +391,7 @@ class Html5Layout implements LayoutInterface
      * @param $application_name
      * @return Html5Layout
      */
-    public function setApplicaionName($application_name)
+    public function setApplicationName($application_name)
     {
         $this->application_name = $application_name;
         return $this;

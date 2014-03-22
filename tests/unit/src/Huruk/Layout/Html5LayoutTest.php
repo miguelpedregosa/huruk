@@ -33,11 +33,133 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateSimpleDocument()
     {
-        $html = $this->layout->render(' ');
-
+        $html = $this->layout->render();
         $this->assertContains('<!DOCTYPE html>', $html);
-        $this->assertHtmlValidates($html);
-        $this->assertContains('<title>' . $this->title . '</title>', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setTitle
+     */
+    public function testSetTitle()
+    {
+        $this->layout->setTitle($this->title);
+        $html = $this->layout->render();
+        $this->assertContains('<title>Hello world</title>', $html);
+    }
+
+    /**
+     * @cover Html5Layout::addMeta
+     */
+    public function testMeta()
+    {
+        $this->layout->addMeta(Meta::make('author', 'Miguel Pedregosa'));
+        $html = $this->layout->render();
+        $this->assertContains('<meta name="author" content="Miguel Pedregosa">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setAuthor
+     */
+    public function testSetAuthor()
+    {
+        $this->layout->setAuthor('Miguel Pedregosa');
+        $html = $this->layout->render();
+        $this->assertContains('<meta name="author" content="Miguel Pedregosa">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setLanguage
+     */
+    public function testSetLanguage()
+    {
+        $this->layout->setLanguage('en');
+        $html = $this->layout->render();
+        $this->assertContains('<html lang="en">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setCharset
+     */
+    public function testSetCharset()
+    {
+        $this->layout->setCharset('utf-8');
+        $html = $this->layout->render();
+        $this->assertContains('<meta charset="utf-8">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setApplicationName
+     */
+    public function testSetApplicationName()
+    {
+        $this->layout->setApplicationName('Huruk');
+        $html = $this->layout->render();
+        $this->assertContains('<meta name="application-name" content="Huruk">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setGenerator
+     */
+    public function testSetGenerator()
+    {
+        $this->layout->setGenerator('Huruk');
+        $html = $this->layout->render();
+        $this->assertContains('<meta name="generator" content="Huruk">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setDescription
+     */
+    public function testSetDescription()
+    {
+        $this->layout->setDescription('Lorem ipsum');
+        $html = $this->layout->render();
+        $this->assertContains('<meta name="description" content="Lorem ipsum">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setKeywords
+     */
+    public function testSetKeywords()
+    {
+        $this->layout->setKeywords('a,b,c');
+        $html = $this->layout->render();
+        $this->assertContains('<meta name="keywords" content="a,b,c">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setViewPort
+     */
+    public function testSetViewport()
+    {
+        $this->layout->setViewPort('width=device-width, user-scalable=no');
+        $html = $this->layout->render();
+        $this->assertContains('<meta name="viewport" content="width=device-width, user-scalable=no">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::setCanonical
+     */
+    public function testSetCanonical()
+    {
+        $this->layout->setCanonical('http://foo.bar');
+        $html = $this->layout->render();
+        $this->assertContains('<link rel="canonical" href="http://foo.bar">', $html);
+    }
+
+    /**
+     *
+     */
+    public function testHtmlDocumentValidates()
+    {
+        $this->layout->setAuthor('Miguel Pedregosa');
+        $this->layout->setCanonical('http://foo.bar');
+        $this->layout->setViewPort('width=device-width, user-scalable=no');
+        $this->layout->setKeywords('a,b,c');
+        $this->layout->setDescription('Lorem ipsum');
+        $this->layout->setGenerator('Huruk');
+        $this->layout->setLanguage('en');
+        $this->assertHtmlValidates($this->layout->render());
     }
 
     /**
@@ -58,18 +180,5 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
             }
         }
         $this->assertTrue($res, $msg);
-
     }
-
-    /**
-     * @cover Html5Layout::addMeta
-     */
-    public function testMeta()
-    {
-        $this->layout->addMeta(Meta::make('author', 'Miguel Pedregosa'));
-        $html = $this->layout->render('');
-        $this->assertHtmlValidates($html);
-        $this->assertContains('<meta name="author" content="Miguel Pedregosa">', $html);
-    }
-
 }
