@@ -1,0 +1,6 @@
+{# Pinta los meta del documento html #}
+{% for meta in metas %}
+    {% if meta.getContent or meta.getCharset %}
+        <meta{% if meta.getHttpEquiv %} http-equiv="{{meta.getHttpEquiv}}"{% endif %}{% if meta.getName %} name="{{ meta.getName }}"{% endif %}{% if meta.getContent %} content="{{meta.getContent}}"{% endif %}{% if meta.getCharset %} charset="{{ meta.getCharset }}"{% endif %}>
+    {% endif %}
+{% endfor %}
