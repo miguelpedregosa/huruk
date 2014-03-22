@@ -10,6 +10,7 @@ namespace unit\src\Huruk\Layout;
 
 
 use Huruk\Layout\Html5Layout;
+use Huruk\Layout\Link;
 use Huruk\Layout\Meta;
 use W3C\HtmlValidator;
 
@@ -145,6 +146,46 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->layout->setCanonical('http://foo.bar');
         $html = $this->layout->render();
         $this->assertContains('<link rel="canonical" href="http://foo.bar">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::addHttpEquivMetaTag
+     */
+    public function testAddHttpEquivMetaTag()
+    {
+        $this->layout->addHttpEquivMetaTag('refresh', '30');
+        $html = $this->layout->render();
+        $this->assertContains('<meta http-equiv="refresh" content="30">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::addLink
+     */
+    public function testAddLink()
+    {
+        $this->layout->addLink(Link::make("stylesheet", 'text/css', 'theme.css'));
+        $html = $this->layout->render();
+        $this->assertContains('<link rel="stylesheet" href="theme.css" type="text/css">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::addCss
+     */
+    public function testAddCss()
+    {
+        $this->layout->addCss('theme.css', 'screen');
+        $html = $this->layout->render();
+        $this->assertContains('<link rel="stylesheet" href="theme.css" type="text/css" media="screen">', $html);
+    }
+
+    /**
+     * @cover Html5Layout::addJs
+     */
+    public function testAddJs()
+    {
+        $this->layout->addJs('script.js');
+        $html = $this->layout->render();
+        $this->assertContains('<script src="script.js"></script>', $html);
     }
 
     /**

@@ -267,10 +267,10 @@ class Html5Layout implements LayoutInterface
         while (!$css_assets->isEmpty()) {
             $asset = $css_assets->extract();
             $link = new Link();
-            $link->setMedia($asset['media'])->setType('text/css')->setRel('stylesheet');
-
-            $asset_resource = $asset['asset'];
-            $link->setHref($asset_resource);
+            $link->setHref($asset['asset'])
+                ->setMedia($asset['media'])
+                ->setType('text/css')
+                ->setRel('stylesheet');
             $this->addLink($link, 0);
         }
     }

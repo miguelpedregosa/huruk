@@ -20,13 +20,13 @@ class Link
 
     /**
      * Factoria estatica
-     * @param string $href
-     * @param string $media
      * @param string $rel
      * @param string $type
+     * @param string $href
+     * @param string $media
      * @return Link
      */
-    public static function make($href = '', $media = '', $rel = '', $type = '')
+    public static function make($rel, $type, $href, $media = '')
     {
         $link = new self();
         $link->setHref($href)->setMedia($media)->setRel($rel)->setType($type);

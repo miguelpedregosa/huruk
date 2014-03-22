@@ -86,10 +86,10 @@ class LinkTest extends \PHPUnit_Framework_TestCase
      */
     public function testFactory()
     {
-        $link = Link::make('xxx', 'screen', 'style', 'foo');
-        $this->assertEquals('xxx', $link->getHref());
+        $link = Link::make('stylesheet', 'text/css', 'theme.css', 'screen');
+        $this->assertEquals('stylesheet', $link->getRel());
+        $this->assertEquals('text/css', $link->getType());
+        $this->assertEquals('theme.css', $link->getHref());
         $this->assertEquals('screen', $link->getMedia());
-        $this->assertEquals('style', $link->getRel());
-        $this->assertEquals('foo', $link->getType());
     }
 }
