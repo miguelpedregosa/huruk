@@ -24,7 +24,8 @@
         "natxet/CssMin": "dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.0.*"
+        "phpunit/phpunit": "4.0.*",
+        "micheh/w3c-validator": "dev-master"
     },
     "autoload": {
         "psr-0": {
