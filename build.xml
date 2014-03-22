@@ -25,8 +25,6 @@
         <delete dir="${basedir}/build/coverage"/>
         <delete dir="${basedir}/build/logs"/>
         <delete dir="${basedir}/build/pdepend"/>
-        <delete dir="${basedir}/vendor"/>
-        <delete file="${basedir}/composer.lock"/>
     </target>
 
     <target name="prepare" depends="clean" description="Prepare for build">
@@ -39,7 +37,7 @@
 
     <target name="vendors" depends="clean" description="Add Vendors">
         <exec executable="${basedir}/build/tools/composer.phar" failonerror="true">
-            <arg value='install' />
+            <arg value='update' />
         </exec>
     </target>
 
