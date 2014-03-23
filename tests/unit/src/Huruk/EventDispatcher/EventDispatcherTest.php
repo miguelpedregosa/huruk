@@ -39,6 +39,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::listen
+     * @covers ::on
+     * @covers ::getListeners
      */
     public function testListen()
     {
