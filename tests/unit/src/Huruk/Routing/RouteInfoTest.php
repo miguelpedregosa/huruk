@@ -41,6 +41,9 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
      * @covers ::__construct
      * @covers ::setRouteName
      * @covers ::getRouteName
+     * @covers ::setControllerClass
+     * @covers ::setParams
+     * @covers ::setAction
      */
     public function testSetRoute()
     {
@@ -52,6 +55,9 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::setControllerClass
+     * @covers ::setControllerClass
+     * @covers ::setAction
+     * @covers ::setParams
      * @covers ::getControllerClass
      */
     public function testSetControllerClass()
@@ -64,6 +70,9 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::setAction
+     * @covers ::setControllerClass
+     * @covers ::setAction
+     * @covers ::setParams
      * @covers ::getAction
      */
     public function testSetAction()
@@ -76,6 +85,8 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::__construct
      * @covers ::setParams
+     * @covers ::setControllerClass
+     * @covers ::setAction
      * @covers ::getParams
      */
     public function testSetParams()
