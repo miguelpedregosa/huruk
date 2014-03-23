@@ -54,13 +54,13 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Huruk\Dispatcher\Header::setReeplace
+     * @covers Huruk\Dispatcher\Header::setReplace
      * @covers Huruk\Dispatcher\Header::getReplace
      */
     public function testSetReplace()
     {
         $header = new Header();
-        $this->assertInstanceOf('\Huruk\Dispatcher\Header', $header->setReeplace(false));
+        $this->assertInstanceOf('\Huruk\Dispatcher\Header', $header->setReplace(false));
         $this->assertFalse($header->getReplace());
 
     }
@@ -82,7 +82,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     public function testMake()
     {
         $header = new Header('Foo:bar');
-        $header->setReeplace(false)->setHttpResponseCode(302);
+        $header->setReplace(false)->setHttpResponseCode(302);
 
         $this->assertEquals($header, Header::make('Foo:bar', false, 302));
     }

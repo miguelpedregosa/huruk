@@ -90,7 +90,7 @@ class Header
     public function __construct($header = '', $replace = true, $http_response_code = 200)
     {
         $this->setHeader($header)
-            ->setReeplace($replace)
+            ->setReplace($replace)
             ->setHttpResponseCode($http_response_code);
     }
 
@@ -98,7 +98,7 @@ class Header
      * @param bool $replace
      * @return Header
      */
-    public function setReeplace($replace = true)
+    public function setReplace($replace = true)
     {
         $this->replace = (bool)$replace;
         return $this;
