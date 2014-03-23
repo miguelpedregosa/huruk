@@ -15,7 +15,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @cover Header::__construct
+     * @covers Header::__construct
      */
     public function testNewHeader()
     {
@@ -31,8 +31,8 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover Header::setHeader
-     * @cover Header::getHeader
+     * @covers Header::setHeader
+     * @covers Header::getHeader
      */
     public function testSetHeader()
     {
@@ -43,8 +43,8 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover Header::setReeplace
-     * @cover Header::getReplace
+     * @covers Header::setReeplace
+     * @covers Header::getReplace
      */
     public function testSetReplace()
     {
@@ -55,8 +55,8 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover Header::setHttpResponseCode
-     * @cover Header::getHttpResponseCode
+     * @covers Header::setHttpResponseCode
+     * @covers Header::getHttpResponseCode
      */
     public function testHttpResponseCode()
     {
@@ -66,7 +66,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover Header::make
+     * @covers Header::make
      */
     public function testMake()
     {
@@ -77,7 +77,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover Header::makeFromStatusCode
+     * @covers Header::makeFromStatusCode
      */
     public function testMakeFromStatusCode()
     {
@@ -88,7 +88,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover Header::makeJsonHeader
+     * @covers Header::makeJsonHeader
      */
     public function testMakeJsonHeader()
     {
