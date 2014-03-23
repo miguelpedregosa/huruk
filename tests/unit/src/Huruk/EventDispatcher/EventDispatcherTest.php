@@ -26,7 +26,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testOn()
     {
-        $event_dispatcher = new EventDispatcher();
+        /** @var EventDispatcher $event_dispatcher */
+        $event_dispatcher = EventDispatcher::getInstance(true);
         $function = function () {
             //Does nothing
         };
@@ -44,7 +45,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testListen()
     {
-        $event_dispatcher = new EventDispatcher();
+        /** @var EventDispatcher $event_dispatcher */
+        $event_dispatcher = EventDispatcher::getInstance(true);
         $function = function () {
             //Does nothing
         };
@@ -62,7 +64,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testDispatch()
     {
-        $event_dispatcher = new EventDispatcher();
+        /** @var EventDispatcher $event_dispatcher */
+        $event_dispatcher = EventDispatcher::getInstance(true);
         $function = function () {
             $this->counter++;
         };
@@ -85,7 +88,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function testDispatchEvent()
     {
-        $event_dispatcher = new EventDispatcher();
+        /** @var EventDispatcher $event_dispatcher */
+        $event_dispatcher = EventDispatcher::getInstance(true);
         $function = function (Event $event) {
             $this->assertInstanceOf('Huruk\EventDispatcher\Event', $event);
             if (isset($event['foo'])) {
