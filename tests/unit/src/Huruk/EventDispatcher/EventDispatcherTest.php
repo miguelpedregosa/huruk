@@ -57,6 +57,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::dispatch
+     * @covers ::listen
+     * @covers ::on
      */
     public function testDispatch()
     {
@@ -76,6 +78,9 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::dispatchEvent
+     * @covers ::dispatch
+     * @covers ::listen
+     * @covers ::on
      */
     public function testDispatchEvent()
     {
