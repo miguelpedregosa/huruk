@@ -115,7 +115,7 @@ abstract class Application implements ApplicationInterface
         if (!isset($this->services_container[self::EVENT_DISPATCHER_SERVICE])
             || !$this->services_container[self::EVENT_DISPATCHER_SERVICE] instanceof EventDispatcher
         ) {
-            $this->services_container[self::EVENT_DISPATCHER_SERVICE] = new EventDispatcher();
+            $this->services_container[self::EVENT_DISPATCHER_SERVICE] = EventDispatcher::getInstance();
         }
         return $this->services_container[self::EVENT_DISPATCHER_SERVICE];
     }
