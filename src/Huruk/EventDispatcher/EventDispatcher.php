@@ -43,6 +43,9 @@ class EventDispatcher extends SymfonyEventDispatcher
      */
     public function dispatchEvent($event_name, Event $event = null)
     {
+        if (is_null($event)) {
+            $event = Event::make();
+        }
         return $this->dispatch($event_name, $event);
     }
 }
