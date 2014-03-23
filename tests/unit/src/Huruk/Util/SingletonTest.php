@@ -16,6 +16,7 @@ class SingletonTest extends \PHPUnit_Framework_TestCase
 
     public static function setupBeforeClass()
     {
+        parent::setUpBeforeClass();
         require_once __DIR__ . '/sut/DummySingleton.php';
     }
 
@@ -80,6 +81,7 @@ class SingletonTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        parent::setUp();
         $this->errors = array();
         set_error_handler(array($this, "errorHandler"));
     }

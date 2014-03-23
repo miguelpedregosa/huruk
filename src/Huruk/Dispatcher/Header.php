@@ -8,6 +8,11 @@
 
 namespace Huruk\Dispatcher;
 
+/**
+ * Represents a http header
+ * Class Header
+ * @package Huruk\Dispatcher
+ */
 class Header
 {
 
@@ -80,31 +85,33 @@ class Header
     /**
      * @param $header
      * @param bool $replace
-     * @param null $http_response_code
+     * @param int $http_response_code
      */
-    public function __construct($header, $replace = true, $http_response_code = null)
+    public function __construct($header = '', $replace = true, $http_response_code = 200)
     {
-        $this->setHeader($header);
-        $this->setReeplace($replace);
-        $this->setHttpResponseCode($http_response_code);
+        $this->setHeader($header)
+            ->setReeplace($replace)
+            ->setHttpResponseCode($http_response_code);
     }
 
     /**
      * @param bool $replace
+     * @return Header
      */
     public function setReeplace($replace = true)
     {
         $this->replace = (bool)$replace;
+        return $this;
     }
 
     /**
      * Factoria estatica
      * @param $header
      * @param bool $replace
-     * @param null $http_response_code
+     * @param int $http_response_code
      * @return Header
      */
-    public static function make($header, $replace = true, $http_response_code = null)
+    public static function make($header = '', $replace = true, $http_response_code = 200)
     {
         return new self($header, $replace, $http_response_code);
     }
@@ -123,11 +130,11 @@ class Header
 
     /**
      * Genera el header correcto para servir datos en json
+     * @param string $charset
      * @param bool $json_p
-     * @param null $charset
      * @return Header
      */
-    public static function makeJsonHeader($json_p = false, $charset = null)
+    public static function makeJsonHeader($charset = 'utf-8', $json_p = false)
     {
         $header_str = ($json_p) ? 'Content-Type: application/javascript' : 'Content-Type: application/json';
         if (!is_null($charset)) {
@@ -154,10 +161,12 @@ class Header
 
     /**
      * @param $header
+     * @return Header
      */
     public function setHeader($header)
     {
         $this->header = $header;
+        return $this;
     }
 
     /**
@@ -182,9 +191,11 @@ class Header
 
     /**
      * @param null $response_code
+     * @return Header
      */
     public function setHttpResponseCode($response_code = null)
     {
         $this->http_response_code = (int)$response_code;
+        return $this;
     }
 }

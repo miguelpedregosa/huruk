@@ -9,6 +9,10 @@ namespace Huruk\Dispatcher;
 
 use Huruk\Util\StablePriorityQueue;
 
+/**
+ * Class Response
+ * @package Huruk\Dispatcher
+ */
 class Response
 {
     const PRIORITY_HIGH = 3;
@@ -87,6 +91,9 @@ class Response
         return $action_result;
     }
 
+    /**
+     *
+     */
     public function disableSendContent()
     {
         $this->send_content = false;
@@ -100,25 +107,33 @@ class Response
         return $this->headers;
     }
 
+    /**
+     * @return string
+     */
     public function getContent()
     {
         return $this->content;
     }
 
+    /**
+     * @param $content
+     */
     public function setContent($content)
     {
         $this->content = $content;
     }
 
     /**
-     * Metodos factoria
+     *
      */
-
     public function enableSendContent()
     {
         $this->send_content = true;
     }
 
+    /**
+     * @return bool
+     */
     public function mustSendContent()
     {
         return $this->send_content;

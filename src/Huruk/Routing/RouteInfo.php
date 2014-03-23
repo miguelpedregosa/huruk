@@ -1,6 +1,6 @@
 <?php
 /**
- * Encapulsa los parametros provenientes del enrutado
+ *
  * User: migue
  * Date: 9/02/14
  * Time: 16:10
@@ -8,7 +8,11 @@
 
 namespace Huruk\Routing;
 
-
+/**
+ * Encapulsa los parametros provenientes del enrutado
+ * Class RouteInfo
+ * @package Huruk\Routing
+ */
 class RouteInfo
 {
     private $controller_class = null;

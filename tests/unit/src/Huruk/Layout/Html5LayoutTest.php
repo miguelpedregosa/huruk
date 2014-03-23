@@ -23,8 +23,9 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
     /**
      *
      */
-    public function setUp()
+    protected function setUp()
     {
+        parent::setUp();
         $this->layout = new Html5Layout();
         $this->layout->setTitle($this->title);
     }

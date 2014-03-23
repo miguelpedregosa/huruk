@@ -16,8 +16,9 @@ class MetaTest extends \PHPUnit_Framework_TestCase
     /** @var  Meta */
     private $meta;
 
-    public function setUp()
+    protected function setUp()
     {
+        parent::setUp();
         $this->meta = new Meta();
     }
 

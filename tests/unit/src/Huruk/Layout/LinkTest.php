@@ -16,8 +16,9 @@ class LinkTest extends \PHPUnit_Framework_TestCase
     /** @var  Link */
     private $link;
 
-    public function setup()
+    protected function setup()
     {
+        parent::setUp();
         $this->link = new Link();
     }
 
