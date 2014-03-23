@@ -15,7 +15,7 @@ use Huruk\EventDispatcher\EventDispatcher;
 /**
  * Class EventDispatcherTest
  * @package unit\src\Huruk\EventDispatcher
- * @coversDefaultClass Huruk\EventDispatcher\EventDispatcher
+ * @coversDefaultClass \Huruk\EventDispatcher\EventDispatcher
  */
 class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 {
@@ -81,6 +81,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      * @covers ::dispatch
      * @covers ::listen
      * @covers ::on
+     * @covers \Huruk\EventDispatcher\Event::make
      */
     public function testDispatchEvent()
     {

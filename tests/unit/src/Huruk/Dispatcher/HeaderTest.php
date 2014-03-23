@@ -14,7 +14,7 @@ use Huruk\Dispatcher\Header;
 /**
  * Class HeaderTest
  * @package unit\src\Huruk\Dispatcher
- * @coversDefaultClass Huruk\Dispatcher\Header
+ * @coversDefaultClass \Huruk\Dispatcher\Header
  */
 class HeaderTest extends \PHPUnit_Framework_TestCase
 {
