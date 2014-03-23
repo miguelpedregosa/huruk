@@ -8,7 +8,11 @@
 
 namespace Huruk\Layout;
 
-
+/**
+ * Interface for layouts
+ * Interface LayoutInterface
+ * @package Huruk\Layout
+ */
 interface LayoutInterface
 {
     /**

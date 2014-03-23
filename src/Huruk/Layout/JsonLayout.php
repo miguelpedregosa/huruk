@@ -8,7 +8,11 @@
 
 namespace Huruk\Layout;
 
-
+/**
+ * Layout for create Json documents
+ * Class JsonLayout
+ * @package Huruk\Layout
+ */
 class JsonLayout implements LayoutInterface
 {
 
@@ -22,4 +26,3 @@ class JsonLayout implements LayoutInterface
         return json_encode($contents);
     }
 }
- 

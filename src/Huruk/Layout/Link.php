@@ -8,7 +8,11 @@
 
 namespace Huruk\Layout;
 
-
+/**
+ * Represents a html link tag
+ * Class Link
+ * @package Huruk\Layout
+ */
 class Link
 {
     private $href;

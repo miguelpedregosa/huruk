@@ -8,14 +8,13 @@
 
 namespace Huruk\Layout;
 
-
-use Assetic\Asset\AssetCollection;
-use Assetic\Asset\AssetInterface;
-use Assetic\AssetWriter;
-use Assetic\Filter\CssRewriteFilter;
-use Huruk\Debug\DebugWebBar;
 use Huruk\Util\StablePriorityQueue;
 
+/**
+ * Layout for crate Html5 documents
+ * Class Html5Layout
+ * @package Huruk\Layout
+ */
 class Html5Layout implements LayoutInterface
 {
     const PRIORITY_HIGH = 3;

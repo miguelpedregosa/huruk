@@ -8,7 +8,11 @@
 
 namespace Huruk\Layout;
 
-
+/**
+ * Represents a html meta tag
+ * Class Meta
+ * @package Huruk\Layout
+ */
 class Meta
 {
     private $name;
@@ -106,4 +110,3 @@ class Meta
         return $this;
     }
 }
- 
