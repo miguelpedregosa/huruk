@@ -19,7 +19,7 @@ class RouteInfo
     /**
      * @param $route_info
      */
-    public function __construct($route_info)
+    public function __construct($route_info = array())
     {
         if (is_array($route_info)) {
             //Controlador
@@ -118,4 +118,3 @@ class RouteInfo
         return $this;
     }
 }
- 
