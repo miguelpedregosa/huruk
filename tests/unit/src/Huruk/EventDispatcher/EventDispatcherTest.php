@@ -12,12 +12,17 @@ namespace unit\src\Huruk\EventDispatcher;
 use Huruk\EventDispatcher\Event;
 use Huruk\EventDispatcher\EventDispatcher;
 
+/**
+ * Class EventDispatcherTest
+ * @package unit\src\Huruk\EventDispatcher
+ * @coversDefaultClass Huruk\EventDispatcher\EventDispatcher
+ */
 class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 {
     private $counter = 0;
 
     /**
-     * @cover EventDispatcher::on
+     * @covers EventDispatcher::on
      */
     public function testOn()
     {
@@ -33,7 +38,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover EventDispatcher::listen
+     * @covers EventDispatcher::listen
      */
     public function testListen()
     {
@@ -49,7 +54,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover EventDispatcher::dispatch
+     * @covers EventDispatcher::dispatch
      */
     public function testDispatch()
     {
@@ -68,7 +73,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover EventDispatcher::dispatchEvent
+     * @covers EventDispatcher::dispatchEvent
      */
     public function testDispatchEvent()
     {
