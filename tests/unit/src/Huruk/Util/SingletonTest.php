@@ -10,6 +10,11 @@ namespace unit\src\Huruk\Util;
 
 use unit\src\Huruk\Util\sut\DummySingleton;
 
+/**
+ * Class SingletonTest
+ * @package unit\src\Huruk\Util
+ * @coversDefaultClass \Huruk\Util\Singleton
+ */
 class SingletonTest extends \PHPUnit_Framework_TestCase
 {
     private $errors;
