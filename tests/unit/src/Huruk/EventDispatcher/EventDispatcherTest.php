@@ -70,7 +70,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     /**
      * @cover EventDispatcher::dispatchEvent
      */
-    public function dispatchEvent()
+    public function testDispatchEvent()
     {
         $event_dispatcher = new EventDispatcher();
         $function = function (Event $event) {
