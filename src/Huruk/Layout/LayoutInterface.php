@@ -21,4 +21,4 @@ interface LayoutInterface
      * @return string
      */
     public function render($contents);
-} 
+}
