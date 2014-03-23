@@ -11,11 +11,16 @@ namespace unit\src\Huruk\EventDispatcher;
 
 use Huruk\EventDispatcher\Event;
 
+/**
+ * Class EventTest
+ * @package unit\src\Huruk\EventDispatcher
+ * @coversDefaultClass \Huruk\EventDispatcher\Event
+ */
 class EventTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @cover Event::__construct
-     * @cover Event::getData
+     * @covers ::__construct
+     * @covers ::getData
      */
     public function testDataEvent()
     {
@@ -25,7 +30,8 @@ class EventTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover Event::setData
+     * @covers ::setData
+     * @covers ::getData
      */
     public function testSetData()
     {
@@ -36,7 +42,8 @@ class EventTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover Event::make
+     * @covers ::make
+     * @covers ::getData
      */
     public function testFactory()
     {
@@ -46,10 +53,10 @@ class EventTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover Event::offsetExists
-     * @cover Event::offsetGet
-     * @cover Event::offsetSet
-     * @cover Event::offsetUnset
+     * @covers ::offsetExists
+     * @covers ::offsetGet
+     * @covers ::offsetSet
+     * @covers ::offsetUnset
      */
     public function testArrayAccess ()
     {
