@@ -91,7 +91,7 @@ class Event extends SymfonyEvent implements \ArrayAccess
      */
     public function offsetGet($offset)
     {
-        return (isset($this[$offset])) ? $this->data[$offset] : null;
+        return (is_array($this->data) && isset($this[$offset])) ? $this->data[$offset] : null;
     }
 
     /**
@@ -108,10 +108,9 @@ class Event extends SymfonyEvent implements \ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        if (!is_array($this->data)) {
-            $this->data = array();
+        if (is_array($this->data)) {
+            $this->data[$offset] = $value;
         }
-        $this->data[$offset] = $value;
     }
 
     /**
@@ -125,7 +124,7 @@ class Event extends SymfonyEvent implements \ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        if (isset($this[$offset])) {
+        if (is_array($this->data) && isset($this[$offset])) {
             unset($this->data[$offset]);
         }
     }
