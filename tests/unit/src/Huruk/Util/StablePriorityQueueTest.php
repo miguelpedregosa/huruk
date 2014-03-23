@@ -11,11 +11,16 @@ namespace unit\src\Huruk\Util;
 
 use Huruk\Util\StablePriorityQueue;
 
+/**
+ * Class StablePriorityQueueTest
+ * @package unit\src\Huruk\Util
+ * @coversDefaultClass \Huruk\Util\StablePriorityQueue
+ */
 class StablePriorityQueueTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @cover StablePriorityQueue::insert
+     * @covers ::insert
      */
     public function testPriority()
     {
@@ -31,7 +36,7 @@ class StablePriorityQueueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover StablePriorityQueue::insert
+     * @covers ::insert
      */
     public function testEqualPriority()
     {
