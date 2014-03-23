@@ -11,11 +11,19 @@ namespace unit\src\Huruk\Dispatcher;
 
 use Huruk\Dispatcher\Header;
 
+/**
+ * Class HeaderTest
+ * @package unit\src\Huruk\Dispatcher
+ * @coversDefaultClass Huruk\Dispatcher\Header
+ */
 class HeaderTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
      * @covers Huruk\Dispatcher\Header::__construct
+     * @covers Huruk\Dispatcher\Header::getHeader
+     * @covers Huruk\Dispatcher\Header::getReplace
+     * @covers Huruk\Dispatcher\Header::getHttpResponseCode
      */
     public function testNewHeader()
     {
