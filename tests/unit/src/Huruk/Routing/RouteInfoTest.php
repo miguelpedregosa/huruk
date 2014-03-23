@@ -11,10 +11,15 @@ namespace unit\src\Huruk\Routing;
 
 use Huruk\Routing\RouteInfo;
 
+/**
+ * Class RouteInfoTest
+ * @package unit\src\Huruk\Routing
+ * @coversDefaultClass \Huruk\Routing\RouteInfo
+ */
 class RouteInfoTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @cover RouteInfo::__construct
+     * @covers ::__construct
      */
     public function testConstruct()
     {
@@ -33,8 +38,9 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover ReouteInfo::setRouteName
-     * @cover ReouteInfo::getRouteName
+     * @covers ::__construct
+     * @covers ::setRouteName
+     * @covers ::getRouteName
      */
     public function testSetRoute()
     {
@@ -44,8 +50,9 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover ReouteInfo::setControllerClass
-     * @cover ReouteInfo::getControllerClass
+     * @covers ::__construct
+     * @covers ::setControllerClass
+     * @covers ::getControllerClass
      */
     public function testSetControllerClass()
     {
@@ -55,8 +62,9 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover ReouteInfo::setAction
-     * @cover ReouteInfo::getAction
+     * @covers ::__construct
+     * @covers ::setAction
+     * @covers ::getAction
      */
     public function testSetAction()
     {
@@ -66,8 +74,9 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @cover ReouteInfo::setParams
-     * @cover ReouteInfo::getParams
+     * @covers ::__construct
+     * @covers ::setParams
+     * @covers ::getParams
      */
     public function testSetParams()
     {
