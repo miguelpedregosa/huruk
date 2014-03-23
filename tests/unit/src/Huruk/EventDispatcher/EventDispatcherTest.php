@@ -23,6 +23,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ::on
+     * @covers \Huruk\Util\Singleton
      */
     public function testOn()
     {
@@ -42,6 +43,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      * @covers ::listen
      * @covers ::on
      * @covers ::getListeners
+     * @covers \Huruk\Util\Singleton
      */
     public function testListen()
     {
@@ -61,6 +63,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      * @covers ::dispatch
      * @covers ::listen
      * @covers ::on
+     * @covers \Huruk\Util\Singleton
      */
     public function testDispatch()
     {
@@ -85,6 +88,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      * @covers ::listen
      * @covers ::on
      * @covers \Huruk\EventDispatcher\Event
+     * @covers \Huruk\Util\Singleton
      */
     public function testDispatchEvent()
     {
