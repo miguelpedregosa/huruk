@@ -11,6 +11,11 @@ namespace Huruk\EventDispatcher;
 
 use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
 
+/**
+ * Represent an event
+ * Class Event
+ * @package Huruk\EventDispatcher
+ */
 class Event extends SymfonyEvent implements \ArrayAccess
 {
     const EVENT_RUN = 'event.run';
