@@ -30,6 +30,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::__construct
      * @covers ::setData
      * @covers ::getData
      */
@@ -42,6 +43,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::__construct
      * @covers ::make
      * @covers ::getData
      */
@@ -53,6 +55,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ::__construct
      * @covers ::offsetExists
      * @covers ::offsetGet
      * @covers ::offsetSet
