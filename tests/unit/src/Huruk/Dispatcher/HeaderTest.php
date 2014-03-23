@@ -15,7 +15,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers Header::__construct
+     * @covers Huruk\Dispatcher\Header::__construct
      */
     public function testNewHeader()
     {
@@ -31,8 +31,8 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Header::setHeader
-     * @covers Header::getHeader
+     * @covers Huruk\Dispatcher\Header::setHeader
+     * @covers Huruk\Dispatcher\Header::getHeader
      */
     public function testSetHeader()
     {
@@ -43,8 +43,8 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Header::setReeplace
-     * @covers Header::getReplace
+     * @covers Huruk\Dispatcher\Header::setReeplace
+     * @covers Huruk\Dispatcher\Header::getReplace
      */
     public function testSetReplace()
     {
@@ -55,8 +55,8 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Header::setHttpResponseCode
-     * @covers Header::getHttpResponseCode
+     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
+     * @covers Huruk\Dispatcher\Header::getHttpResponseCode
      */
     public function testHttpResponseCode()
     {
@@ -66,7 +66,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Header::make
+     * @covers Huruk\Dispatcher\Header::make
      */
     public function testMake()
     {
@@ -77,7 +77,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Header::makeFromStatusCode
+     * @covers Huruk\Dispatcher\Header::makeFromStatusCode
      */
     public function testMakeFromStatusCode()
     {
@@ -88,7 +88,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Header::makeJsonHeader
+     * @covers Huruk\Dispatcher\Header::makeJsonHeader
      */
     public function testMakeJsonHeader()
     {
