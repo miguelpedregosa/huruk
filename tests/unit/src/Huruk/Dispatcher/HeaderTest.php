@@ -42,8 +42,11 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Huruk\Dispatcher\Header::__construct
      * @covers Huruk\Dispatcher\Header::setHeader
      * @covers Huruk\Dispatcher\Header::getHeader
+     * @covers Huruk\Dispatcher\Header::setReplace
+     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
      */
     public function testSetHeader()
     {
@@ -54,8 +57,11 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Huruk\Dispatcher\Header::__construct
+     * @covers Huruk\Dispatcher\Header::setHeader
      * @covers Huruk\Dispatcher\Header::setReplace
      * @covers Huruk\Dispatcher\Header::getReplace
+     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
      */
     public function testSetReplace()
     {
@@ -66,6 +72,9 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Huruk\Dispatcher\Header::__construct
+     * @covers Huruk\Dispatcher\Header::setHeader
+     * @covers Huruk\Dispatcher\Header::setReplace
      * @covers Huruk\Dispatcher\Header::setHttpResponseCode
      * @covers Huruk\Dispatcher\Header::getHttpResponseCode
      */
