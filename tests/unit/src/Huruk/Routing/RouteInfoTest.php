@@ -19,7 +19,7 @@ use Huruk\Routing\RouteInfo;
 class RouteInfoTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ::__construct
+     * @covers \Huruk\Routing\RouteInfo
      */
     public function testConstruct()
     {
