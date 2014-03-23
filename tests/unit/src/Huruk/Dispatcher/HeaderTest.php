@@ -20,13 +20,13 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @covers Huruk\Dispatcher\Header::__construct
-     * @covers Huruk\Dispatcher\Header::setHeader
-     * @covers Huruk\Dispatcher\Header::getHeader
-     * @covers Huruk\Dispatcher\Header::setReplace
-     * @covers Huruk\Dispatcher\Header::getReplace
-     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
-     * @covers Huruk\Dispatcher\Header::getHttpResponseCode
+     * @covers ::__construct
+     * @covers ::setHeader
+     * @covers ::getHeader
+     * @covers ::setReplace
+     * @covers ::getReplace
+     * @covers ::setHttpResponseCode
+     * @covers ::getHttpResponseCode
      */
     public function testNewHeader()
     {
@@ -42,11 +42,11 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Huruk\Dispatcher\Header::__construct
-     * @covers Huruk\Dispatcher\Header::setHeader
-     * @covers Huruk\Dispatcher\Header::getHeader
-     * @covers Huruk\Dispatcher\Header::setReplace
-     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
+     * @covers ::__construct
+     * @covers ::setHeader
+     * @covers ::getHeader
+     * @covers ::setReplace
+     * @covers ::setHttpResponseCode
      */
     public function testSetHeader()
     {
@@ -57,11 +57,11 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Huruk\Dispatcher\Header::__construct
-     * @covers Huruk\Dispatcher\Header::setHeader
-     * @covers Huruk\Dispatcher\Header::setReplace
-     * @covers Huruk\Dispatcher\Header::getReplace
-     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
+     * @covers ::__construct
+     * @covers ::setHeader
+     * @covers ::setReplace
+     * @covers ::getReplace
+     * @covers ::setHttpResponseCode
      */
     public function testSetReplace()
     {
@@ -72,11 +72,11 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Huruk\Dispatcher\Header::__construct
-     * @covers Huruk\Dispatcher\Header::setHeader
-     * @covers Huruk\Dispatcher\Header::setReplace
-     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
-     * @covers Huruk\Dispatcher\Header::getHttpResponseCode
+     * @covers ::__construct
+     * @covers ::setHeader
+     * @covers ::setReplace
+     * @covers ::setHttpResponseCode
+     * @covers ::getHttpResponseCode
      */
     public function testHttpResponseCode()
     {
@@ -86,11 +86,11 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Huruk\Dispatcher\Header::make
-     * @covers Huruk\Dispatcher\Header::__construct
-     * @covers Huruk\Dispatcher\Header::setHeader
-     * @covers Huruk\Dispatcher\Header::setReplace
-     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
+     * @covers ::make
+     * @covers ::__construct
+     * @covers ::setHeader
+     * @covers ::setReplace
+     * @covers ::setHttpResponseCode
      */
     public function testMake()
     {
@@ -101,14 +101,14 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Huruk\Dispatcher\Header::makeFromStatusCode
-     * @covers Huruk\Dispatcher\Header::__construct
-     * @covers Huruk\Dispatcher\Header::setHeader
-     * @covers Huruk\Dispatcher\Header::getHeader
-     * @covers Huruk\Dispatcher\Header::setReplace
-     * @covers Huruk\Dispatcher\Header::getReplace
-     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
-     * @covers Huruk\Dispatcher\Header::getHttpResponseCode
+     * @covers ::makeFromStatusCode
+     * @covers ::__construct
+     * @covers ::setHeader
+     * @covers ::getHeader
+     * @covers ::setReplace
+     * @covers ::getReplace
+     * @covers ::setHttpResponseCode
+     * @covers ::getHttpResponseCode
      */
     public function testMakeFromStatusCode()
     {
@@ -119,14 +119,14 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Huruk\Dispatcher\Header::makeJsonHeader
-     * @covers Huruk\Dispatcher\Header::__construct
-     * @covers Huruk\Dispatcher\Header::setHeader
-     * @covers Huruk\Dispatcher\Header::getHeader
-     * @covers Huruk\Dispatcher\Header::setReplace
-     * @covers Huruk\Dispatcher\Header::getReplace
-     * @covers Huruk\Dispatcher\Header::setHttpResponseCode
-     * @covers Huruk\Dispatcher\Header::getHttpResponseCode
+     * @covers ::makeJsonHeader
+     * @covers ::__construct
+     * @covers ::setHeader
+     * @covers ::getHeader
+     * @covers ::setReplace
+     * @covers ::getReplace
+     * @covers ::setHttpResponseCode
+     * @covers ::getHttpResponseCode
      */
     public function testMakeJsonHeader()
     {
