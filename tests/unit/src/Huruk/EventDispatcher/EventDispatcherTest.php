@@ -81,7 +81,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
      * @covers ::dispatch
      * @covers ::listen
      * @covers ::on
-     * @covers \Huruk\EventDispatcher\Event::make
+     * @covers \Huruk\EventDispatcher\Event
      */
     public function testDispatchEvent()
     {
