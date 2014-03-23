@@ -22,7 +22,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     private $counter = 0;
 
     /**
-     * @covers EventDispatcher::on
+     * @covers ::on
      */
     public function testOn()
     {
@@ -38,7 +38,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers EventDispatcher::listen
+     * @covers ::listen
      */
     public function testListen()
     {
@@ -54,7 +54,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers EventDispatcher::dispatch
+     * @covers ::dispatch
      */
     public function testDispatch()
     {
@@ -73,7 +73,7 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers EventDispatcher::dispatchEvent
+     * @covers ::dispatchEvent
      */
     public function testDispatchEvent()
     {
