@@ -12,6 +12,6 @@ namespace Huruk\Application;
 class ServicesFactory
 {
 
-    privat static $closures = array();
+    private static $closures = array();
 
 }
