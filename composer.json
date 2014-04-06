@@ -21,6 +21,7 @@
         "swiftmailer/swiftmailer": "*"
     },
     "require-dev": {
+        "ext-curl" : "*",
         "phpunit/phpunit": "4.*",
         "micheh/w3c-validator": "dev-master"
     },
