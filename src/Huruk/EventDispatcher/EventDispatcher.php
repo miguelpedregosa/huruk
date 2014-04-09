@@ -8,7 +8,6 @@
 
 namespace Huruk\EventDispatcher;
 
-use Huruk\Util\Singleton;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
 /**
@@ -17,16 +16,15 @@ use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
  */
 class EventDispatcher extends SymfonyEventDispatcher
 {
-    use Singleton;
 
     /**
      * @param $eventName
      * @param $listener
      * @param int $priority
      */
-    public static function listen($eventName, $listener, $priority = 0)
+    public function listen($eventName, $listener, $priority = 0)
     {
-        self::on($eventName, $listener, $priority);
+        $this->on($eventName, $listener, $priority);
     }
 
     /**
@@ -34,11 +32,9 @@ class EventDispatcher extends SymfonyEventDispatcher
      * @param $listener
      * @param int $priority
      */
-    public static function on($eventName, $listener, $priority = 0)
+    public function on($eventName, $listener, $priority = 0)
     {
-        /** @var EventDispatcher $instance */
-        $instance = self::getInstance();
-        $instance->addListener($eventName, $listener, $priority);
+        $this->addListener($eventName, $listener, $priority);
     }
 
     /**
@@ -46,13 +42,12 @@ class EventDispatcher extends SymfonyEventDispatcher
      * @param Event $event
      * @return \Symfony\Component\EventDispatcher\Event
      */
-    public static function dispatchEvent($event_name, Event $event = null)
+    public function dispatchEvent($event_name, Event $event = null)
     {
         if (is_null($event)) {
             $event = Event::make();
         }
-        /** @var EventDispatcher $instance */
-        $instance = self::getInstance();
-        return $instance->dispatch($event_name, $event);
+
+        return $this->dispatch($event_name, $event);
     }
 }

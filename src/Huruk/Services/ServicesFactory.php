@@ -8,8 +8,11 @@
 namespace Huruk\Services;
 
 
+use Huruk\EventDispatcher\EventDispatcher;
+
 class ServicesFactory
 {
+    const SERVICE_EVENT_DISPATCHER = 'event_dispatcher';
     private static $closures = array();
     private static $services = array();
 
@@ -37,5 +40,22 @@ class ServicesFactory
             }
         }
         return self::$services[$name];
+    }
+
+
+    /**
+     * @return EventDispatcher
+     */
+    public static function getEventDispatcherService()
+    {
+        if (!self::getService(self::SERVICE_EVENT_DISPATCHER)) {
+            self::registerService(
+                self::SERVICE_EVENT_DISPATCHER,
+                function () {
+                    return new EventDispatcher();
+                }
+            );
+        }
+        return self::getService(self::SERVICE_EVENT_DISPATCHER);
     }
 }
