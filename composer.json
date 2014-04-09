@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "ext-curl" : "*",
-        "phpunit/phpunit": "4.*",
+        "phpunit/phpunit": "3.*",
         "phpunit/phpunit-mock-objects": "2.*",
         "phpunit/phpunit-story": "dev-master",
         "micheh/w3c-validator": "dev-master"
