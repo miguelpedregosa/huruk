@@ -17,8 +17,7 @@
         "symfony/http-foundation": "2.*",
         "symfony/event-dispatcher": "2.*",
         "monolog/monolog": "1.*",
-        "maximebf/debugbar": "1.*",
-        "swiftmailer/swiftmailer": "*"
+        "maximebf/debugbar": "1.*"
     },
     "require-dev": {
         "ext-curl" : "*",

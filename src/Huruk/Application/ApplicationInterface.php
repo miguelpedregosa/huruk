@@ -77,11 +77,6 @@ interface ApplicationInterface
     public static function renderTemplate($template_name, $context = array());
 
     /**
-     * @return \Swift_Mailer
-     */
-    public static function mail();
-
-    /**
      * Procesa una peticion http dirgida a la aplicacion
      */
     public static function run();

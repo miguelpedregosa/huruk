@@ -319,35 +319,6 @@ abstract class Application implements ApplicationInterface
      */
     abstract protected function getWebRootPath();
 
-    /**
-     * @return \Swift_Mailer
-     */
-    public static function mail()
-    {
-        return static::getInstance()->getMailerService();
-    }
-
-    /**
-     * @return mixed
-     */
-    private function getMailerService()
-    {
-        if (!isset($this->services_container[self::MAIL_SERVICE])
-            || !$this->services_container[self::MAIL_SERVICE] instanceof \Swift_Mailer
-        ) {
-            $mailer = $this->getMailer();
-            $debugbar = DebugWebBar::getInstance();
-            $debugbar['messages']->aggregate(new SwiftLogCollector($mailer));
-            $debugbar->addCollector(new SwiftMailCollector($mailer));
-            $this->services_container[self::MAIL_SERVICE] = $mailer;
-        }
-        return $this->services_container[self::MAIL_SERVICE];
-    }
-
-    /**
-     * @return \Swift_Mailer
-     */
-    abstract protected function getMailer();
 
     /**
      * Procesa una peticion http dirgida a la aplicacion
