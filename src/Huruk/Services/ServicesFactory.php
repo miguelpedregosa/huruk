@@ -9,23 +9,30 @@ namespace Huruk\Services;
 
 
 use Huruk\EventDispatcher\EventDispatcher;
+use Monolog\Handler\NullHandler;
+use Monolog\Logger;
 
 class ServicesFactory
 {
     const SERVICE_EVENT_DISPATCHER = 'event_dispatcher';
+    const SERVICE_LOGGER = 'logger';
     private static $closures = array();
     private static $services = array();
 
     /**
-     * @param $name
-     * @param callable $service
+     * @return EventDispatcher
      */
-    public static function registerService($name, \Closure $service)
+    public static function getEventDispatcherService()
     {
-        self::$closures[$name] = $service;
-        if (isset(self::$services[$name])) {
-            self::$services[$name] = null;
+        if (!self::getService(self::SERVICE_EVENT_DISPATCHER)) {
+            self::registerService(
+                self::SERVICE_EVENT_DISPATCHER,
+                function () {
+                    return new EventDispatcher();
+                }
+            );
         }
+        return self::getService(self::SERVICE_EVENT_DISPATCHER);
     }
 
     /**
@@ -42,20 +49,33 @@ class ServicesFactory
         return self::$services[$name];
     }
 
+    /**
+     * @param $name
+     * @param callable $service
+     */
+    public static function registerService($name, \Closure $service)
+    {
+        self::$closures[$name] = $service;
+        if (isset(self::$services[$name])) {
+            self::$services[$name] = null;
+        }
+    }
 
     /**
-     * @return EventDispatcher
+     * @return Logger
      */
-    public static function getEventDispatcherService()
+    public static function getLoggerService()
     {
-        if (!self::getService(self::SERVICE_EVENT_DISPATCHER)) {
+        if (!self::getService(self::SERVICE_LOGGER)) {
             self::registerService(
-                self::SERVICE_EVENT_DISPATCHER,
+                self::SERVICE_LOGGER,
                 function () {
-                    return new EventDispatcher();
+                    $logger = new Logger('application_log');
+                    $logger->pushHandler(new NullHandler());
+                    return $logger;
                 }
             );
         }
-        return self::getService(self::SERVICE_EVENT_DISPATCHER);
+        return self::getService(self::SERVICE_LOGGER);
     }
 }

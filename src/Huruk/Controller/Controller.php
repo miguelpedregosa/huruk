@@ -86,13 +86,4 @@ abstract class Controller implements ControllerInterface, ApplicationAccess, Eve
     {
         $this->application = $app;
     }
-
-    /**
-     * Acceso a la barra de debug
-     * @return DebugWebBar
-     */
-    protected function getDebugBar()
-    {
-        return DebugWebBar::getInstance();
-    }
 }

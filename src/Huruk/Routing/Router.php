@@ -8,21 +8,17 @@
 
 namespace Huruk\Routing;
 
-use Huruk\Application\ApplicationAccess;
-use Huruk\Application\ApplicationInterface;
 use Huruk\Exception\PageNotFoundException;
-use Monolog\Logger;
+use Huruk\Services\ServicesFactory;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\ClosureLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 
-class Router implements ApplicationAccess
+class Router
 {
     /** @var  \Symfony\Component\Routing\Router */
     private $router;
-    private $application;
-    private $logger;
     private $route_collection;
     private $request_context;
 
@@ -30,51 +26,11 @@ class Router implements ApplicationAccess
     /**
      * @param RouteCollection $collection
      * @param RequestContext $context
-     * @param Logger $logger
      */
-    public function __construct(RouteCollection $collection, RequestContext $context, Logger $logger)
+    public function __construct(RouteCollection $collection, RequestContext $context)
     {
         $this->route_collection = $collection;
         $this->request_context = $context;
-        $this->logger = $logger;
-    }
-
-
-    /**
-     * @return \Symfony\Component\Routing\Router
-     */
-    private function getRouter()
-    {
-        if (!$this->router instanceof \Symfony\Component\Routing\Router) {
-
-            $closure = function () {
-                return $this->route_collection;
-            };
-
-            $routes_timestamp = md5(serialize($this->route_collection));
-            $closure_loader = new ClosureLoader();
-
-            $cache_dir = '/tmp/huruk/route_cache_' .
-                strtolower($this->getApplication()->getName()).'/'.$routes_timestamp;
-
-            $this->getApplication()->log()->addDebug('Router cache dir: '.$cache_dir);
-
-            $router_options = array(
-                'cache_dir' => $cache_dir,
-                'debug' => false,
-            );
-
-            $this->router =
-                new \Symfony\Component\Routing\Router(
-                    $closure_loader,
-                    $closure,
-                    $router_options,
-                    $this->request_context,
-                    $this->logger
-                );
-        }
-
-        return $this->router;
     }
 
     /**
@@ -93,31 +49,51 @@ class Router implements ApplicationAccess
     }
 
     /**
+     * @return \Symfony\Component\Routing\Router
+     */
+    private function getRouter()
+    {
+        if (!$this->router instanceof \Symfony\Component\Routing\Router) {
+            $closure = function () {
+                return $this->route_collection;
+            };
+
+            $routes_md5 = md5(serialize($this->route_collection));
+            $closure_loader = new ClosureLoader();
+
+            $cache_dir = '/tmp/huruk/route_cache_' . $routes_md5;
+            $logger = ServicesFactory::getLoggerService();
+            $logger->addDebug('Router cache dir: ' . $cache_dir);
+
+
+            $this->router =
+                new \Symfony\Component\Routing\Router(
+                    $closure_loader,
+                    $closure,
+                    array(
+                        'cache_dir' => $cache_dir,
+                        'debug' => false,
+                    ),
+                    $this->request_context,
+                    $logger
+                );
+        }
+
+        return $this->router;
+    }
+
+    /**
      * @param $name
      * @param array $parameters
      * @param bool $referenceType
      * @return null|string
      * @throws \Exception
      */
-    public function generateUrl($name, $parameters = array(), $referenceType = UrlGenerator::ABSOLUTE_PATH)
-    {
+    public function generateUrl(
+        $name,
+        $parameters = array(),
+        $referenceType = UrlGenerator::ABSOLUTE_PATH
+    ) {
         return $this->getRouter()->generate($name, $parameters, $referenceType);
-    }
-
-    /**
-     * @param ApplicationInterface $app
-     * @return void
-     */
-    public function setApplication(ApplicationInterface $app)
-    {
-        $this->application = $app;
-    }
-
-    /**
-     * @return ApplicationInterface
-     */
-    public function getApplication()
-    {
-        return $this->application;
     }
 }

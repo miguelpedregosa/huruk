@@ -14,13 +14,23 @@ use Huruk\Controller\ControllerInterface;
 use Huruk\EventDispatcher\Event;
 use Huruk\Exception\PageNotFoundException;
 use Huruk\Routing\RouteInfo;
+use Huruk\Services\ServicesFactory;
 use Huruk\Util\StablePriorityQueue;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class Dispatcher implements ApplicationAccess
+class Dispatcher
 {
-    /** @var  ApplicationInterface */
-    private $application;
+
+    private $request;
+
+    /**
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
 
     /**
      * A partir de la informacion de enrutado, instancia el controlador adecuado, ejecuta la accion
@@ -43,7 +53,7 @@ class Dispatcher implements ApplicationAccess
 
 
         if (!class_exists($controller_class)) {
-            $this->getApplication()->trigger(
+            $this->getEventDispatcher()->trigger(
                 Event::EVENT_INVALID_CONTROLLER_CLASS,
                 new Event(array('route_info' => $route_info))
             );
@@ -52,21 +62,21 @@ class Dispatcher implements ApplicationAccess
 
         //Intancia del controlador
         /** @var ControllerInterface|ApplicationAccess|EventSubscriberInterface $controller */
-        $controller = new $controller_class($this->getApplication());
+        $controller = new $controller_class();
         if (!$controller instanceof ControllerInterface || !$controller instanceof ApplicationAccess) {
-            $this->getApplication()->trigger(
+            $this->getEventDispatcher()->trigger(
                 Event::EVENT_INVALID_CONTROLLER_CLASS,
                 new Event(array('route_info' => $route_info))
             );
             throw new \Exception('Invalid controller class');
         }
-        $controller->setApplication($this->getApplication());
-        $this->getApplication()->addSubscriber($controller);
+        //$controller->setApplication();
+        $this->getEventDispatcher()->addSubscriber($controller);
 
         //Accion a ejecutar
         $action_name = $route_info->getAction();
         if (!strlen($action_name)) {
-            $this->getApplication()->trigger(
+            $this->getEventDispatcher()->trigger(
                 Event::EVENT_INVALID_ACTION_NAME,
                 new Event(array('route_info' => $route_info))
             );
@@ -74,7 +84,7 @@ class Dispatcher implements ApplicationAccess
         }
 
         //Ejecuto la accion, pasando el control al Controller
-        $request = $this->getApplication()->getRequest();
+        $request = $this->request;
         $response = $controller->doAction($action_name, $route_info, $request);
 
         //Envio el resultado de la accion al navegador
@@ -83,21 +93,13 @@ class Dispatcher implements ApplicationAccess
     }
 
     /**
-     * @return ApplicationInterface
+     * @return \Huruk\EventDispatcher\EventDispatcher
      */
-    public function getApplication()
+    private function getEventDispatcher()
     {
-        return $this->application;
+        return ServicesFactory::getEventDispatcherService();
     }
 
-    /**
-     * @param ApplicationInterface $app
-     * @return void
-     */
-    public function setApplication(ApplicationInterface $app)
-    {
-        $this->application = $app;
-    }
 
     /**
      * Enviamos el Response al navegador
