@@ -28,4 +28,9 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $request_context = new RequestContext('/');
         $this->router = new Router($route_collection, $request_context);
     }
+
+    public function testClass()
+    {
+        $this->assertInstanceOf('\Huruk\Routing\Router', $this->router);
+    }
 }
