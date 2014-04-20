@@ -18,6 +18,16 @@ class Application
     const EVENT_DISPATCHER_SERVICE = 'event_dispatcher_service';
 
     /**
+     * @param $eventName
+     * @param $listener
+     * @param int $prioriy
+     */
+    public static function listen($eventName, $listener, $prioriy = 0)
+    {
+        self::getEventDispatcherService()->listen($eventName, $listener, $prioriy);
+    }
+
+    /**
      * @return EventDispatcher
      */
     public static function getEventDispatcherService()
@@ -35,20 +45,25 @@ class Application
 
     /**
      * @param $eventName
-     * @param $listener
-     * @param int $prioriy
-     */
-    public static function listen($eventName, $listener, $prioriy = 0)
-    {
-        self::getEventDispatcherService()->listen($eventName, $listener, $prioriy);
-    }
-
-    /**
-     * @param $eventName
      * @param Event $event
      */
     public static function trigger($eventName, Event $event = null)
     {
         self::getEventDispatcherService()->trigger($eventName, $event);
+    }
+
+    public static function run()
+    {
+
+    }
+
+    public static function get($route, \Closure $function)
+    {
+
+    }
+
+    public static function post($route, \Closure $function)
+    {
+
     }
 }
