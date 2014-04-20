@@ -120,24 +120,6 @@ class Router
     }
 
     /**
-     * @return LoggerInterface
-     */
-    public function getLogger()
-    {
-        return $this->logger;
-    }
-
-    /**
-     * @param LoggerInterface $logger
-     * @return Router
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-        return $this;
-    }
-
-    /**
      * @return RequestContext
      */
     public function getRequestContext()
@@ -152,6 +134,24 @@ class Router
     public function setRequestContext(RequestContext $context)
     {
         $this->requestContext = $context;
+        return $this;
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @return Router
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
         return $this;
     }
 
