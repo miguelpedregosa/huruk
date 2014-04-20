@@ -23,5 +23,4 @@ interface ControllerInterface
      * @return Response
      */
     public function doAction($action, RouteInfo $routeInfo, Request $request);
-
 }
