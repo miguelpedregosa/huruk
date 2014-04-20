@@ -108,5 +108,6 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         //Trigger
         $event_dispatcher->dispatchEvent('foo');
         $event_dispatcher->dispatchEvent('foo', Event::make(array('foo' => 'bar')));
+        $event_dispatcher->trigger('foo', Event::make(array('foo' => 'bar')));
     }
 }

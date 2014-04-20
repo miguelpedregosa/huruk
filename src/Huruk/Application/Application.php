@@ -18,11 +18,11 @@ class Application
 
     /**
      * @param $serviceName
-     * @return mixed
+     * @param callable $service
      */
-    public static function getService($serviceName)
+    public static function registerService($serviceName, \Closure $service)
     {
-        return self::getApplicationServices()->getService($serviceName);
+        self::getApplicationServices()->registerService($serviceName, $service);
     }
 
     /**
@@ -32,17 +32,17 @@ class Application
     {
         if (is_null(self::$applicationServices)) {
             self::$applicationServices = new ApplicationServices();
+            static::initializeServices();
         }
         return self::$applicationServices;
     }
 
     /**
-     * @param $serviceName
-     * @param callable $service
+     *
      */
-    public static function registerService($serviceName, \Closure $service)
+    protected static function initializeServices()
     {
-        self::getApplicationServices()->registerService($serviceName, $service);
+
     }
 
     /**
@@ -64,6 +64,15 @@ class Application
     }
 
     /**
+     * @param $serviceName
+     * @return mixed
+     */
+    public static function getService($serviceName)
+    {
+        return self::getApplicationServices()->getService($serviceName);
+    }
+
+    /**
      * @param $eventName
      * @param Event $event
      */
@@ -71,19 +80,4 @@ class Application
     {
         self::getEventDispatcherService()->trigger($eventName, $event);
     }
-
-//    public static function run()
-//    {
-//
-//    }
-//
-//    public static function get($route, \Closure $function)
-//    {
-//
-//    }
-//
-//    public static function post($route, \Closure $function)
-//    {
-//
-//    }
 }
