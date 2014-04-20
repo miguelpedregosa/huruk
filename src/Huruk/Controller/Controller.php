@@ -9,9 +9,6 @@
 namespace Huruk\Controller;
 
 use Huruk\Application\Application;
-use Huruk\Application\ApplicationAccess;
-use Huruk\Application\ApplicationInterface;
-use Huruk\Debug\DebugWebBar;
 use Huruk\Dispatcher\Response;
 use Huruk\EventDispatcher\Event;
 use Huruk\Routing\RouteInfo;
@@ -20,9 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class Controller implements ControllerInterface, EventSubscriberInterface
 {
-    /** @var */
-    private $application;
-
     public static function getSubscribedEvents()
     {
         return array();
