@@ -8,13 +8,11 @@
 
 namespace Huruk\Dispatcher;
 
-use Huruk\Application\ApplicationAccess;
-use Huruk\Application\ApplicationInterface;
+use Huruk\Application\Application;
 use Huruk\Controller\ControllerInterface;
 use Huruk\EventDispatcher\Event;
 use Huruk\Exception\PageNotFoundException;
 use Huruk\Routing\RouteInfo;
-use Huruk\Services\ServicesFactory;
 use Huruk\Util\StablePriorityQueue;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,7 +51,7 @@ class Dispatcher
 
 
         if (!class_exists($controller_class)) {
-            $this->getEventDispatcher()->trigger(
+            Application::trigger(
                 Event::EVENT_INVALID_CONTROLLER_CLASS,
                 new Event(array('route_info' => $route_info))
             );
@@ -61,10 +59,10 @@ class Dispatcher
         }
 
         //Intancia del controlador
-        /** @var ControllerInterface|ApplicationAccess|EventSubscriberInterface $controller */
+        /** @var ControllerInterface|EventSubscriberInterface $controller */
         $controller = new $controller_class();
-        if (!$controller instanceof ControllerInterface || !$controller instanceof ApplicationAccess) {
-            $this->getEventDispatcher()->trigger(
+        if (!$controller instanceof ControllerInterface) {
+            Application::trigger(
                 Event::EVENT_INVALID_CONTROLLER_CLASS,
                 new Event(array('route_info' => $route_info))
             );
@@ -76,7 +74,7 @@ class Dispatcher
         //Accion a ejecutar
         $action_name = $route_info->getAction();
         if (!strlen($action_name)) {
-            $this->getEventDispatcher()->trigger(
+            Application::trigger(
                 Event::EVENT_INVALID_ACTION_NAME,
                 new Event(array('route_info' => $route_info))
             );
@@ -97,7 +95,7 @@ class Dispatcher
      */
     private function getEventDispatcher()
     {
-        return ServicesFactory::getEventDispatcherService();
+        return Application::getEventDispatcherService();
     }
 
 
