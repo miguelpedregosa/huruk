@@ -12,11 +12,17 @@ use Huruk\Routing\Router;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use \Mockery;
 
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
     /** @var Router */
     private $router;
+
+    public function tearDown()
+    {
+        Mockery::close();
+    }
 
     public function setUp()
     {
@@ -69,16 +75,36 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->router->matchUrl('/false');
     }
 
-    public function testExceptions()
+    public function testNoRouteCollectionException()
     {
         $this->setExpectedException('\Huruk\Exception\PageNotFoundException');
         $router = new Router();
         $router->matchUrl('/route');
+    }
 
+    public function testNoRquestContextCollection()
+    {
+        $this->setExpectedException('\Huruk\Exception\PageNotFoundException');
         $new_router = new Router();
         $route_collection = new RouteCollection();
         $route_collection->add('foo', new Route('/foo', array('_controller' => 'FooController')));
         $new_router->setRouteCollection($route_collection);
-        $router->matchUrl('/route');
+        $new_router->matchUrl('/route');
+    }
+
+    public function testLogger()
+    {
+        /** @var \Psr\Log\LoggerInterface|\Mockery\MockInterface $logger */
+        $logger = Mockery::mock('\Psr\Log\LoggerInterface');
+        $logger->shouldReceive('debug')->once();
+        $this->router->setLogger($logger);
+
+        $expected = new RouteInfo(
+            array(
+                '_controller' => 'FooController',
+                '_route' => 'foo'
+            )
+        );
+        $this->assertEquals($expected, $this->router->matchUrl('/foo'));
     }
 }
