@@ -2,9 +2,19 @@
 namespace Huruk\Application;
 
 
+use Huruk\Dispatcher\Dispatcher;
+use Huruk\Dispatcher\Response;
 use Huruk\EventDispatcher\Event;
 use Huruk\EventDispatcher\EventDispatcher;
+use Huruk\Exception\PageNotFoundException;
+use Huruk\Layout\Html5Layout;
+use Huruk\Routing\Router;
 use Huruk\Services\ServicesContainer;
+use Huruk\Util\Charset;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
 
 abstract class Application
 {
@@ -79,6 +89,67 @@ abstract class Application
     public static function trigger($eventName, Event $event = null)
     {
         self::getService(self::EVENT_DISPATCHER_SERVICE)->trigger($eventName, $event);
+    }
+
+    /**
+     * @param RouteCollection $collection
+     * @param Request $request
+     * @throws \Exception
+     */
+    public static function run(RouteCollection $collection = null, Request $request = null)
+    {
+        //Dispatcher
+        $dispatcher = new Dispatcher();
+
+        try {
+            //Request context
+            if (!$request instanceof Request) {
+                $request = Request::createFromGlobals();
+            }
+            $dispatcher->setRequest($request);
+            $requestContext = new RequestContext();
+            $requestContext->fromRequest($request);
+
+            //Logger
+            $logger = self::getService(self::LOGGER_SERVICE);
+            $logger = ($logger instanceof LoggerInterface) ? $logger : null;
+
+            //Router
+            $collection = ($collection) ? $collection : self::getRouteCollection();
+            $router = new Router();
+            $router->setRouteCollection($collection)
+                ->setRequestContext($requestContext)
+                ->setLogger($logger);
+
+            //RouteInfo y Dispatch
+            $route_info = $router->matchUrl($requestContext->getPathInfo());
+            $dispatcher->dispatch($route_info);
+
+        } catch (PageNotFoundException $exception) {
+            self::handlePageNotFound($dispatcher, $exception);
+        }
+    }
+
+    /**
+     * @return RouteCollection
+     */
+    protected static function getRouteCollection()
+    {
+        return new RouteCollection();
+    }
+
+    /**
+     * @param Dispatcher $dispatcher
+     * @param PageNotFoundException $exception
+     */
+    protected static function handlePageNotFound(Dispatcher $dispatcher, PageNotFoundException $exception)
+    {
+        $html_layout = new Html5Layout();
+        $html_layout->setTitle('Huruk µFramework - Not Found')
+            ->setApplicationName('Huruk µFramework')
+            ->setCharset(Charset::CHARSET_UTF8);
+        $html = $html_layout->render('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>');
+        $dispatcher->sendResponse(Response::make($html, 404));
     }
 
     public function __clone()

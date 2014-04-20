@@ -21,7 +21,7 @@ class Dispatcher
     /**
      * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request = null)
     {
         $this->request = $request;
     }
@@ -78,8 +78,7 @@ class Dispatcher
         }
 
         //Ejecuto la accion, pasando el control al Controller
-        $request = $this->request;
-        $response = $controller->doAction($action_name, $route_info, $request);
+        $response = $controller->doAction($action_name, $route_info, $this->getRequest());
 
         //Envio el resultado de la accion al navegador
         $this->sendResponse($response);
@@ -93,6 +92,23 @@ class Dispatcher
         return Application::getService(Application::EVENT_DISPATCHER_SERVICE);
     }
 
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     * @return Dispatcher
+     */
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
+        return $this;
+    }
 
     /**
      * Enviamos el Response al navegador

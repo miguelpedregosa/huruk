@@ -38,7 +38,7 @@ class Router
 
     /**
      * @param $path_info
-     * @return array
+     * @return RouteInfo
      * @throws \Huruk\Exception\PageNotFoundException
      */
     public function matchUrl($path_info)
