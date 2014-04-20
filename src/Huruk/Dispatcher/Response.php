@@ -29,7 +29,7 @@ class Response
      * Indica si se debe enviar el contenido o solo los header al navegador
      * @var bool
      */
-    private $send_content = true;
+    private $sendContent = true;
 
     public function __construct($content = '')
     {
@@ -83,7 +83,7 @@ class Response
                 break;
 
             default:
-                $action_result->addHeader(new Header('Location: ' . $redirect_to));
+                $action_result->addHeader(new Header('Location: ' . $redirect_to, true, 302));
                 $action_result->disableSendContent();
                 break;
         }
@@ -96,7 +96,7 @@ class Response
      */
     public function disableSendContent()
     {
-        $this->send_content = false;
+        $this->sendContent = false;
     }
 
     /**
@@ -128,7 +128,7 @@ class Response
      */
     public function enableSendContent()
     {
-        $this->send_content = true;
+        $this->sendContent = true;
     }
 
     /**
@@ -136,6 +136,6 @@ class Response
      */
     public function mustSendContent()
     {
-        return $this->send_content;
+        return $this->sendContent;
     }
 }
