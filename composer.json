@@ -16,8 +16,7 @@
         "twig/twig": "1.*",
         "symfony/http-foundation": "2.*",
         "symfony/event-dispatcher": "2.*",
-        "monolog/monolog": "1.*",
-        "maximebf/debugbar": "1.*"
+        "psr/log": "1.*"
     },
     "require-dev": {
         "ext-curl" : "*",

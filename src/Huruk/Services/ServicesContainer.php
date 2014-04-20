@@ -22,6 +22,8 @@ class ServicesContainer
         if (!isset($this->services[$name])) {
             if (isset($this->closures[$name]) && is_callable($this->closures[$name])) {
                 $this->services[$name] = call_user_func($this->closures[$name]);
+            } else {
+                $this->services[$name] = null;
             }
         }
         return $this->services[$name];

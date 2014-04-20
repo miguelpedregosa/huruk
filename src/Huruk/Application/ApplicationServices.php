@@ -11,8 +11,6 @@ namespace Huruk\Application;
 
 use Huruk\EventDispatcher\EventDispatcher;
 use Huruk\Services\ServicesContainer;
-use Monolog\Handler\NullHandler;
-use Monolog\Logger;
 
 class ApplicationServices extends ServicesContainer
 {
@@ -24,8 +22,6 @@ class ApplicationServices extends ServicesContainer
         //Event Dispatcher
         $this->registerEventDispatcherService();
 
-        //Logger
-        $this->registerLoggerService();
 
     }
 
@@ -35,18 +31,6 @@ class ApplicationServices extends ServicesContainer
             Application::EVENT_DISPATCHER_SERVICE,
             function () {
                 return new EventDispatcher();
-            }
-        );
-    }
-
-    private function registerLoggerService()
-    {
-        $this->registerService(
-            Application::LOGGER_SERVICE,
-            function () {
-                $logger = new Logger('application');
-                $logger->pushHandler(new NullHandler());
-                return $logger;
             }
         );
     }
