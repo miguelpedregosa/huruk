@@ -14,6 +14,13 @@ use Huruk\Dispatcher\Response;
 
 class DummyController extends Controller
 {
+    public $value = 0;
+
+    public static function getSubscribedEvents()
+    {
+        return array('foo.event' => array('onFooEvent'));
+    }
+
     public function dummyAction()
     {
         return Response::make('foo:bar');
@@ -27,5 +34,10 @@ class DummyController extends Controller
     public function stringAction()
     {
         return 'foo:bar';
+    }
+
+    public function onFooEvent()
+    {
+        $this->value = 100;
     }
 }
