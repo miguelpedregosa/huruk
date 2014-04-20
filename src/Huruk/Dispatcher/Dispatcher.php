@@ -33,7 +33,7 @@ class Dispatcher
      * @throws \Huruk\Exception\PageNotFoundException
      * @throws \Exception
      */
-    public function dispatch(RouteInfo $route_info)
+    public function dispatch(RouteInfo $route_info = null)
     {
         if (!$route_info instanceof RouteInfo) {
             throw new PageNotFoundException();

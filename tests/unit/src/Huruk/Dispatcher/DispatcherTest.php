@@ -38,4 +38,39 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         ob_end_clean();
         $this->assertEquals('foo:bar', $output);
     }
+
+    public function testNoRouteInfoException()
+    {
+        $this->setExpectedException('\Huruk\Exception\PageNotFoundException');
+        $dispatcher = new Dispatcher(new Request());
+        $dispatcher->dispatch();
+    }
+
+    public function testNoControllerException()
+    {
+        $this->setExpectedException('\Exception');
+        $dispatcher = new Dispatcher(new Request());
+        $route_info = new RouteInfo(
+            array(
+                '_controller' => '\foo\Bar',
+                '_action' => 'dummyAction',
+                '_route' => 'dummyRoute'
+            )
+        );
+        $dispatcher->dispatch($route_info);
+    }
+
+    public function testNoActionrException()
+    {
+        $this->setExpectedException('\Exception');
+        $dispatcher = new Dispatcher(new Request());
+        $route_info = new RouteInfo(
+            array(
+                '_controller' => '\unit\src\Huruk\Controller\sut\DummyController',
+                '_action' => '',
+                '_route' => 'dummyRoute'
+            )
+        );
+        $dispatcher->dispatch($route_info);
+    }
 }
