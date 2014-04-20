@@ -22,12 +22,15 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
+        $this->router = new Router();
+
         $route_collection = new RouteCollection();
         $route_collection->add('foo', new Route('/foo', array('_controller' => 'FooController')));
         $route_collection->add('bar', new Route('/bar', array('_controller' => 'BarController')));
+        $this->router->setRouteCollection($route_collection);
 
         $request_context = new RequestContext();
-        $this->router = new Router($route_collection, $request_context);
+        $this->router->setRequestContext($request_context);
     }
 
     public function testClass()
@@ -59,5 +62,11 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('/foo', $this->router->generateUrl('foo'));
         $this->assertEquals('/bar', $this->router->generateUrl('bar'));
+    }
+
+    public function testInvalidRoute()
+    {
+        $this->setExpectedException('\Exception');
+        $this->router->matchUrl('/false');
     }
 }

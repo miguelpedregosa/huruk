@@ -8,7 +8,6 @@
 
 namespace Huruk\Routing;
 
-use Huruk\Application\Application;
 use Huruk\Exception\PageNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -20,18 +19,24 @@ class Router
 {
     /** @var  \Symfony\Component\Routing\Router */
     private $router;
-    private $route_collection;
-    private $request_context;
+    private $routeCollection;
+    private $requestContext;
+    private $logger;
 
 
     /**
      * @param RouteCollection $collection
      * @param RequestContext $context
+     * @param LoggerInterface $logger
      */
-    public function __construct(RouteCollection $collection, RequestContext $context)
-    {
-        $this->route_collection = $collection;
-        $this->request_context = $context;
+    public function __construct(
+        RouteCollection $collection = null,
+        RequestContext $context = null,
+        LoggerInterface $logger = null
+    ) {
+        $this->routeCollection = $collection;
+        $this->requestContext = $context;
+        $this->logger = $logger;
     }
 
     /**
@@ -52,24 +57,33 @@ class Router
 
     /**
      * @return \Symfony\Component\Routing\Router
+     * @throws \Exception
      */
     private function getRouter()
     {
         if (!$this->router instanceof \Symfony\Component\Routing\Router) {
             $closure = function () {
-                return $this->route_collection;
+                return $this->routeCollection;
             };
 
-            $routes_md5 = md5(serialize($this->route_collection));
+            if (!$this->getRouteCollection() instanceof RouteCollection) {
+                throw new \Exception('No RouteCollection');
+            }
+
+            $routes_md5 = md5(serialize($this->getRouteCollection()));
             $closure_loader = new ClosureLoader();
 
             $cache_dir = '/tmp/huruk/route_cache_' . $routes_md5;
-            /** @var LoggerInterface|null $logger */
-            $logger = Application::getService(Application::LOGGER_SERVICE);
+
+            $logger = $this->getLogger();
             if ($logger instanceof LoggerInterface) {
                 $logger->debug('Router cache dir: ' . $cache_dir);
             } else {
                 $logger = null;
+            }
+
+            if (!$this->getRequestContext() instanceof RequestContext) {
+                throw new \Exception('No RequestContext');
             }
 
             $this->router =
@@ -80,12 +94,66 @@ class Router
                         'cache_dir' => $cache_dir,
                         'debug' => false,
                     ),
-                    $this->request_context,
+                    $this->getRequestContext(),
                     $logger
                 );
         }
 
         return $this->router;
+    }
+
+    /**
+     * @return RouteCollection
+     */
+    public function getRouteCollection()
+    {
+        return $this->routeCollection;
+    }
+
+    /**
+     * @param RouteCollection $collection
+     * @return Router
+     */
+    public function setRouteCollection(RouteCollection $collection)
+    {
+        $this->routeCollection = $collection;
+        return $this;
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this->logger;
+    }
+
+    /**
+     * @param LoggerInterface $logger
+     * @return Router
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        return $this;
+    }
+
+    /**
+     * @return RequestContext
+     */
+    public function getRequestContext()
+    {
+        return $this->requestContext;
+    }
+
+    /**
+     * @param RequestContext $context
+     * @return Router
+     */
+    public function setRequestContext(RequestContext $context)
+    {
+        $this->requestContext = $context;
+        return $this;
     }
 
     /**
