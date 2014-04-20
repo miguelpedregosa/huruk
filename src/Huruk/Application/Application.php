@@ -39,9 +39,7 @@ class Application
         return self::$applicationServices;
     }
 
-    /**
-     *
-     */
+
     protected static function initializeServices()
     {
 
