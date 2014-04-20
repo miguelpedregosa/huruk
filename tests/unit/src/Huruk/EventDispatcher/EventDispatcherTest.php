@@ -64,6 +64,8 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         //Trigger
         $event_dispatcher->dispatch('foo');
         $this->assertEquals(1, $this->counter);
+        $event_dispatcher->trigger('foo');
+        $this->assertEquals(2, $this->counter);
     }
 
     public function testDispatchEvent()
