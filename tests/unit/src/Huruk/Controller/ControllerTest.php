@@ -23,8 +23,29 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testDoAction()
     {
-        $response = new Response('foo:bar');
+        $response = Response::make('foo:bar');
         $controller = new DummyController();
         $this->assertEquals($response, $controller->doAction('dummyAction', new RouteInfo(), new Request()));
+    }
+
+    public function testNoActionException()
+    {
+        $this->setExpectedException('\Exception');
+        $controller = new DummyController();
+        $controller->doAction('noAction', new RouteInfo(), new Request());
+    }
+
+    public function testInvalidAction()
+    {
+        $this->setExpectedException('\Exception');
+        $controller = new DummyController();
+        $controller->doAction('invalidAction', new RouteInfo(), new Request());
+    }
+
+    public function testStringAction()
+    {
+        $response = Response::make('foo:bar');
+        $controller = new DummyController();
+        $this->assertEquals($response, $controller->doAction('stringAction', new RouteInfo(), new Request()));
     }
 }

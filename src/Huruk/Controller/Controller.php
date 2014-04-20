@@ -50,7 +50,11 @@ abstract class Controller implements ControllerInterface, EventSubscriberInterfa
         $response = call_user_func(array($this, $action_name), $route_info, $request);
 
         if (!$response instanceof Response) {
-            throw new \Exception('Expected Response Object');
+            if (is_string($response)) {
+                $response = Response::make($response);
+            } else {
+                throw new \Exception('Expected Response Object');
+            }
         }
 
         //Evento postAction

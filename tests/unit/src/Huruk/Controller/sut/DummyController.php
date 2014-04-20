@@ -16,6 +16,16 @@ class DummyController extends Controller
 {
     public function dummyAction()
     {
-        return new Response('foo:bar');
+        return Response::make('foo:bar');
+    }
+
+    public function invalidAction()
+    {
+        return false;
+    }
+
+    public function stringAction()
+    {
+        return 'foo:bar';
     }
 }
