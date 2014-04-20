@@ -74,5 +74,11 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\Huruk\Exception\PageNotFoundException');
         $router = new Router();
         $router->matchUrl('/route');
+
+        $new_router = new Router();
+        $route_collection = new RouteCollection();
+        $route_collection->add('foo', new Route('/foo', array('_controller' => 'FooController')));
+        $new_router->setRouteCollection($route_collection);
+        $router->matchUrl('/route');
     }
 }
