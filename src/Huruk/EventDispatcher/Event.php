@@ -18,15 +18,6 @@ use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
  */
 class Event extends SymfonyEvent implements \ArrayAccess
 {
-    const EVENT_RUN = 'event.run';
-    const EVENT_RUN_EXCEPTION = 'event.run.exception';
-    const EVENT_RUN_NOT_FOUND_EXCEPTION = 'event.run.not_found_exception';
-    const EVENT_ROUTE_MATCH = 'event.route.match';
-    const EVENT_INVALID_CONTROLLER_CLASS = 'event.controller.invalid_class';
-    const EVENT_INVALID_ACTION_NAME = 'event.controller.invalid_action';
-    const EVENT_PREACTION = 'event.controller.preaction';
-    const EVENT_POSTACTION = 'event.controller.postaction';
-
     private $data;
 
     /**

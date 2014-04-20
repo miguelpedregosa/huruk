@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class Controller implements ControllerInterface, EventSubscriberInterface
 {
+    const EVENT_PREACTION = 'event.controller.preaction';
+    const EVENT_POSTACTION = 'event.controller.postaction';
+
     public static function getSubscribedEvents()
     {
         return array();
@@ -37,7 +40,7 @@ abstract class Controller implements ControllerInterface, EventSubscriberInterfa
 
         //Evento lanzado antes de ejecutar la accion
         Application::trigger(
-            Event::EVENT_PREACTION,
+            self::EVENT_PREACTION,
             new Event(
                 array(
                     'action_name' => $action_name,
@@ -59,7 +62,7 @@ abstract class Controller implements ControllerInterface, EventSubscriberInterfa
 
         //Evento postAction
         Application::trigger(
-            Event::EVENT_POSTACTION,
+            self::EVENT_POSTACTION,
             new Event(
                 array(
                     'action_name' => $action_name,

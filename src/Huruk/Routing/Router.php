@@ -2,6 +2,8 @@
 
 namespace Huruk\Routing;
 
+use Huruk\Application\Application;
+use Huruk\EventDispatcher\Event;
 use Huruk\Exception\PageNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -11,6 +13,8 @@ use Symfony\Component\Routing\RouteCollection;
 
 class Router
 {
+    const EVENT_ROUTE_DONT_MATCH = 'event.route.dont_match';
+
     /** @var  \Symfony\Component\Routing\Router */
     private $router;
     private $routeCollection;
@@ -44,6 +48,7 @@ class Router
             $route_params = $this->getRouter()->match($path_info);
             $route_info = new RouteInfo($route_params);
         } catch (\Exception $e) {
+            Application::trigger(self::EVENT_ROUTE_DONT_MATCH, new Event(array($path_info)));
             throw new PageNotFoundException('Resource not found!!');
         }
         return $route_info;

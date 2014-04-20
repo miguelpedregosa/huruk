@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Dispatcher
 {
+    const EVENT_INVALID_CONTROLLER_CLASS = 'event.controller.invalid_class';
+    const EVENT_INVALID_ACTION_NAME = 'event.controller.invalid_action';
 
     private $request;
 
@@ -52,7 +54,7 @@ class Dispatcher
 
         if (!class_exists($controller_class)) {
             Application::trigger(
-                Event::EVENT_INVALID_CONTROLLER_CLASS,
+                self::EVENT_INVALID_CONTROLLER_CLASS,
                 new Event(array('route_info' => $route_info))
             );
             throw new \Exception('Invalid controller class');
@@ -63,7 +65,7 @@ class Dispatcher
         $controller = new $controller_class();
         if (!$controller instanceof ControllerInterface) {
             Application::trigger(
-                Event::EVENT_INVALID_CONTROLLER_CLASS,
+                self::EVENT_INVALID_CONTROLLER_CLASS,
                 new Event(array('route_info' => $route_info))
             );
             throw new \Exception('Invalid controller class');
@@ -75,7 +77,7 @@ class Dispatcher
         $action_name = $route_info->getAction();
         if (!strlen($action_name)) {
             Application::trigger(
-                Event::EVENT_INVALID_ACTION_NAME,
+                self::EVENT_INVALID_ACTION_NAME,
                 new Event(array('route_info' => $route_info))
             );
             throw new \Exception('No action to be executed');
