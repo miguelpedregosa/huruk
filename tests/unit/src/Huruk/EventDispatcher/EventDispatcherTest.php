@@ -21,10 +21,6 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
 {
     private $counter = 0;
 
-    /**
-     * @covers ::on
-     * @covers \Huruk\Util\Singleton
-     */
     public function testOn()
     {
         /** @var EventDispatcher $event_dispatcher */
@@ -39,12 +35,6 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $event_dispatcher->getListeners('foo'));
     }
 
-    /**
-     * @covers ::listen
-     * @covers ::on
-     * @covers ::getListeners
-     * @covers \Huruk\Util\Singleton
-     */
     public function testListen()
     {
         /** @var EventDispatcher $event_dispatcher */
@@ -59,12 +49,6 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $event_dispatcher->getListeners('foo'));
     }
 
-    /**
-     * @covers ::dispatch
-     * @covers ::listen
-     * @covers ::on
-     * @covers \Huruk\Util\Singleton
-     */
     public function testDispatch()
     {
         /** @var EventDispatcher $event_dispatcher */
@@ -82,14 +66,6 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->counter);
     }
 
-    /**
-     * @covers ::dispatchEvent
-     * @covers ::dispatch
-     * @covers ::listen
-     * @covers ::on
-     * @covers \Huruk\EventDispatcher\Event
-     * @covers \Huruk\Util\Singleton
-     */
     public function testDispatchEvent()
     {
         /** @var EventDispatcher $event_dispatcher */
@@ -108,6 +84,5 @@ class EventDispatcherTest extends \PHPUnit_Framework_TestCase
         //Trigger
         $event_dispatcher->dispatchEvent('foo');
         $event_dispatcher->dispatchEvent('foo', Event::make(array('foo' => 'bar')));
-        $event_dispatcher->trigger('foo', Event::make(array('foo' => 'bar')));
     }
 }
