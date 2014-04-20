@@ -8,6 +8,7 @@
 
 namespace Huruk\Controller;
 
+use Huruk\Application\Application;
 use Huruk\Application\ApplicationAccess;
 use Huruk\Application\ApplicationInterface;
 use Huruk\Debug\DebugWebBar;
@@ -17,7 +18,7 @@ use Huruk\Routing\RouteInfo;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-abstract class Controller implements ControllerInterface, ApplicationAccess, EventSubscriberInterface
+abstract class Controller implements ControllerInterface, EventSubscriberInterface
 {
     /** @var */
     private $application;
@@ -34,7 +35,6 @@ abstract class Controller implements ControllerInterface, ApplicationAccess, Eve
      * @return Response|mixed
      * @throws \Exception
      */
-
     final public function doAction($action_name, RouteInfo $route_info, Request $request)
     {
         if (!method_exists($this, $action_name)) {
@@ -42,12 +42,14 @@ abstract class Controller implements ControllerInterface, ApplicationAccess, Eve
         }
 
         //Evento lanzado antes de ejecutar la accion
-        $this->getApplication()->trigger(
+        Application::trigger(
             Event::EVENT_PREACTION,
-            new Event(array(
-                'action_name' => $action_name,
-                'route_info' => $route_info
-            ))
+            new Event(
+                array(
+                    'action_name' => $action_name,
+                    'route_info' => $route_info
+                )
+            )
         );
 
         //Ejecutamos la accion
@@ -58,32 +60,17 @@ abstract class Controller implements ControllerInterface, ApplicationAccess, Eve
         }
 
         //Evento postAction
-        $this->getApplication()->trigger(
+        Application::trigger(
             Event::EVENT_POSTACTION,
-            new Event(array(
-                'action_name' => $action_name,
-                'route_info' => $route_info,
-                'response' => $response
-            ))
+            new Event(
+                array(
+                    'action_name' => $action_name,
+                    'route_info' => $route_info,
+                    'response' => $response
+                )
+            )
         );
 
         return $response;
-    }
-
-    /**
-     * @return ApplicationInterface
-     */
-    public function getApplication()
-    {
-        return $this->application;
-    }
-
-    /**
-     * @param ApplicationInterface $app
-     * @return void
-     */
-    public function setApplication(ApplicationInterface $app)
-    {
-        $this->application = $app;
     }
 }
