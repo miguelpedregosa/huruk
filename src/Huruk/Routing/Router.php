@@ -62,12 +62,13 @@ class Router
     private function getRouter()
     {
         if (!$this->router instanceof \Symfony\Component\Routing\Router) {
-            $closure = function () {
-                return $this->routeCollection;
-            };
 
             if (!$this->getRouteCollection() instanceof RouteCollection) {
                 throw new \Exception('No RouteCollection');
+            }
+
+            if (!$this->getRequestContext() instanceof RequestContext) {
+                throw new \Exception('No RequestContext');
             }
 
             $routes_md5 = md5(serialize($this->getRouteCollection()));
@@ -82,14 +83,12 @@ class Router
                 $logger = null;
             }
 
-            if (!$this->getRequestContext() instanceof RequestContext) {
-                throw new \Exception('No RequestContext');
-            }
-
             $this->router =
                 new \Symfony\Component\Routing\Router(
                     $closure_loader,
-                    $closure,
+                    function () {
+                        return $this->getRouteCollection();
+                    },
                     array(
                         'cache_dir' => $cache_dir,
                         'debug' => false,
