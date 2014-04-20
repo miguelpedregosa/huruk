@@ -28,9 +28,6 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase
         $this->servicesContainer = new ServicesContainer();
     }
 
-    /**
-     *
-     */
     public function testRegisterService()
     {
         $this->servicesContainer->registerService(
@@ -52,9 +49,6 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(125, $service_again->getValue());
     }
 
-    /**
-     *
-     */
     public function testReRegisterService()
     {
         $this->servicesContainer->registerService(
@@ -82,5 +76,10 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase
         $service = $this->servicesContainer->getService('dummy');
         $this->assertNotEquals(125, $service->getValue());
         $this->assertNull($service->getValue());
+    }
+
+    public function testNonRegisteredService()
+    {
+        $this->assertNull($this->servicesContainer->getService('new_service'));
     }
 }
