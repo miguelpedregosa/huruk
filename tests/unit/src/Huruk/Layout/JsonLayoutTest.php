@@ -13,9 +13,6 @@ use Huruk\Layout\JsonLayout;
 
 class JsonLayoutTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @cover JsonLayout::render
-     */
     public function testRenderJson()
     {
         $array = array('foo' => 'bar');

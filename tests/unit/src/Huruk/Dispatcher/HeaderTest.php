@@ -19,15 +19,6 @@ use Huruk\Dispatcher\Header;
 class HeaderTest extends \PHPUnit_Framework_TestCase
 {
 
-    /**
-     * @covers ::__construct
-     * @covers ::setHeader
-     * @covers ::getHeader
-     * @covers ::setReplace
-     * @covers ::getReplace
-     * @covers ::setHttpResponseCode
-     * @covers ::getHttpResponseCode
-     */
     public function testNewHeader()
     {
         $header = new Header('Foo:bar');
@@ -41,13 +32,6 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(301, $header->getHttpResponseCode());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::setHeader
-     * @covers ::getHeader
-     * @covers ::setReplace
-     * @covers ::setHttpResponseCode
-     */
     public function testSetHeader()
     {
         $header = new Header();
@@ -56,13 +40,6 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::setHeader
-     * @covers ::setReplace
-     * @covers ::getReplace
-     * @covers ::setHttpResponseCode
-     */
     public function testSetReplace()
     {
         $header = new Header();
@@ -71,13 +48,6 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::setHeader
-     * @covers ::setReplace
-     * @covers ::setHttpResponseCode
-     * @covers ::getHttpResponseCode
-     */
     public function testHttpResponseCode()
     {
         $header = new Header();
@@ -85,13 +55,6 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(302, $header->getHttpResponseCode());
     }
 
-    /**
-     * @covers ::make
-     * @covers ::__construct
-     * @covers ::setHeader
-     * @covers ::setReplace
-     * @covers ::setHttpResponseCode
-     */
     public function testMake()
     {
         $header = new Header('Foo:bar');
@@ -100,16 +63,6 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($header, Header::make('Foo:bar', false, 302));
     }
 
-    /**
-     * @covers ::makeFromStatusCode
-     * @covers ::__construct
-     * @covers ::setHeader
-     * @covers ::getHeader
-     * @covers ::setReplace
-     * @covers ::getReplace
-     * @covers ::setHttpResponseCode
-     * @covers ::getHttpResponseCode
-     */
     public function testMakeFromStatusCode()
     {
         $header = Header::makeFromStatusCode(404);
@@ -118,16 +71,6 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(404, $header->getHttpResponseCode());
     }
 
-    /**
-     * @covers ::makeJsonHeader
-     * @covers ::__construct
-     * @covers ::setHeader
-     * @covers ::getHeader
-     * @covers ::setReplace
-     * @covers ::getReplace
-     * @covers ::setHttpResponseCode
-     * @covers ::getHttpResponseCode
-     */
     public function testMakeJsonHeader()
     {
         $header = Header::makeJsonHeader('utf-8');

@@ -36,9 +36,6 @@ class SingletonTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     *
-     */
     public function testSingleton()
     {
         /** @var DummySingleton $dummy */
@@ -58,7 +55,7 @@ class SingletonTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($new_dummy->getValue());
     }
 
-    public function testClone ()
+    public function testClone()
     {
         /** @var DummySingleton $dummy */
         $dummy = DummySingleton::getInstance();
@@ -90,5 +87,4 @@ class SingletonTest extends \PHPUnit_Framework_TestCase
         $this->errors = array();
         set_error_handler(array($this, "errorHandler"));
     }
-
 }

@@ -18,10 +18,6 @@ use Huruk\EventDispatcher\Event;
  */
 class EventTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers ::__construct
-     * @covers ::getData
-     */
     public function testDataEvent()
     {
         $data = array('foo' => 'bar');
@@ -29,11 +25,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data, $event->getData());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::setData
-     * @covers ::getData
-     */
     public function testSetData()
     {
         $data = array('foo' => 'bar');
@@ -42,11 +33,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data, $event->getData());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::make
-     * @covers ::getData
-     */
     public function testFactory()
     {
         $data = array('foo' => 'bar');
@@ -54,13 +40,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data, $event->getData());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::offsetExists
-     * @covers ::offsetGet
-     * @covers ::offsetSet
-     * @covers ::offsetUnset
-     */
     public function testArrayAccess ()
     {
         $event = new Event();
@@ -76,5 +55,4 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(isset($event['foo']));
 
     }
-
 }

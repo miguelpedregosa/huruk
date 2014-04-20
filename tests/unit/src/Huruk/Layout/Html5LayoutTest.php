@@ -20,28 +20,12 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
     private $layout;
     private $title = 'Hello world';
 
-    /**
-     *
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $this->layout = new Html5Layout();
-        $this->layout->setTitle($this->title);
-    }
-
-    /**
-     * @cover Html5Layout:render
-     */
     public function testGenerateSimpleDocument()
     {
         $html = $this->layout->render();
         $this->assertContains('<!DOCTYPE html>', $html);
     }
 
-    /**
-     * @cover Html5Layout::setTitle
-     */
     public function testSetTitle()
     {
         $this->layout->setTitle($this->title);
@@ -49,9 +33,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<title>Hello world</title>', $html);
     }
 
-    /**
-     * @cover Html5Layout::addMeta
-     */
     public function testMeta()
     {
         $this->layout->addMeta(Meta::make('author', 'Miguel Pedregosa'));
@@ -59,9 +40,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<meta name="author" content="Miguel Pedregosa">', $html);
     }
 
-    /**
-     * @cover Html5Layout::setAuthor
-     */
     public function testSetAuthor()
     {
         $this->layout->setAuthor('Miguel Pedregosa');
@@ -69,9 +47,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<meta name="author" content="Miguel Pedregosa">', $html);
     }
 
-    /**
-     * @cover Html5Layout::setLanguage
-     */
     public function testSetLanguage()
     {
         $this->layout->setLanguage('en');
@@ -79,9 +54,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<html lang="en">', $html);
     }
 
-    /**
-     * @cover Html5Layout::setCharset
-     */
     public function testSetCharset()
     {
         $this->layout->setCharset('utf-8');
@@ -89,9 +61,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<meta charset="utf-8">', $html);
     }
 
-    /**
-     * @cover Html5Layout::setApplicationName
-     */
     public function testSetApplicationName()
     {
         $this->layout->setApplicationName('Huruk');
@@ -99,9 +68,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<meta name="application-name" content="Huruk">', $html);
     }
 
-    /**
-     * @cover Html5Layout::setGenerator
-     */
     public function testSetGenerator()
     {
         $this->layout->setGenerator('Huruk');
@@ -109,9 +75,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<meta name="generator" content="Huruk">', $html);
     }
 
-    /**
-     * @cover Html5Layout::setDescription
-     */
     public function testSetDescription()
     {
         $this->layout->setDescription('Lorem ipsum');
@@ -119,9 +82,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<meta name="description" content="Lorem ipsum">', $html);
     }
 
-    /**
-     * @cover Html5Layout::setKeywords
-     */
     public function testSetKeywords()
     {
         $this->layout->setKeywords('a,b,c');
@@ -129,9 +89,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<meta name="keywords" content="a,b,c">', $html);
     }
 
-    /**
-     * @cover Html5Layout::setViewPort
-     */
     public function testSetViewport()
     {
         $this->layout->setViewPort('width=device-width, user-scalable=no');
@@ -139,9 +96,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<meta name="viewport" content="width=device-width, user-scalable=no">', $html);
     }
 
-    /**
-     * @cover Html5Layout::setCanonical
-     */
     public function testSetCanonical()
     {
         $this->layout->setCanonical('http://foo.bar');
@@ -149,9 +103,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<link rel="canonical" href="http://foo.bar">', $html);
     }
 
-    /**
-     * @cover Html5Layout::addHttpEquivMetaTag
-     */
     public function testAddHttpEquivMetaTag()
     {
         $this->layout->addHttpEquivMetaTag('refresh', '30');
@@ -159,9 +110,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<meta http-equiv="refresh" content="30">', $html);
     }
 
-    /**
-     * @cover Html5Layout::addLink
-     */
     public function testAddLink()
     {
         $this->layout->addLink(Link::make("stylesheet", 'text/css', 'theme.css'));
@@ -169,9 +117,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<link rel="stylesheet" href="theme.css" type="text/css">', $html);
     }
 
-    /**
-     * @cover Html5Layout::addCss
-     */
     public function testAddCss()
     {
         $this->layout->addCss('theme.css', 'screen');
@@ -179,9 +124,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<link rel="stylesheet" href="theme.css" type="text/css" media="screen">', $html);
     }
 
-    /**
-     * @cover Html5Layout::addJs
-     */
     public function testAddJs()
     {
         $this->layout->addJs('script.js');
@@ -189,11 +131,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<script src="script.js"></script>', $html);
     }
 
-    /**
-     * @cover Html5Layout::setBodyAttribute
-     * @cover Html5Layout::unsetBodyAttribute
-     * @cover Html5Layout::cleanBodyAttributes
-     */
     public function testBodyAttributes()
     {
         $this->layout->setBodyAttribute('class', 'foo');
@@ -208,9 +145,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<body>', $html);
     }
 
-    /**
-     *
-     */
     public function testHtmlDocumentValidates()
     {
         $this->layout->setAuthor('Miguel Pedregosa');
@@ -245,5 +179,12 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
             }
         }
         $this->assertTrue($res, $msg);
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->layout = new Html5Layout();
+        $this->layout->setTitle($this->title);
     }
 }

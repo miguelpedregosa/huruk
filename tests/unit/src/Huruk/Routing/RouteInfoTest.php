@@ -18,9 +18,6 @@ use Huruk\Routing\RouteInfo;
  */
 class RouteInfoTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers \Huruk\Routing\RouteInfo
-     */
     public function testConstruct()
     {
         $info = array(
@@ -37,14 +34,6 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::setRouteName
-     * @covers ::getRouteName
-     * @covers ::setControllerClass
-     * @covers ::setParams
-     * @covers ::setAction
-     */
     public function testSetRoute()
     {
         $route_info = new RouteInfo();
@@ -52,14 +41,6 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('dummy', $route_info->getRouteName());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::setControllerClass
-     * @covers ::setControllerClass
-     * @covers ::setAction
-     * @covers ::setParams
-     * @covers ::getControllerClass
-     */
     public function testSetControllerClass()
     {
         $route_info = new RouteInfo();
@@ -67,14 +48,6 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('dummy', $route_info->getControllerClass());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::setAction
-     * @covers ::setControllerClass
-     * @covers ::setAction
-     * @covers ::setParams
-     * @covers ::getAction
-     */
     public function testSetAction()
     {
         $route_info = new RouteInfo();
@@ -82,13 +55,6 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('dummy', $route_info->getAction());
     }
 
-    /**
-     * @covers ::__construct
-     * @covers ::setParams
-     * @covers ::setControllerClass
-     * @covers ::setAction
-     * @covers ::getParams
-     */
     public function testSetParams()
     {
         $route_info = new RouteInfo();

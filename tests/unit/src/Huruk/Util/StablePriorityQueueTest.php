@@ -18,10 +18,6 @@ use Huruk\Util\StablePriorityQueue;
  */
 class StablePriorityQueueTest extends \PHPUnit_Framework_TestCase
 {
-
-    /**
-     * @covers ::insert
-     */
     public function testPriority()
     {
         $queue = new StablePriorityQueue();
@@ -35,9 +31,6 @@ class StablePriorityQueueTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($first, $queue->extract(), 'First element has less priority than seconde one');
     }
 
-    /**
-     * @covers ::insert
-     */
     public function testEqualPriority()
     {
         $queue = new StablePriorityQueue();
