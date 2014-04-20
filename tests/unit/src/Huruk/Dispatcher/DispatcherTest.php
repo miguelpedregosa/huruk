@@ -52,7 +52,35 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
         $dispatcher = new Dispatcher(new Request());
         $route_info = new RouteInfo(
             array(
+                '_controller' => '',
+                '_action' => 'dummyAction',
+                '_route' => 'dummyRoute'
+            )
+        );
+        $dispatcher->dispatch($route_info);
+    }
+
+    public function testInvalidControllerException()
+    {
+        $this->setExpectedException('\Exception');
+        $dispatcher = new Dispatcher(new Request());
+        $route_info = new RouteInfo(
+            array(
                 '_controller' => '\foo\Bar',
+                '_action' => 'dummyAction',
+                '_route' => 'dummyRoute'
+            )
+        );
+        $dispatcher->dispatch($route_info);
+    }
+
+    public function testInvalidControllerClassException()
+    {
+        $this->setExpectedException('\Exception');
+        $dispatcher = new Dispatcher(new Request());
+        $route_info = new RouteInfo(
+            array(
+                '_controller' => __CLASS__,
                 '_action' => 'dummyAction',
                 '_route' => 'dummyRoute'
             )
