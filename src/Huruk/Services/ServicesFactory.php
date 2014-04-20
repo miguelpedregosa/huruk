@@ -14,26 +14,8 @@ use Monolog\Logger;
 
 class ServicesFactory
 {
-    const SERVICE_EVENT_DISPATCHER = 'event_dispatcher';
-    const SERVICE_LOGGER = 'logger';
     private static $closures = array();
     private static $services = array();
-
-    /**
-     * @return EventDispatcher
-     */
-    public static function getEventDispatcherService()
-    {
-        if (!self::getService(self::SERVICE_EVENT_DISPATCHER)) {
-            self::registerService(
-                self::SERVICE_EVENT_DISPATCHER,
-                function () {
-                    return new EventDispatcher();
-                }
-            );
-        }
-        return self::getService(self::SERVICE_EVENT_DISPATCHER);
-    }
 
     /**
      * @param $name
@@ -59,23 +41,5 @@ class ServicesFactory
         if (isset(self::$services[$name])) {
             self::$services[$name] = null;
         }
-    }
-
-    /**
-     * @return Logger
-     */
-    public static function getLoggerService()
-    {
-        if (!self::getService(self::SERVICE_LOGGER)) {
-            self::registerService(
-                self::SERVICE_LOGGER,
-                function () {
-                    $logger = new Logger('application_log');
-                    $logger->pushHandler(new NullHandler());
-                    return $logger;
-                }
-            );
-        }
-        return self::getService(self::SERVICE_LOGGER);
     }
 }

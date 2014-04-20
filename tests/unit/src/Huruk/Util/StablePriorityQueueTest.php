@@ -52,5 +52,4 @@ class StablePriorityQueueTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($second, $queue->extract(), 'Second element was inserted after');
 
     }
-
 }
