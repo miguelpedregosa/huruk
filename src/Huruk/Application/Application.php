@@ -3,13 +3,15 @@ namespace Huruk\Application;
 
 
 use Huruk\EventDispatcher\Event;
+use Huruk\EventDispatcher\EventDispatcher;
+use Huruk\Services\ServicesContainer;
 
 abstract class Application
 {
     const EVENT_DISPATCHER_SERVICE = 'event_dispatcher';
     const LOGGER_SERVICE = 'logger';
 
-    private static $applicationServices = null;
+    private static $servicesContainer = null;
 
     private function __construct()
     {
@@ -25,15 +27,25 @@ abstract class Application
     }
 
     /**
-     * @return ApplicationServices|null
+     * @return ServicesContainer|null
      */
     private static function getApplicationServices()
     {
-        if (is_null(self::$applicationServices)) {
-            self::$applicationServices = new ApplicationServices();
+        if (is_null(self::$servicesContainer)) {
+            self::$servicesContainer = new ServicesContainer();
+
+            //Common services
+            self::$servicesContainer->registerService(
+                Application::EVENT_DISPATCHER_SERVICE,
+                function () {
+                    return new EventDispatcher();
+                }
+            );
+
+            //Application services
             static::initializeServices();
         }
-        return self::$applicationServices;
+        return self::$servicesContainer;
     }
 
     protected static function initializeServices()
