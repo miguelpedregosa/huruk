@@ -15,6 +15,7 @@ class Dispatcher
     const EVENT_INVALID_CONTROLLER_CLASS = 'event.controller.invalid_class';
     const EVENT_INVALID_ACTION_NAME = 'event.controller.invalid_action';
 
+    public $sendHeaders = true;
     private $request;
 
     /**
@@ -82,7 +83,6 @@ class Dispatcher
 
         //Envio el resultado de la accion al navegador
         $this->sendResponse($response);
-
     }
 
     /**
@@ -101,13 +101,15 @@ class Dispatcher
     public function sendResponse(Response $response)
     {
         //Enviar los headers y enviar el contenido si hay que hacerlo
-        /** @var $headers StablePriorityQueue */
-        $headers = $response->getHeaders();
+        if ($this->sendHeaders) {
+            /** @var $headers StablePriorityQueue */
+            $headers = $response->getHeaders();
 
-        while (!$headers->isEmpty()) {
-            /** @var $header Header */
-            $header = $headers->extract();
-            $header->send();
+            while (!$headers->isEmpty()) {
+                /** @var $header Header */
+                $header = $headers->extract();
+                $header->send();
+            }
         }
 
         if ($response->mustSendContent()) {

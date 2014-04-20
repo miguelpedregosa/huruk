@@ -1,0 +1,41 @@
+<?php
+/**
+ *
+ * User: migue
+ * Date: 20/04/14
+ * Time: 19:58
+ */
+
+namespace unit\src\Huruk\Dispatcher;
+
+
+use Huruk\Dispatcher\Dispatcher;
+use Huruk\Routing\RouteInfo;
+use Symfony\Component\HttpFoundation\Request;
+
+class DispatcherTest extends \PHPUnit_Framework_TestCase
+{
+    public static function setupBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        require_once __DIR__ . '/../Controller/sut/DummyController.php';
+    }
+
+    public function testDispatcher()
+    {
+        $dispatcher = new Dispatcher(new Request());
+        $dispatcher->sendHeaders = false;
+        $route_info = new RouteInfo(
+            array(
+                '_controller' => '\unit\src\Huruk\Controller\sut\DummyController',
+                '_action' => 'dummyAction',
+                '_route' => 'dummyRoute'
+            )
+        );
+        ob_start();
+        $dispatcher->dispatch($route_info);
+        $output = ob_get_contents();
+        ob_end_clean();
+        $this->assertEquals('foo:bar', $output);
+    }
+}
