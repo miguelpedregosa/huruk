@@ -8,8 +8,10 @@
 
 namespace Huruk\Routing;
 
+use Huruk\Application\Application;
+use Huruk\Application\ApplicationServices;
 use Huruk\Exception\PageNotFoundException;
-use Huruk\Services\ServicesFactory;
+use Monolog\Logger;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\ClosureLoader;
 use Symfony\Component\Routing\RequestContext;
@@ -62,7 +64,8 @@ class Router
             $closure_loader = new ClosureLoader();
 
             $cache_dir = '/tmp/huruk/route_cache_' . $routes_md5;
-            $logger = ServicesFactory::getLoggerService();
+            /** @var Logger $logger */
+            $logger = Application::getService(ApplicationServices::LOGGER_SERVICE);
             $logger->addDebug('Router cache dir: ' . $cache_dir);
 
 

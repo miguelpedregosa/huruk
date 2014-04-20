@@ -11,11 +11,39 @@ namespace Huruk\Application;
 
 use Huruk\EventDispatcher\Event;
 use Huruk\EventDispatcher\EventDispatcher;
-use Huruk\Services\ServicesFactory;
 
 class Application
 {
-    const EVENT_DISPATCHER_SERVICE = 'event_dispatcher_service';
+    private static $applicationServices = null;
+
+    /**
+     * @param $serviceName
+     * @return mixed
+     */
+    public static function getService($serviceName)
+    {
+        return self::getApplicationServices()->getService($serviceName);
+    }
+
+    /**
+     * @return ApplicationServices|null
+     */
+    private static function getApplicationServices()
+    {
+        if (is_null(self::$applicationServices)) {
+            self::$applicationServices = new ApplicationServices();
+        }
+        return self::$applicationServices;
+    }
+
+    /**
+     * @param $serviceName
+     * @param callable $service
+     */
+    public static function registerService($serviceName, \Closure $service)
+    {
+        self::getApplicationServices()->registerService($serviceName, $service);
+    }
 
     /**
      * @param $eventName
@@ -32,15 +60,7 @@ class Application
      */
     public static function getEventDispatcherService()
     {
-        if (!ServicesFactory::getService(self::EVENT_DISPATCHER_SERVICE)) {
-            ServicesFactory::registerService(
-                self::EVENT_DISPATCHER_SERVICE,
-                function () {
-                    return new EventDispatcher();
-                }
-            );
-        }
-        return ServicesFactory::getService(self::EVENT_DISPATCHER_SERVICE);
+        return self::getService(ApplicationServices::EVENT_DISPATCHER_SERVICE);
     }
 
     /**
@@ -52,18 +72,18 @@ class Application
         self::getEventDispatcherService()->trigger($eventName, $event);
     }
 
-    public static function run()
-    {
-
-    }
-
-    public static function get($route, \Closure $function)
-    {
-
-    }
-
-    public static function post($route, \Closure $function)
-    {
-
-    }
+//    public static function run()
+//    {
+//
+//    }
+//
+//    public static function get($route, \Closure $function)
+//    {
+//
+//    }
+//
+//    public static function post($route, \Closure $function)
+//    {
+//
+//    }
 }
