@@ -7,7 +7,6 @@
 
 namespace unit\src\Huruk\Routing;
 
-
 use Huruk\Routing\RouteInfo;
 use Huruk\Routing\Router;
 use Symfony\Component\Routing\RequestContext;
@@ -64,9 +63,16 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/bar', $this->router->generateUrl('bar'));
     }
 
-    public function testInvalidRoute()
+    public function testNotFoundRoute()
     {
-        $this->setExpectedException('\Exception');
+        $this->setExpectedException('\Huruk\Exception\PageNotFoundException');
         $this->router->matchUrl('/false');
+    }
+
+    public function testExceptions()
+    {
+        $this->setExpectedException('\Huruk\Exception\PageNotFoundException');
+        $router = new Router();
+        $router->matchUrl('/route');
     }
 }
