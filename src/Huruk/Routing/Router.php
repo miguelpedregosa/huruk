@@ -43,10 +43,11 @@ class Router
     {
         try {
             $route_params = $this->getRouter()->match($path_info);
+            $route_info = new RouteInfo($route_params);
         } catch (\Exception $e) {
             throw new PageNotFoundException('Resource not found!!');
         }
-        return $route_params;
+        return $route_info;
     }
 
     /**
@@ -65,8 +66,10 @@ class Router
             $cache_dir = '/tmp/huruk/route_cache_' . $routes_md5;
             /** @var LoggerInterface|null $logger */
             $logger = Application::getService(Application::LOGGER_SERVICE);
-            if ($logger) {
+            if ($logger instanceof LoggerInterface) {
                 $logger->debug('Router cache dir: ' . $cache_dir);
+            } else {
+                $logger = null;
             }
 
             $this->router =
