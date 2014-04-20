@@ -1,14 +1,11 @@
 <?php
-/**
- * Trait que implementa el patron Singleton
- * User: migue
- * Date: 9/02/14
- * Time: 15:13
- */
-
 namespace Huruk\Util;
 
-
+/**
+ * Trait que implementa el patron Singleton
+ * Class Singleton
+ * @package Huruk\Util
+ */
 trait Singleton
 {
     private static $instance;

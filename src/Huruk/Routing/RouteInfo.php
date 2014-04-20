@@ -9,7 +9,7 @@ namespace Huruk\Routing;
  */
 class RouteInfo
 {
-    private $controller_class = null;
+    private $controllerClass = null;
     private $action = null;
     private $route = null;
     private $params = array();
@@ -59,7 +59,7 @@ class RouteInfo
      */
     public function getControllerClass()
     {
-        return $this->controller_class;
+        return $this->controllerClass;
     }
 
     /**
@@ -68,7 +68,7 @@ class RouteInfo
      */
     public function setControllerClass($controller_class)
     {
-        $this->controller_class = $controller_class;
+        $this->controllerClass = $controller_class;
         return $this;
     }
 

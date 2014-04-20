@@ -1,11 +1,4 @@
 <?php
-/**
- * Genera un documento Html 5
- * User: migue
- * Date: 9/02/14
- * Time: 17:05
- */
-
 namespace Huruk\Layout;
 
 use Huruk\Util\StablePriorityQueue;
@@ -34,7 +27,7 @@ class Html5Layout implements LayoutInterface
     public $author;
 
     /** @var  string Nombre de la aplicacion */
-    public $application_name;
+    public $applicationName;
 
     /** @var  string Generador de la aplicacion */
     public $generator;
@@ -58,13 +51,13 @@ class Html5Layout implements LayoutInterface
     /** @var  StablePriorityQueue */
     private $links;
     /** @var array */
-    private $body_attributes = array();
+    private $bodyAttributes = array();
     /** @var  \Twig_Environment */
-    private $twig_environment;
+    private $twigEnvironment;
     /** @var  StablePriorityQueue */
-    private $js_assets;
+    private $jsAssets;
     /** @var  StablePriorityQueue */
-    private $css_assets;
+    private $cssAssets;
 
     /**
      * Aniade una etiqueta meta al documento
@@ -111,7 +104,7 @@ class Html5Layout implements LayoutInterface
      */
     public function setBodyAttribute($name, $value)
     {
-        $this->body_attributes[$name] = $value;
+        $this->bodyAttributes[$name] = $value;
         return $this;
     }
 
@@ -121,8 +114,8 @@ class Html5Layout implements LayoutInterface
      */
     public function unsetBodyAttribute($name)
     {
-        if (isset($this->body_attributes[$name])) {
-            unset ($this->body_attributes[$name]);
+        if (isset($this->bodyAttributes[$name])) {
+            unset ($this->bodyAttributes[$name]);
         }
         return $this;
     }
@@ -132,7 +125,7 @@ class Html5Layout implements LayoutInterface
      */
     public function cleanBodyAttributes()
     {
-        $this->body_attributes = array();
+        $this->bodyAttributes = array();
         return $this;
     }
 
@@ -162,15 +155,12 @@ class Html5Layout implements LayoutInterface
             'links' => $this->getLinksContainer(),
             'body' => $body_contents,
             'js_files' => $js_files,
-            'body_attributes' => $this->body_attributes
+            'body_attributes' => $this->bodyAttributes
         );
 
         return $this->getTwigEnvironment()->render('html5.twig', $context);
     }
 
-    /**
-     *
-     */
     private function addCommonMetaTags()
     {
         //Charset
@@ -180,7 +170,7 @@ class Html5Layout implements LayoutInterface
         $this->addMetaTag('author', $this->author, self::PRIORITY_HIGH);
 
         //Aplication name
-        $this->addMetaTag('application-name', $this->application_name, self::PRIORITY_HIGH);
+        $this->addMetaTag('application-name', $this->applicationName, self::PRIORITY_HIGH);
 
         //Generador
         $this->addMetaTag('generator', $this->generator, self::PRIORITY_HIGH);
@@ -196,9 +186,6 @@ class Html5Layout implements LayoutInterface
 
     }
 
-    /**
-     *
-     */
     private function setCharsetMeta()
     {
         $meta = Meta::make()->setCharset(strtolower($this->charset));
@@ -219,9 +206,6 @@ class Html5Layout implements LayoutInterface
         return $this;
     }
 
-    /**
-     *
-     */
     private function addCommonLinkTags()
     {
         //Url Canonica
@@ -246,11 +230,11 @@ class Html5Layout implements LayoutInterface
      */
     private function getJsAssetsContainer()
     {
-        if (!$this->js_assets instanceof StablePriorityQueue) {
-            $this->js_assets = new StablePriorityQueue();
+        if (!$this->jsAssets instanceof StablePriorityQueue) {
+            $this->jsAssets = new StablePriorityQueue();
         }
 
-        return $this->js_assets;
+        return $this->jsAssets;
     }
 
     /**
@@ -276,11 +260,11 @@ class Html5Layout implements LayoutInterface
      */
     private function getCssAssetsContainer()
     {
-        if (!$this->css_assets instanceof StablePriorityQueue) {
-            $this->css_assets = new StablePriorityQueue();
+        if (!$this->cssAssets instanceof StablePriorityQueue) {
+            $this->cssAssets = new StablePriorityQueue();
         }
 
-        return $this->css_assets;
+        return $this->cssAssets;
     }
 
     /**
@@ -300,7 +284,7 @@ class Html5Layout implements LayoutInterface
      */
     private function getTwigEnvironment()
     {
-        if (!$this->twig_environment || !$this->twig_environment instanceof \Twig_Environment) {
+        if (!$this->twigEnvironment || !$this->twigEnvironment instanceof \Twig_Environment) {
             $loader = new \Twig_Loader_Filesystem(array(
                 __DIR__ . '/../../../templates/layout'
             ));
@@ -310,10 +294,10 @@ class Html5Layout implements LayoutInterface
                 'auto_reload' => true,
                 'debug' => $this->debug
             );
-            $this->twig_environment = new \Twig_Environment($loader, $options);
-            $this->twig_environment->addExtension(new \Twig_Extension_Debug());
+            $this->twigEnvironment = new \Twig_Environment($loader, $options);
+            $this->twigEnvironment->addExtension(new \Twig_Extension_Debug());
         }
-        return $this->twig_environment;
+        return $this->twigEnvironment;
     }
 
     /**
@@ -389,7 +373,7 @@ class Html5Layout implements LayoutInterface
      */
     public function setApplicationName($application_name)
     {
-        $this->application_name = $application_name;
+        $this->applicationName = $application_name;
         return $this;
     }
 
@@ -443,4 +427,3 @@ class Html5Layout implements LayoutInterface
         return $this;
     }
 }
-

@@ -1,11 +1,4 @@
 <?php
-/**
- *
- * User: migue
- * Date: 25/11/13
- * Time: 21:42
- */
-
 namespace Huruk\EventDispatcher;
 
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;

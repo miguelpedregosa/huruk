@@ -1,11 +1,4 @@
 <?php
-/**
- *
- * User: migue
- * Date: 9/02/14
- * Time: 15:32
- */
-
 namespace Huruk\Dispatcher;
 
 use Huruk\Application\Application;

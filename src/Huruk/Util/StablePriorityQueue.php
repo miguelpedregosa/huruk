@@ -1,13 +1,5 @@
 <?php
-/**
- *
- * User: migue
- * Date: 22/02/14
- * Time: 21:03
- */
-
 namespace Huruk\Util;
-
 
 use SplPriorityQueue;
 
@@ -20,4 +12,3 @@ class StablePriorityQueue extends SplPriorityQueue
         parent::insert($value, array($priority, $this->serial--));
     }
 }
- 

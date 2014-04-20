@@ -1,11 +1,4 @@
 <?php
-/**
- *
- * User: migue
- * Date: 9/02/14
- * Time: 17:47
- */
-
 namespace Huruk\Layout;
 
 /**
@@ -18,7 +11,7 @@ class Meta
     private $name;
     private $content;
     private $charset;
-    private $http_equiv = '';
+    private $httpEquiv = '';
 
     /**
      * Factoria estatica
@@ -97,7 +90,7 @@ class Meta
      */
     public function getHttpEquiv()
     {
-        return $this->http_equiv;
+        return $this->httpEquiv;
     }
 
     /**
@@ -106,7 +99,7 @@ class Meta
      */
     public function setHttpEquiv($http_equiv)
     {
-        $this->http_equiv = $http_equiv;
+        $this->httpEquiv = $http_equiv;
         return $this;
     }
 }

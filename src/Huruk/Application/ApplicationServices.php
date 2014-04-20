@@ -1,11 +1,4 @@
 <?php
-/**
- *
- * User: migue
- * Date: 20/04/14
- * Time: 14:21
- */
-
 namespace Huruk\Application;
 
 

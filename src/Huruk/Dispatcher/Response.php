@@ -1,10 +1,4 @@
 <?php
-/**
- *
- * @author Miguel A. Pedregosa <miguelpedregosa@gmail.com>
- * @version 1.0
- * @created 3/03/13 - 2:24
- */
 namespace Huruk\Dispatcher;
 
 use Huruk\Util\StablePriorityQueue;

@@ -1,5 +1,4 @@
 <?php
-
 namespace Huruk\Routing;
 
 use Huruk\Application\Application;

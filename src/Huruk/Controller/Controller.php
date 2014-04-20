@@ -1,11 +1,4 @@
 <?php
-/**
- * Controlador base
- * User: migue
- * Date: 24/11/13
- * Time: 21:09
- */
-
 namespace Huruk\Controller;
 
 use Huruk\Application\Application;

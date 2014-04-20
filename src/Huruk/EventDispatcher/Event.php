@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: migue
- * Date: 24/11/13
- * Time: 20:43
- */
-
 namespace Huruk\EventDispatcher;
 
 
