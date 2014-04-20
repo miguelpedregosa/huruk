@@ -1,10 +1,4 @@
 <?php
-/**
- *
- * User: migue
- * Date: 9/02/14
- * Time: 16:10
- */
 
 namespace Huruk\Routing;
 

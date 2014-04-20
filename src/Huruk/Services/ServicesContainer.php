@@ -1,9 +1,4 @@
 <?php
-/**
- * User: migue
- * Date: 6/04/14
- * Time: 14:26
- */
 
 namespace Huruk\Services;
 
