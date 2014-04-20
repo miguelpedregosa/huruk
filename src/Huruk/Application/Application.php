@@ -10,10 +10,12 @@ namespace Huruk\Application;
 
 
 use Huruk\EventDispatcher\Event;
-use Huruk\EventDispatcher\EventDispatcher;
 
 class Application
 {
+    const EVENT_DISPATCHER_SERVICE = 'event_dispatcher';
+    const LOGGER_SERVICE = 'logger';
+
     private static $applicationServices = null;
 
     /**
@@ -52,15 +54,7 @@ class Application
      */
     public static function listen($eventName, $listener, $prioriy = 0)
     {
-        self::getEventDispatcherService()->listen($eventName, $listener, $prioriy);
-    }
-
-    /**
-     * @return EventDispatcher
-     */
-    public static function getEventDispatcherService()
-    {
-        return self::getService(ApplicationServices::EVENT_DISPATCHER_SERVICE);
+        self::getService(self::EVENT_DISPATCHER_SERVICE)->listen($eventName, $listener, $prioriy);
     }
 
     /**
@@ -78,6 +72,6 @@ class Application
      */
     public static function trigger($eventName, Event $event = null)
     {
-        self::getEventDispatcherService()->trigger($eventName, $event);
+        self::getService(self::EVENT_DISPATCHER_SERVICE)->trigger($eventName, $event);
     }
 }

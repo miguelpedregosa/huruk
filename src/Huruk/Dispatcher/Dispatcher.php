@@ -95,7 +95,7 @@ class Dispatcher
      */
     private function getEventDispatcher()
     {
-        return Application::getEventDispatcherService();
+        return Application::getService(Application::EVENT_DISPATCHER_SERVICE);
     }
 
 

@@ -9,7 +9,6 @@
 namespace Huruk\Routing;
 
 use Huruk\Application\Application;
-use Huruk\Application\ApplicationServices;
 use Huruk\Exception\PageNotFoundException;
 use Monolog\Logger;
 use Symfony\Component\Routing\Generator\UrlGenerator;
@@ -65,7 +64,7 @@ class Router
 
             $cache_dir = '/tmp/huruk/route_cache_' . $routes_md5;
             /** @var Logger $logger */
-            $logger = Application::getService(ApplicationServices::LOGGER_SERVICE);
+            $logger = Application::getService(Application::LOGGER_SERVICE);
             $logger->addDebug('Router cache dir: ' . $cache_dir);
 
 

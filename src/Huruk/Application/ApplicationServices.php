@@ -16,27 +16,38 @@ use Monolog\Logger;
 
 class ApplicationServices extends ServicesContainer
 {
-    const EVENT_DISPATCHER_SERVICE = 'event_dispatcher';
-    const LOGGER_SERVICE = 'logger';
 
     public function __construct()
     {
         //Registramos servicios comunes
+
+        //Event Dispatcher
+        $this->registerEventDispatcherService();
+
+        //Logger
+        $this->registerLoggerService();
+
+    }
+
+    private function registerEventDispatcherService()
+    {
         $this->registerService(
-            self::EVENT_DISPATCHER_SERVICE,
+            Application::EVENT_DISPATCHER_SERVICE,
             function () {
                 return new EventDispatcher();
             }
         );
+    }
 
+    private function registerLoggerService()
+    {
         $this->registerService(
-            self::LOGGER_SERVICE,
+            Application::LOGGER_SERVICE,
             function () {
                 $logger = new Logger('application');
                 $logger->pushHandler(new NullHandler());
                 return $logger;
             }
         );
-
     }
 }
