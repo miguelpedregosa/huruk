@@ -144,22 +144,6 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<body>', $html);
     }
 
-    public function testHtmlDocumentValidates()
-    {
-        $this->layout->setAuthor('Miguel Pedregosa');
-        $this->layout->setCanonical('http://foo.bar');
-        $this->layout->setViewPort('width=device-width, user-scalable=no');
-        $this->layout->setKeywords('a,b,c');
-        $this->layout->setDescription('Lorem ipsum');
-        $this->layout->setGenerator('Huruk');
-        $this->layout->setLanguage('en');
-        $this->layout->addCss('theme.css', 'screen');
-        $this->layout->addJs('script.js');
-        $this->layout->setBodyAttribute('class', 'foo');
-        $this->layout->setBodyAttribute('id', 'body');
-    }
-
-
     protected function setUp()
     {
         parent::setUp();
