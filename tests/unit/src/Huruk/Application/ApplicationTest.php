@@ -76,9 +76,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $collection = new RouteCollection();
         $collection->add(
-            'foo',
+            'bar',
             new Route(
-                '/foo',
+                '/bar',
                 array(
                     '_controller' => '\unit\src\Huruk\Controller\sut\DummyController',
                     '_action' => 'dummyAction'
@@ -86,7 +86,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $request = Request::create('http://example.com/bar');
+        $request = Request::create('http://example.com/foo');
 
         ob_start();
         Dispatcher::$sendHeaders = false;

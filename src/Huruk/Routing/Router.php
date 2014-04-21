@@ -72,11 +72,11 @@ class Router
             $routes_md5 = md5(serialize($this->getRouteCollection()));
             $closure_loader = new ClosureLoader();
 
-            $cache_dir = '/tmp/huruk/route_cache_' . $routes_md5;
+            $cache_dir = '/tmp/huruk/router_cache';
 
             $logger = $this->getLogger();
             if ($logger instanceof LoggerInterface) {
-                $logger->debug('Router cache dir: ' . $cache_dir);
+                $logger->debug('');
             } else {
                 $logger = null;
             }
@@ -90,6 +90,8 @@ class Router
                     array(
                         'cache_dir' => $cache_dir,
                         'debug' => false,
+                        'matcher_cache_class' => 'ProjectUrlMatcher' . $routes_md5,
+                        'generator_cache_class' => 'ProjectUrlGenerator' . $routes_md5
                     ),
                     $this->getRequestContext(),
                     $logger
