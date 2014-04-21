@@ -118,8 +118,10 @@ abstract class Application
             $collection = ($collection) ? $collection : self::getRouteCollection();
             $router = new Router();
             $router->setRouteCollection($collection)
-                ->setRequestContext($requestContext)
-                ->setLogger($logger);
+                ->setRequestContext($requestContext);
+            if ($logger) {
+                $router->setLogger($logger);
+            }
 
             //RouteInfo y Dispatch
             $route_info = $router->matchUrl($requestContext->getPathInfo());
