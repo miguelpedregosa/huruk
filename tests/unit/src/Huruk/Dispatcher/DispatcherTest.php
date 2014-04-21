@@ -24,7 +24,7 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase
     public function testDispatcher()
     {
         $dispatcher = new Dispatcher(new Request());
-        $dispatcher->sendHeaders = false;
+        $dispatcher::$sendHeaders = false;
         $route_info = new RouteInfo(
             array(
                 '_controller' => '\unit\src\Huruk\Controller\sut\DummyController',

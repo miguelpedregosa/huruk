@@ -15,7 +15,11 @@ class Dispatcher
     const EVENT_INVALID_CONTROLLER_CLASS = 'event.controller.invalid_class';
     const EVENT_INVALID_ACTION_NAME = 'event.controller.invalid_action';
 
-    public $sendHeaders = true;
+    /**
+     * Just for testing
+     * @var bool
+     */
+    public static $sendHeaders = true;
     private $request;
 
     /**
@@ -117,7 +121,7 @@ class Dispatcher
     public function sendResponse(Response $response)
     {
         //Enviar los headers y enviar el contenido si hay que hacerlo
-        if ($this->sendHeaders) {
+        if (self::$sendHeaders) {
             /** @var $headers StablePriorityQueue */
             $headers = $response->getHeaders();
 
