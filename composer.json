@@ -23,7 +23,6 @@
         "phpunit/phpunit": "4.*",
         "phpunit/phpunit-mock-objects": "2.*",
         "phpunit/phpunit-story": "dev-master",
-        "micheh/w3c-validator": "dev-master",
         "mockery/mockery": "dev-master"
     },
     "autoload": {

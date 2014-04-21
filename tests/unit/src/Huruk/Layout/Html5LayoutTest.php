@@ -12,7 +12,6 @@ namespace unit\src\Huruk\Layout;
 use Huruk\Layout\Html5Layout;
 use Huruk\Layout\Link;
 use Huruk\Layout\Meta;
-use W3C\HtmlValidator;
 
 class Html5LayoutTest extends \PHPUnit_Framework_TestCase
 {
@@ -158,28 +157,8 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->layout->addJs('script.js');
         $this->layout->setBodyAttribute('class', 'foo');
         $this->layout->setBodyAttribute('id', 'body');
-        $this->assertHtmlValidates($this->layout->render());
     }
 
-    /**
-     * Assert that a html document is w3c valid.
-     * @param $html
-     */
-    private function assertHtmlValidates($html)
-    {
-        $validator = new HtmlValidator();
-        $validation = $validator->validateInput($html);
-        $res = $validation->isValid();
-        $msg = '';
-        if (!$res) {
-            $errors = $validation->getErrors();
-            $msg = '';
-            foreach ($errors as $error) {
-                $msg .= $error->getMessage();
-            }
-        }
-        $this->assertTrue($res, $msg);
-    }
 
     protected function setUp()
     {
