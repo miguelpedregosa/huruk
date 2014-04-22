@@ -43,8 +43,6 @@ class Html5Layout implements LayoutInterface
 
     /** @var  string URL canonica del documento */
     public $canonical;
-    /** @var bool */
-    protected $debug = false;
 
     /** @var  StablePriorityQueue */
     private $metas;
@@ -52,12 +50,20 @@ class Html5Layout implements LayoutInterface
     private $links;
     /** @var array */
     private $bodyAttributes = array();
-    /** @var  \Twig_Environment */
-    private $twigEnvironment;
+
     /** @var  StablePriorityQueue */
     private $jsAssets;
     /** @var  StablePriorityQueue */
     private $cssAssets;
+
+
+    public function __construct()
+    {
+        $this->metas = new StablePriorityQueue();
+        $this->links = new StablePriorityQueue();
+        $this->jsAssets = new StablePriorityQueue();
+        $this->cssAssets = new StablePriorityQueue();
+    }
 
     /**
      * Aniade una etiqueta meta al documento
@@ -67,20 +73,10 @@ class Html5Layout implements LayoutInterface
      */
     public function addMeta(Meta $meta, $priority = self::PRIORITY_LOW)
     {
-        $this->getMetasContainer()->insert($meta, $priority);
+        $this->metas->insert($meta, $priority);
         return $this;
     }
 
-    /**
-     * @return StablePriorityQueue
-     */
-    private function getMetasContainer()
-    {
-        if (!$this->metas instanceof StablePriorityQueue) {
-            $this->metas = new StablePriorityQueue();
-        }
-        return $this->metas;
-    }
 
     /**
      * Aniade un meta de tipo Http-eqiov al documento
@@ -92,7 +88,7 @@ class Html5Layout implements LayoutInterface
     public function addHttpEquivMetaTag($http_equiv, $content, $priority = self::PRIORITY_LOW)
     {
         $meta = Meta::make()->setHttpEquiv($http_equiv)->setContent($content);
-        $this->getMetasContainer()->insert($meta, $priority);
+        $this->metas->insert($meta, $priority);
         return $this;
     }
 
@@ -143,7 +139,7 @@ class Html5Layout implements LayoutInterface
         $this->addCommonLinkTags();
 
         //Archivos Js a incluir en el documento
-        $js_files = $this->getJsAssetsContainer();
+        $js_files = $this->jsAssets;
 
         //Archivos Css a incluir en el documento
         $this->processCssAssets();
@@ -151,14 +147,15 @@ class Html5Layout implements LayoutInterface
         $context = array(
             'language' => $this->language,
             'title' => $this->title,
-            'metas' => $this->getMetasContainer(),
-            'links' => $this->getLinksContainer(),
+            'metas' => $this->metas,
+            'links' => $this->links,
             'body' => $body_contents,
             'js_files' => $js_files,
             'body_attributes' => $this->bodyAttributes
         );
 
-        return $this->getTwigEnvironment()->render('html5.twig', $context);
+        $template = new Html5LayoutTemplate();
+        return $template->render($context);
     }
 
     private function addCommonMetaTags()
@@ -189,7 +186,7 @@ class Html5Layout implements LayoutInterface
     private function setCharsetMeta()
     {
         $meta = Meta::make()->setCharset(strtolower($this->charset));
-        $this->getMetasContainer()->insert($meta, self::PRIORITY_HIGH);
+        $this->metas->insert($meta, self::PRIORITY_HIGH);
     }
 
     /**
@@ -202,7 +199,7 @@ class Html5Layout implements LayoutInterface
     public function addMetaTag($name, $content, $priority = self::PRIORITY_LOW)
     {
         $meta = Meta::make($name, $content);
-        $this->getMetasContainer()->insert($meta, $priority);
+        $this->metas->insert($meta, $priority);
         return $this;
     }
 
@@ -211,31 +208,9 @@ class Html5Layout implements LayoutInterface
         //Url Canonica
         $link = new Link();
         $link->setRel('canonical')->setHref($this->canonical);
-        $this->getLinksContainer()->insert($link, self::PRIORITY_HIGH);
+        $this->links->insert($link, self::PRIORITY_HIGH);
     }
 
-    /**
-     * @return StablePriorityQueue
-     */
-    private function getLinksContainer()
-    {
-        if (!$this->links instanceof StablePriorityQueue) {
-            $this->links = new StablePriorityQueue();
-        }
-        return $this->links;
-    }
-
-    /**
-     * @return StablePriorityQueue
-     */
-    private function getJsAssetsContainer()
-    {
-        if (!$this->jsAssets instanceof StablePriorityQueue) {
-            $this->jsAssets = new StablePriorityQueue();
-        }
-
-        return $this->jsAssets;
-    }
 
     /**
      * Procesa los recursos CSS a incluir en el documento
@@ -243,7 +218,7 @@ class Html5Layout implements LayoutInterface
     private function processCssAssets()
     {
         /** @var StablePriorityQueue $css_assets */
-        $css_assets = $this->getCssAssetsContainer();
+        $css_assets = $this->cssAssets;
         while (!$css_assets->isEmpty()) {
             $asset = $css_assets->extract();
             $link = new Link();
@@ -255,17 +230,6 @@ class Html5Layout implements LayoutInterface
         }
     }
 
-    /**
-     * @return StablePriorityQueue
-     */
-    private function getCssAssetsContainer()
-    {
-        if (!$this->cssAssets instanceof StablePriorityQueue) {
-            $this->cssAssets = new StablePriorityQueue();
-        }
-
-        return $this->cssAssets;
-    }
 
     /**
      * @param Link $link
@@ -274,30 +238,8 @@ class Html5Layout implements LayoutInterface
      */
     public function addLink(Link $link, $priority = self::PRIORITY_LOW)
     {
-        $this->getLinksContainer()->insert($link, $priority);
+        $this->links->insert($link, $priority);
         return $this;
-    }
-
-    /**
-     * Devuelve la instancia de TwigEnviroment que debe usar para renderizar el documento
-     * @return \Twig_Environment
-     */
-    private function getTwigEnvironment()
-    {
-        if (!$this->twigEnvironment || !$this->twigEnvironment instanceof \Twig_Environment) {
-            $loader = new \Twig_Loader_Filesystem(array(
-                __DIR__ . '/../../templates/layout'
-            ));
-            $options = array(
-                'cache' => '/tmp/twigcache',
-                'strict_variables' => $this->debug,
-                'auto_reload' => true,
-                'debug' => $this->debug
-            );
-            $this->twigEnvironment = new \Twig_Environment($loader, $options);
-            $this->twigEnvironment->addExtension(new \Twig_Extension_Debug());
-        }
-        return $this->twigEnvironment;
     }
 
     /**
@@ -312,7 +254,7 @@ class Html5Layout implements LayoutInterface
             'asset' => $path,
             'media' => $media
         );
-        $this->getCssAssetsContainer()->insert($css, $priority);
+        $this->cssAssets->insert($css, $priority);
         return $this;
     }
 
@@ -323,7 +265,7 @@ class Html5Layout implements LayoutInterface
      */
     public function addJs($path, $priority = self::PRIORITY_LOW)
     {
-        $this->getJsAssetsContainer()->insert($path, $priority);
+        $this->jsAssets->insert($path, $priority);
         return $this;
     }
 
