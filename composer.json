@@ -26,8 +26,8 @@
         "mockery/mockery": "dev-master"
     },
     "autoload": {
-        "psr-0": {
-            "Huruk": "src/"
+        "psr-4": {
+            "Huruk\\": "src/"
         }
     }
 }

@@ -33,67 +33,28 @@ class Dispatcher
     /**
      * A partir de la informacion de enrutado, instancia el controlador adecuado, ejecuta la accion
      * y realiza el dispatcheo del resultado
-     * @param RouteInfo $route_info
+     * @param RouteInfo $routeInfo
      * @throws \Huruk\Exception\PageNotFoundException
      * @throws \Exception
      */
-    public function dispatch(RouteInfo $route_info = null)
+    public function dispatch(RouteInfo $routeInfo = null)
     {
-        if (!$route_info instanceof RouteInfo) {
+        if (!$routeInfo instanceof RouteInfo) {
             throw new PageNotFoundException();
         }
 
-        //Clase del controlador encargado de ejecutar la accion proveniente del enrutado
-        $controller_class = $route_info->getControllerClass();
-        if (!is_string($controller_class) || !strlen($controller_class)) {
-            throw new PageNotFoundException();
-        }
+        $closure = $routeInfo->getClosure();
+        $response = is_callable($closure) ?
+            call_user_func_array(
+                $closure,
+                array($routeInfo, $this->getRequest())
+            )
+            : $this->dispatchUsingController($routeInfo);
 
-
-        if (!class_exists($controller_class)) {
-            Application::trigger(
-                self::EVENT_INVALID_CONTROLLER_CLASS,
-                new Event(array('route_info' => $route_info))
-            );
-            throw new \Exception('Invalid controller class');
-        }
-
-        //Intancia del controlador
-        /** @var ControllerInterface|EventSubscriberInterface $controller */
-        $controller = new $controller_class();
-        if (!$controller instanceof ControllerInterface) {
-            Application::trigger(
-                self::EVENT_INVALID_CONTROLLER_CLASS,
-                new Event(array('route_info' => $route_info))
-            );
-            throw new \Exception('Invalid controller class');
-        }
-        //$controller->setApplication();
-        $this->getEventDispatcher()->addSubscriber($controller);
-
-        //Accion a ejecutar
-        $action_name = $route_info->getAction();
-        if (!strlen($action_name)) {
-            Application::trigger(
-                self::EVENT_INVALID_ACTION_NAME,
-                new Event(array('route_info' => $route_info))
-            );
-            throw new \Exception('No action to be executed');
-        }
-
-        //Ejecuto la accion, pasando el control al Controller
-        $response = $controller->doAction($action_name, $route_info, $this->getRequest());
+        $response = $this->normalizeResponse($response);
 
         //Envio el resultado de la accion al navegador
         $this->sendResponse($response);
-    }
-
-    /**
-     * @return \Huruk\EventDispatcher\EventDispatcher
-     */
-    private function getEventDispatcher()
-    {
-        return Application::getService(Application::EVENT_DISPATCHER_SERVICE);
     }
 
     /**
@@ -112,6 +73,80 @@ class Dispatcher
     {
         $this->request = $request;
         return $this;
+    }
+
+    /**
+     * @param RouteInfo $routeInfo
+     * @return Response
+     * @throws \Exception
+     * @throws \Huruk\Exception\PageNotFoundException
+     */
+    private function dispatchUsingController(RouteInfo $routeInfo)
+    {
+        //Clase del controlador encargado de ejecutar la accion proveniente del enrutado
+        $controller_class = $routeInfo->getControllerClass();
+        if (!is_string($controller_class) || !strlen($controller_class)) {
+            throw new PageNotFoundException();
+        }
+
+        if (!class_exists($controller_class)) {
+            Application::trigger(
+                self::EVENT_INVALID_CONTROLLER_CLASS,
+                new Event(array('route_info' => $routeInfo))
+            );
+            throw new \Exception('Invalid controller class');
+        }
+
+        //Intancia del controlador
+        /** @var ControllerInterface|EventSubscriberInterface $controller */
+        $controller = new $controller_class();
+        if (!$controller instanceof ControllerInterface) {
+            Application::trigger(
+                self::EVENT_INVALID_CONTROLLER_CLASS,
+                new Event(array('route_info' => $routeInfo))
+            );
+            throw new \Exception('Invalid controller class');
+        }
+        //$controller->setApplication();
+        $this->getEventDispatcher()->addSubscriber($controller);
+
+        //Accion a ejecutar
+        $action_name = $routeInfo->getAction();
+        if (!strlen($action_name)) {
+            Application::trigger(
+                self::EVENT_INVALID_ACTION_NAME,
+                new Event(array('route_info' => $routeInfo))
+            );
+            throw new \Exception('No action to be executed');
+        }
+
+        //Ejecuto la accion, pasando el control al Controller
+        return $controller->doAction($action_name, $routeInfo, $this->getRequest());
+    }
+
+    /**
+     * @return \Huruk\EventDispatcher\EventDispatcher
+     */
+    private function getEventDispatcher()
+    {
+        return Application::getService(Application::EVENT_DISPATCHER_SERVICE);
+    }
+
+    /**
+     * @param $response
+     * @return Response
+     * @throws \Exception
+     */
+    private function normalizeResponse($response)
+    {
+        if (!$response instanceof Response) {
+            if (is_string($response)) {
+                $response = Response::make($response);
+            } else {
+                throw new \Exception('Expected Response Object');
+            }
+        }
+        return $response;
     }
 
     /**
