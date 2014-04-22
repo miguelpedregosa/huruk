@@ -286,7 +286,7 @@ class Html5Layout implements LayoutInterface
     {
         if (!$this->twigEnvironment || !$this->twigEnvironment instanceof \Twig_Environment) {
             $loader = new \Twig_Loader_Filesystem(array(
-                __DIR__ . '/../../../templates/layout'
+                __DIR__ . '/../../templates/layout'
             ));
             $options = array(
                 'cache' => '/tmp/twigcache',
