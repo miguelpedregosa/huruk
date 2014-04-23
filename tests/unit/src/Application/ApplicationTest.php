@@ -97,4 +97,32 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<title>Huruk µFramework - Not Found</title>', $output);
 
     }
+
+//    public function testGet()
+//    {
+//        $closure = function () {
+//            return Response::make('foo:bar');
+//        };
+//        $request = Request::create('http://example.com/get_route');
+//        ob_start();
+//        Dispatcher::$sendHeaders = false;
+//        Application::get('/get_route', $closure, $request);
+//        $output = ob_get_contents();
+//        ob_end_clean();
+//        $this->assertContains('foo:bar', $output);
+//    }
+//
+//    public function testPost()
+//    {
+//        $closure = function () {
+//            return Response::make('One->Two');
+//        };
+//        $request = Request::create('http://example.com/post_route', 'POST');
+//        ob_start();
+//        Dispatcher::$sendHeaders = false;
+//        Application::post('/post_route', $closure, $request);
+//        $output = ob_get_contents();
+//        ob_end_clean();
+//        $this->assertContains('One->Two', $output);
+//    }
 }

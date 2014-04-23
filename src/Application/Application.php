@@ -8,12 +8,14 @@ use Huruk\EventDispatcher\Event;
 use Huruk\EventDispatcher\EventDispatcher;
 use Huruk\Exception\PageNotFoundException;
 use Huruk\Layout\Html5Layout;
+use Huruk\Routing\RouteInfo;
 use Huruk\Routing\Router;
 use Huruk\Services\ServicesContainer;
 use Huruk\Util\Charset;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 abstract class Application
@@ -92,6 +94,20 @@ abstract class Application
     }
 
     /**
+     * @param $path
+     * @param callable $function
+     * @param Request $request
+     */
+    public static function get($path, \Closure $function, Request $request = null)
+    {
+        $collection = new RouteCollection();
+        $route = new Route($path, array(RouteInfo::CLOSURE => $function));
+        $route->setMethods('GET');
+        $collection->add(str_replace('/', '_', $path) . '_GET', $route);
+        self::run($collection, $request);
+    }
+
+    /**
      * @param RouteCollection $collection
      * @param Request $request
      * @throws \Exception
@@ -152,6 +168,20 @@ abstract class Application
             ->setCharset(Charset::CHARSET_UTF8);
         $html = $html_layout->render('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>');
         $dispatcher->sendResponse(Response::make($html, 404));
+    }
+
+    /**
+     * @param $path
+     * @param callable $function
+     * @param Request $request
+     */
+    public static function post($path, \Closure $function, Request $request = null)
+    {
+        $collection = new RouteCollection();
+        $route = new Route($path, array(RouteInfo::CLOSURE => $function));
+        $route->setMethods('POST');
+        $collection->add(str_replace('/', '_', $path) . '_POST', $route);
+        self::run($collection, $request);
     }
 
     public function __clone()
