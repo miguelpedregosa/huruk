@@ -2,6 +2,7 @@
 namespace Huruk\Application;
 
 
+use Huruk\Dispatcher\ClosureStorage;
 use Huruk\Dispatcher\Dispatcher;
 use Huruk\Dispatcher\Response;
 use Huruk\EventDispatcher\Event;
@@ -100,11 +101,24 @@ abstract class Application
      */
     public static function get($path, \Closure $function, Request $request = null)
     {
+        $closureStorage = ClosureStorage::getInstance();
+        $routeName = self::getRouteNameFromPath($path, 'GET');
+        $closureStorage[$routeName] = $function;
         $collection = new RouteCollection();
-        $route = new Route($path, array(RouteInfo::CLOSURE => $function));
+        $route = new Route($path, array(RouteInfo::CLOSURE => true));
         $route->setMethods('GET');
-        $collection->add(str_replace('/', '_', $path) . '_GET', $route);
+        $collection->add($routeName, $route);
         self::run($collection, $request);
+    }
+
+    /**
+     * @param $path
+     * @param string $method
+     * @return string
+     */
+    private static function getRouteNameFromPath($path, $method = 'GET')
+    {
+        return str_replace('/', '_', $path) . '_' . strtoupper($method);
     }
 
     /**
@@ -140,8 +154,8 @@ abstract class Application
             }
 
             //RouteInfo y Dispatch
-            $route_info = $router->matchUrl($requestContext->getPathInfo());
-            $dispatcher->dispatch($route_info);
+            $routeInfo = $router->matchUrl($requestContext->getPathInfo());
+            $dispatcher->dispatch($routeInfo);
 
         } catch (PageNotFoundException $exception) {
             self::handlePageNotFound($dispatcher, $exception);
@@ -177,10 +191,13 @@ abstract class Application
      */
     public static function post($path, \Closure $function, Request $request = null)
     {
+        $closureStorage = ClosureStorage::getInstance();
+        $routeName = self::getRouteNameFromPath($path, 'POST');
+        $closureStorage[$routeName] = $function;
         $collection = new RouteCollection();
-        $route = new Route($path, array(RouteInfo::CLOSURE => $function));
+        $route = new Route($path, array(RouteInfo::CLOSURE => true));
         $route->setMethods('POST');
-        $collection->add(str_replace('/', '_', $path) . '_POST', $route);
+        $collection->add($routeName, $route);
         self::run($collection, $request);
     }
 

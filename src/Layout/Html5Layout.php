@@ -206,9 +206,11 @@ class Html5Layout implements LayoutInterface
     private function addCommonLinkTags()
     {
         //Url Canonica
-        $link = new Link();
-        $link->setRel('canonical')->setHref($this->canonical);
-        $this->links->insert($link, self::PRIORITY_HIGH);
+        if ($this->canonical) {
+            $link = new Link();
+            $link->setRel('canonical')->setHref($this->canonical);
+            $this->links->insert($link, self::PRIORITY_HIGH);
+        }
     }
 
 

@@ -43,13 +43,21 @@ class Dispatcher
             throw new PageNotFoundException();
         }
 
-        $closure = $routeInfo->getClosure();
-        $response = is_callable($closure) ?
-            call_user_func_array(
-                $closure,
-                array($routeInfo, $this->getRequest())
-            )
-            : $this->dispatchUsingController($routeInfo);
+        $response = false;
+        if ($routeInfo->getClosure()) {
+            $closureStorage = ClosureStorage::getInstance();
+            if (isset($closureStorage[$routeInfo->getRouteName()])
+                && is_callable($closureStorage[$routeInfo->getRouteName()])
+            ) {
+                $response = call_user_func_array(
+                    $closureStorage[$routeInfo->getRouteName()],
+                    array($routeInfo, $this->getRequest())
+                );
+            }
+        }
+        if (!$response) {
+            $response = $this->dispatchUsingController($routeInfo);
+        }
 
         $response = $this->normalizeResponse($response);
 

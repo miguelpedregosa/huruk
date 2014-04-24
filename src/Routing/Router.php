@@ -37,20 +37,20 @@ class Router
     }
 
     /**
-     * @param $path_info
+     * @param $pathInfo
      * @return RouteInfo
      * @throws \Huruk\Exception\PageNotFoundException
      */
-    public function matchUrl($path_info)
+    public function matchUrl($pathInfo)
     {
         try {
-            $route_params = $this->getRouter()->match($path_info);
-            $route_info = new RouteInfo($route_params);
+            $routeParams = $this->getRouter()->match($pathInfo);
+            $routeInfo = new RouteInfo($routeParams);
         } catch (\Exception $e) {
-            Application::trigger(self::EVENT_ROUTE_DONT_MATCH, new Event(array($path_info)));
+            Application::trigger(self::EVENT_ROUTE_DONT_MATCH, new Event(array($pathInfo)));
             throw new PageNotFoundException('Resource not found!!');
         }
-        return $route_info;
+        return $routeInfo;
     }
 
     /**

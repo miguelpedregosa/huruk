@@ -17,7 +17,7 @@ class RouteInfo
     private $controllerClass = null;
     private $action = null;
     private $route = null;
-    private $closure = null;
+    private $closure = false;
     private $params = array();
 
     /**
@@ -138,10 +138,10 @@ class RouteInfo
     }
 
     /**
-     * @param callable $closure
+     * @param $closure
      * @return RouteInfo
      */
-    public function setClosure(\Closure $closure)
+    public function setClosure($closure)
     {
         $this->closure = $closure;
         return $this;
