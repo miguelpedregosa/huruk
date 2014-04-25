@@ -1,7 +1,7 @@
 {
     "name": "miguelpedregosa/huruk",
     "description": "Micro http framework",
-    "license": "MIT license",
+    "license": MIT,
     "authors": [
         {
             "name": "Miguel Pedregosa",
