@@ -115,7 +115,7 @@ class Dispatcher
             );
             throw new \Exception('Invalid controller class');
         }
-        //$controller->setApplication();
+        
         $this->getEventDispatcher()->addSubscriber($controller);
 
         //Accion a ejecutar
