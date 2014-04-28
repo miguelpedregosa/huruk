@@ -8,30 +8,41 @@ class ServicesContainer
     private $services = array();
 
     /**
-     * @param $name
+     * @param $serviceName
+     * @param bool $shareInstance
      * @return mixed
      */
-    public function getService($name)
+    public function getService($serviceName, $shareInstance = true)
     {
-        if (!isset($this->services[$name])) {
-            if (isset($this->closures[$name]) && is_callable($this->closures[$name])) {
-                $this->services[$name] = call_user_func($this->closures[$name]);
-            } else {
-                $this->services[$name] = null;
+        if ($shareInstance) {
+            if (!isset($this->services[$serviceName])) {
+                $this->services[$serviceName] = $this->createServiceInstance($serviceName);
             }
+            return $this->services[$serviceName];
+        } else {
+            return $this->createServiceInstance($serviceName);
         }
-        return $this->services[$name];
     }
 
     /**
-     * @param $name
+     * @param $serviceName
+     * @return mixed|null
+     */
+    private function createServiceInstance($serviceName)
+    {
+        return isset($this->closures[$serviceName]) && is_callable($this->closures[$serviceName])
+            ? call_user_func($this->closures[$serviceName]) : null;
+    }
+
+    /**
+     * @param $serviceName
      * @param callable $service
      */
-    public function registerService($name, \Closure $service)
+    public function registerService($serviceName, \Closure $service)
     {
-        $this->closures[$name] = $service;
-        if (isset($this->services[$name])) {
-            $this->services[$name] = null;
+        $this->closures[$serviceName] = $service;
+        if (isset($this->services[$serviceName])) {
+            $this->services[$serviceName] = null;
         }
     }
 }

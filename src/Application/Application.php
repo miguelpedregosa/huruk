@@ -23,6 +23,7 @@ abstract class Application
 {
     const EVENT_DISPATCHER_SERVICE = 'event_dispatcher';
     const LOGGER_SERVICE = 'logger';
+    const ROUTER_SERVICE = 'router';
 
     private static $servicesContainer = null;
 
@@ -55,6 +56,13 @@ abstract class Application
                 }
             );
 
+            self::$servicesContainer->registerService(
+                Application::ROUTER_SERVICE,
+                function () {
+                    return new Router();
+                }
+            );
+
             //Application services
             static::initializeServices();
         }
@@ -78,11 +86,12 @@ abstract class Application
 
     /**
      * @param $serviceName
+     * @param bool $shareInstance
      * @return mixed
      */
-    public static function getService($serviceName)
+    public static function getService($serviceName, $shareInstance = true)
     {
-        return self::getApplicationServices()->getService($serviceName);
+        return self::getApplicationServices()->getService($serviceName, $shareInstance);
     }
 
     /**
@@ -146,7 +155,8 @@ abstract class Application
 
             //Router
             $collection = ($collection) ? $collection : self::getRouteCollection();
-            $router = new Router();
+            /** @var Router $router */
+            $router = self::getService(self::ROUTER_SERVICE);
             $router->setRouteCollection($collection)
                 ->setRequestContext($requestContext);
             if ($logger) {

@@ -116,6 +116,7 @@ class Router
     public function setRouteCollection(RouteCollection $collection)
     {
         $this->routeCollection = $collection;
+        $this->router = null;
         return $this;
     }
 
@@ -134,6 +135,7 @@ class Router
     public function setRequestContext(RequestContext $context)
     {
         $this->requestContext = $context;
+        $this->router = null;
         return $this;
     }
 
