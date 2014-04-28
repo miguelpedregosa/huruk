@@ -117,33 +117,38 @@ class Html5LayoutTemplate
     {
         foreach ($links as $link) {
             if ($link instanceof Link && ($link->getHref() || $link->getRel())) {
-                echo "<link";
-                if ($link->getRel()) {
-                    $rel = $link->getRel();
-                    echo " rel=\"$rel\"";
-                }
-                if ($link->getHref()) {
-                    $href = $link->getHref();
-                    echo " href=\"$href\"";
-                }
-                if ($link->getType()) {
-                    $type = $link->getType();
-                    echo " type=\"$type\"";
-                }
-                if ($link->getMedia()) {
-                    $media = $link->getMedia();
-                    echo " media=\"$media\"";
-                }
-                if ($link->getHrefLang()) {
-                    $hreflang = $link->getHrefLang();
-                    echo " hreflang=\"$hreflang\"";
-                }
-                if ($link->getSizes()) {
-                    $sizes = $link->getSizes();
-                    echo " sizes=\"$sizes\"";
-                }
-                echo ">\n";
+                $this->displayLink($link);
             }
         }
+    }
+
+    private function displayLink(Link $link)
+    {
+        echo "<link";
+        if ($link->getRel()) {
+            $rel = $link->getRel();
+            echo " rel=\"$rel\"";
+        }
+        if ($link->getHref()) {
+            $href = $link->getHref();
+            echo " href=\"$href\"";
+        }
+        if ($link->getType()) {
+            $type = $link->getType();
+            echo " type=\"$type\"";
+        }
+        if ($link->getMedia()) {
+            $media = $link->getMedia();
+            echo " media=\"$media\"";
+        }
+        if ($link->getHrefLang()) {
+            $hreflang = $link->getHrefLang();
+            echo " hreflang=\"$hreflang\"";
+        }
+        if ($link->getSizes()) {
+            $sizes = $link->getSizes();
+            echo " sizes=\"$sizes\"";
+        }
+        echo ">\n";
     }
 }
