@@ -154,6 +154,7 @@ class Router
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
+        $this->router = null;
         return $this;
     }
 
