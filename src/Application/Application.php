@@ -35,7 +35,7 @@ abstract class Application
      * @param $serviceName
      * @param callable $service
      */
-    public static function registerService($serviceName, \Closure $service)
+    final public static function registerService($serviceName, \Closure $service)
     {
         self::getApplicationServices()->registerService($serviceName, $service);
     }
@@ -89,7 +89,7 @@ abstract class Application
      * @param bool $shareInstance
      * @return mixed
      */
-    public static function getService($serviceName, $shareInstance = true)
+    final public static function getService($serviceName, $shareInstance = true)
     {
         return self::getApplicationServices()->getService($serviceName, $shareInstance);
     }
@@ -150,13 +150,13 @@ abstract class Application
             $requestContext->fromRequest($request);
 
             //Logger
-            $logger = self::getService(self::LOGGER_SERVICE);
+            $logger = self::getService(Application::LOGGER_SERVICE);
             $logger = ($logger instanceof LoggerInterface) ? $logger : null;
 
             //Router
-            $collection = ($collection) ? $collection : self::getRouteCollection();
+            $collection = ($collection) ? $collection : static::getRouteCollection();
             /** @var Router $router */
-            $router = self::getService(self::ROUTER_SERVICE);
+            $router = self::getService(Application::ROUTER_SERVICE);
             $router->setRouteCollection($collection)
                 ->setRequestContext($requestContext);
             if ($logger) {
@@ -168,7 +168,7 @@ abstract class Application
             $dispatcher->dispatch($routeInfo);
 
         } catch (PageNotFoundException $exception) {
-            self::handlePageNotFound($dispatcher, $exception);
+            static::handlePageNotFound($dispatcher, $exception);
         }
     }
 
