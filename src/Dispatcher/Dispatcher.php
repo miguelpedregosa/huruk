@@ -127,8 +127,6 @@ class Dispatcher
             );
             throw new \Exception('No action to be executed');
         }
-
-        //Ejecuto la accion, pasando el control al Controller
         return $controller->doAction($action_name, $routeInfo, $this->getRequest());
     }
 
