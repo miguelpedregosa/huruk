@@ -50,7 +50,7 @@
                 <modified/>
             </fileset>
 
-            <fileset dir="${basedir}/tests">
+            <fileset dir="${basedir}/test">
                 <include name="**/*.php"/>
                 <modified/>
             </fileset>
@@ -62,7 +62,7 @@
             <arg value="--log-csv"/>
             <arg value="${basedir}/build/logs/phploc.csv"/>
             <arg path="${basedir}/src"/>
-            <arg path="${basedir}/tests"/>
+            <arg path="${basedir}/test"/>
         </exec>
     </target>
 
