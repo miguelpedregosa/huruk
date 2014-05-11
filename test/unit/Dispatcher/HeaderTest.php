@@ -10,6 +10,7 @@ namespace unit\src\Huruk\Dispatcher;
 
 
 use Huruk\Dispatcher\Header;
+use Huruk\Dispatcher\HeaderFactory;
 
 /**
  * Class HeaderTest
@@ -59,13 +60,12 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
     {
         $header = new Header('Foo:bar');
         $header->setReplace(false)->setHttpResponseCode(302);
-
-        $this->assertEquals($header, Header::make('Foo:bar', false, 302));
+        $this->assertEquals($header, HeaderFactory::make('Foo:bar', false, 302));
     }
 
     public function testMakeFromStatusCode()
     {
-        $header = Header::makeFromStatusCode(404);
+        $header = HeaderFactory::makeFromStatusCode(404);
         $this->assertEquals('Not Found', $header->getHeader());
         $this->assertEquals(true, $header->getReplace());
         $this->assertEquals(404, $header->getHttpResponseCode());
@@ -73,12 +73,12 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
 
     public function testMakeJsonHeader()
     {
-        $header = Header::makeJsonHeader('utf-8');
+        $header = HeaderFactory::makeJsonHeader('utf-8');
         $this->assertEquals(200, $header->getHttpResponseCode());
         $this->assertEquals('Content-Type: application/json; charset=utf-8', $header->getHeader());
         $this->assertEquals(true, $header->getReplace());
 
-        $header = Header::makeJsonHeader('utf-8', true);
+        $header = HeaderFactory::makeJsonHeader('utf-8', true);
         $this->assertEquals(200, $header->getHttpResponseCode());
         $this->assertEquals('Content-Type: application/javascript; charset=utf-8', $header->getHeader());
         $this->assertEquals(true, $header->getReplace());

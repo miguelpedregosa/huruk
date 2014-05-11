@@ -5,6 +5,7 @@ namespace Huruk\Application;
 use Huruk\Dispatcher\ClosureStorage;
 use Huruk\Dispatcher\Dispatcher;
 use Huruk\Dispatcher\Response;
+use Huruk\Dispatcher\ResponseFactory;
 use Huruk\EventDispatcher\Event;
 use Huruk\EventDispatcher\EventDispatcher;
 use Huruk\Exception\PageNotFoundException;
@@ -26,6 +27,7 @@ abstract class Application
     const ROUTER_SERVICE = 'router';
 
     private static $servicesContainer = null;
+    private static $routeCollection = null;
 
     private function __construct()
     {
@@ -106,18 +108,16 @@ abstract class Application
     /**
      * @param $path
      * @param callable $function
-     * @param Request $request
      */
-    public static function get($path, \Closure $function, Request $request = null)
+    public static function get($path, \Closure $function)
     {
         $closureStorage = ClosureStorage::getInstance();
         $routeName = self::getRouteNameFromPath($path, 'GET');
         $closureStorage[$routeName] = $function;
-        $collection = new RouteCollection();
+        $collection = static::getRoutes();
         $route = new Route($path, array(RouteInfo::CLOSURE => true));
         $route->setMethods('GET');
         $collection->add($routeName, $route);
-        self::run($collection, $request);
     }
 
     /**
@@ -131,84 +131,119 @@ abstract class Application
     }
 
     /**
-     * @param RouteCollection $collection
-     * @param Request $request
-     * @throws \Exception
+     * @return RouteCollection
      */
-    public static function run(RouteCollection $collection = null, Request $request = null)
+    final private static function getRoutes()
     {
-        //Dispatcher
-        $dispatcher = new Dispatcher();
-
-        try {
-            //Request context
-            if (!$request instanceof Request) {
-                $request = Request::createFromGlobals();
-            }
-            $dispatcher->setRequest($request);
-            $requestContext = new RequestContext();
-            $requestContext->fromRequest($request);
-
-            //Logger
-            $logger = self::getService(Application::LOGGER_SERVICE);
-            $logger = ($logger instanceof LoggerInterface) ? $logger : null;
-
-            //Router
-            $collection = ($collection) ? $collection : static::getRouteCollection();
-            /** @var Router $router */
-            $router = self::getService(Application::ROUTER_SERVICE);
-            $router->setRouteCollection($collection)
-                ->setRequestContext($requestContext);
-            if ($logger) {
-                $router->setLogger($logger);
-            }
-
-            //RouteInfo y Dispatch
-            $routeInfo = $router->matchUrl($requestContext->getPathInfo());
-            $dispatcher->dispatch($routeInfo);
-
-        } catch (PageNotFoundException $exception) {
-            static::handlePageNotFound($dispatcher, $exception);
+        if (!self::$routeCollection) {
+            self::$routeCollection = static::getRouteCollection();
         }
+        return self::$routeCollection;
     }
 
     /**
      * @return RouteCollection
      */
-    protected static function getRouteCollection()
+    public static function getRouteCollection()
     {
         return new RouteCollection();
     }
 
     /**
-     * @param Dispatcher $dispatcher
-     * @param PageNotFoundException $exception
+     * @param RouteCollection $routes
      */
-    protected static function handlePageNotFound(Dispatcher $dispatcher, PageNotFoundException $exception)
+    public static function setRouteCollection(RouteCollection $routes)
     {
-        $html_layout = new Html5Layout();
-        $html_layout->setTitle('Huruk µFramework - Not Found')
+        self::$routeCollection = $routes;
+    }
+
+    /**
+     * @param Request $request
+     * @throws \Exception
+     */
+    public static function run(Request $request = null)
+    {
+        try {
+            //Request context
+            if (!$request instanceof Request) {
+                $request = Request::createFromGlobals();
+            }
+            $requestContext = new RequestContext();
+            $requestContext->fromRequest($request);
+
+            //Logger
+            $logger = self::getService(Application::LOGGER_SERVICE);
+
+            //Router
+            /** @var Router $router */
+            $router = self::getService(Application::ROUTER_SERVICE);
+            $router->setRouteCollection(static::getRoutes())
+                ->setRequestContext($requestContext);
+            if ($logger instanceof LoggerInterface) {
+                $router->setLogger($logger);
+            }
+
+            //Get RouteInfo from path info
+            $routeInfo = $router->matchUrl($requestContext->getPathInfo());
+
+            //Get Response objet
+            $dispatcher = new Dispatcher();
+            $response = $dispatcher->handleRequest($request, $routeInfo);
+
+        } catch (PageNotFoundException $exception) {
+            $response = static::handlePageNotFound($exception);
+        } catch (\Exception $exception) {
+            $response = static::handleException($exception);
+        }
+
+        //Deal with it!!
+        if (!$response instanceof Response) {
+            throw new \Exception();
+        }
+        $response->send();
+    }
+
+    /**
+     * @param PageNotFoundException $exception
+     * @return \Huruk\Dispatcher\Response
+     */
+    protected static function handlePageNotFound(PageNotFoundException $exception)
+    {
+        $htmlLayout = new Html5Layout();
+        $htmlLayout->setTitle('Huruk µFramework - Not Found')
             ->setApplicationName('Huruk µFramework')
             ->setCharset(Charset::CHARSET_UTF8);
-        $html = $html_layout->render('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>');
-        $dispatcher->sendResponse(Response::make($html, 404));
+        $html = $htmlLayout->render('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>');
+        return ResponseFactory::make($html, 404);
+    }
+
+    /**
+     * @param \Exception $exception
+     * @return \Huruk\Dispatcher\Response
+     */
+    protected static function handleException(\Exception $exception)
+    {
+        $htmlLayout = new Html5Layout();
+        $htmlLayout->setTitle('Huruk µFramework - Error')
+            ->setApplicationName('Huruk µFramework')
+            ->setCharset(Charset::CHARSET_UTF8);
+        $html = $htmlLayout->render('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>');
+        return ResponseFactory::make($html, 500);
     }
 
     /**
      * @param $path
      * @param callable $function
-     * @param Request $request
      */
-    public static function post($path, \Closure $function, Request $request = null)
+    public static function post($path, \Closure $function)
     {
         $closureStorage = ClosureStorage::getInstance();
         $routeName = self::getRouteNameFromPath($path, 'POST');
         $closureStorage[$routeName] = $function;
-        $collection = new RouteCollection();
+        $collection = $collection = static::getRoutes();
         $route = new Route($path, array(RouteInfo::CLOSURE => true));
         $route->setMethods('POST');
         $collection->add($routeName, $route);
-        self::run($collection, $request);
     }
 
     public function __clone()

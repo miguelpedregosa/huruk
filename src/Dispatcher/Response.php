@@ -14,7 +14,7 @@ class Response
     const PRIORITY_LOW = 1;
 
     /** @var StablePriorityQueue */
-    private $headers;
+    private $headers = null;
 
     /** @var string */
     private $content = '';
@@ -25,23 +25,16 @@ class Response
      */
     private $sendContent = true;
 
+    /**
+     * Must send the headers with the content?
+     * @var bool
+     */
+    private $sendHeaders = true;
+
+
     public function __construct($content = '')
     {
-        $this->headers = new StablePriorityQueue();
         $this->setContent($content);
-    }
-
-    /**
-     * Crea un objeto action result con el codigo de estado que se le proporciona
-     * @param string $content
-     * @param int $status_code
-     * @return Response
-     */
-    public static function make($content = '', $status_code = 200)
-    {
-        $action_result = new self($content);
-        $action_result->addHeader(Header::makeFromStatusCode($status_code), Response::PRIORITY_HIGH);
-        return $action_result;
     }
 
     /**
@@ -50,47 +43,7 @@ class Response
      */
     public function addHeader(Header $header, $priority = self::PRIORITY_LOW)
     {
-        $this->headers->insert($header, $priority);
-    }
-
-    /**
-     * Crea una Response para redirigir a otra pagina
-     * @param $redirect_to
-     * @param int $http_response_code
-     * @return Response
-     */
-    public static function makeRedirectResponse($redirect_to, $http_response_code = 302)
-    {
-        $action_result = new self();
-
-        switch ($http_response_code) {
-            case 301:
-                $action_result->addHeader(new Header('HTTP/1.1 301 Moved Permanently', true, 301));
-                $action_result->addHeader(new Header('Location: ' . $redirect_to, true, 301));
-                $action_result->disableSendContent();
-                break;
-
-            case 303:
-                $action_result->addHeader(new Header('HTTP/1.1 303 See Other', true, 303));
-                $action_result->addHeader(new Header('Location: ' . $redirect_to, true, 303));
-                $action_result->disableSendContent();
-                break;
-
-            default:
-                $action_result->addHeader(new Header('Location: ' . $redirect_to, true, 302));
-                $action_result->disableSendContent();
-                break;
-        }
-
-        return $action_result;
-    }
-
-    /**
-     *
-     */
-    public function disableSendContent()
-    {
-        $this->sendContent = false;
+        $this->getHeaders()->insert($header, $priority);
     }
 
     /**
@@ -98,7 +51,15 @@ class Response
      */
     public function getHeaders()
     {
+        if (!$this->headers) {
+            $this->headers = new StablePriorityQueue();
+        }
         return $this->headers;
+    }
+
+    public function disableSendContent()
+    {
+        $this->sendContent = false;
     }
 
     /**
@@ -117,9 +78,7 @@ class Response
         $this->content = $content;
     }
 
-    /**
-     *
-     */
+
     public function enableSendContent()
     {
         $this->sendContent = true;
@@ -131,5 +90,41 @@ class Response
     public function mustSendContent()
     {
         return $this->sendContent;
+    }
+
+    public function enableSendHeaders()
+    {
+        $this->sendHeaders = true;
+    }
+
+    public function disableSendHeaders()
+    {
+        $this->sendHeaders = false;
+    }
+
+    public function mustSendHeaders()
+    {
+        return $this->sendHeaders;
+    }
+
+    /**
+     * Send the response to the client
+     */
+    public function send()
+    {
+        //Send the headers
+        if ($this->mustSendHeaders()) {
+            while (!$this->getHeaders()->isEmpty()) {
+                /** @var $header Header */
+                $header = $this->getHeaders()->extract();
+                $header->send();
+            }
+        }
+
+        //Send the content
+        if ($this->mustSendContent()) {
+            echo $this->getContent();
+        }
+
     }
 }

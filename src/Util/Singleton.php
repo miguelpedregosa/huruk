@@ -20,12 +20,12 @@ trait Singleton
 
     /**
      * Devuelve la unica instancia permitida de la clase
-     * @param $fresh_instance
+     * @param $freshInstance
      * @return Singleton|*
      */
-    public static function getInstance($fresh_instance = false)
+    public static function getInstance($freshInstance = false)
     {
-        if (!self::$instance || $fresh_instance) {
+        if (!self::$instance || $freshInstance) {
             self::$instance = new self();
         }
         return self::$instance;

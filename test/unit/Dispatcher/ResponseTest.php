@@ -11,6 +11,7 @@ namespace unit\src\Huruk\Dispatcher;
 
 use Huruk\Dispatcher\Header;
 use Huruk\Dispatcher\Response;
+use Huruk\Dispatcher\ResponseFactory;
 
 class ResponseTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,12 +19,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $response = new Response('foo:bar');
         $this->assertEquals('foo:bar', $response->getContent());
-        $this->assertEquals('foo:bar', Response::make('foo:bar')->getContent());
+        $this->assertEquals('foo:bar', ResponseFactory::make('foo:bar')->getContent());
     }
 
     public function testMustSendContent()
     {
-        $response = Response::make('foo:bar');
+        $response = ResponseFactory::make('foo:bar');
         $this->assertTrue($response->mustSendContent());
         $response->disableSendContent();
         $this->assertFalse($response->mustSendContent());
@@ -40,7 +41,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testHeaders()
     {
-        $response = Response::make('foo:bar');
+        $response = ResponseFactory::make('foo:bar');
         $expected_header = new Header('foo->bar');
 
         $response->addHeader($expected_header);
@@ -51,7 +52,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testRedirectionResponse()
     {
-        $response = Response::makeRedirectResponse('http://foo.bar');
+        $response = ResponseFactory::makeRedirectResponse('http://foo.bar');
         $this->assertEquals('', $response->getContent());
 
         /** @var Header $header */
@@ -59,7 +60,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(302, $header->getHttpResponseCode());
         $this->assertFalse($response->mustSendContent());
 
-        $response = Response::makeRedirectResponse('http://foo.bar', 301);
+        $response = ResponseFactory::makeRedirectResponse('http://foo.bar', 301);
         $this->assertEquals('', $response->getContent());
 
         /** @var Header $header */
@@ -67,7 +68,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(301, $header->getHttpResponseCode());
         $this->assertFalse($response->mustSendContent());
 
-        $response = Response::makeRedirectResponse('http://foo.bar', 303);
+        $response = ResponseFactory::makeRedirectResponse('http://foo.bar', 303);
         $this->assertEquals('', $response->getContent());
 
         /** @var Header $header */
@@ -75,5 +76,16 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(303, $header->getHttpResponseCode());
         $this->assertFalse($response->mustSendContent());
 
+    }
+
+    public function testSend()
+    {
+        $response = new Response('foo:bar');
+        $response->disableSendHeaders();
+        ob_start();
+        $response->send();
+        $output = ob_get_contents();
+        ob_end_clean();
+        $this->assertEquals('foo:bar', $output);
     }
 }

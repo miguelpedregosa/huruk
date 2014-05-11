@@ -10,18 +10,17 @@ namespace unit\src\Huruk\Application;
 
 
 use Huruk\Application\Application;
-use Huruk\Dispatcher\Dispatcher;
-use Huruk\Dispatcher\Response;
+use Huruk\Dispatcher\ResponseFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
+use unit\Application\sut\DummyApplication;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     public static function setupBeforeClass()
     {
         parent::setUpBeforeClass();
-        require_once __DIR__ . '/../Controller/sut/DummyController.php';
+        require_once __DIR__ . '/../Dispatcher/sut/DummyAction.php';
+        require_once __DIR__ . '/sut/DummyApplication.php';
     }
 
 
@@ -50,23 +49,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testRun()
     {
-        $collection = new RouteCollection();
-        $collection->add(
-            'foo',
-            new Route(
-                '/foo',
-                array(
-                    '_controller' => '\unit\src\Huruk\Controller\sut\DummyController',
-                    '_action' => 'dummyAction'
-                )
-            )
-        );
-
         $request = Request::create('http://example.com/foo');
 
         ob_start();
-        Dispatcher::$sendHeaders = false;
-        Application::run($collection, $request);
+        DummyApplication::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertEquals('foo:bar', $output);
@@ -75,39 +61,28 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidPath()
     {
-        $collection = new RouteCollection();
-        $collection->add(
-            'bar',
-            new Route(
-                '/bar',
-                array(
-                    '_controller' => '\unit\src\Huruk\Controller\sut\DummyController',
-                    '_action' => 'dummyAction'
-                )
-            )
-        );
-
-        $request = Request::create('http://example.com/foo');
+        $request = Request::create('http://example.com/not_setted_route');
 
         ob_start();
-        Dispatcher::$sendHeaders = false;
-        Application::run($collection, $request);
+        DummyApplication::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertNotContains('foo:bar', $output);
-        $this->assertContains('<title>Huruk µFramework - Not Found</title>', $output);
+        $this->assertContains('Not Found', $output);
 
     }
 
     public function testGet()
     {
         $closure = function () {
-            return Response::make('foo:bar');
+            $response = ResponseFactory::make('foo:bar');
+            $response->disableSendHeaders();
+            return $response;
         };
         $request = Request::create('http://example.com/get_route');
         ob_start();
-        Dispatcher::$sendHeaders = false;
-        Application::get('/get_route', $closure, $request);
+        Application::get('/get_route', $closure);
+        Application::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertContains('foo:bar', $output);
@@ -116,12 +91,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testPost()
     {
         $closure = function () {
-            return Response::make('One->Two');
+            $response = ResponseFactory::make('One->Two');
+            $response->disableSendHeaders();
+            return $response;
         };
         $request = Request::create('http://example.com/post_route', 'POST');
         ob_start();
-        Dispatcher::$sendHeaders = false;
-        Application::post('/post_route', $closure, $request);
+        Application::post('/post_route', $closure);
+        Application::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertContains('One->Two', $output);

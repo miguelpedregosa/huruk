@@ -22,13 +22,11 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
     {
         $info = array(
             '_route' => 'dummy',
-            '_controller' => '\dummy\Controller',
             '_action' => 'testAction'
         );
         $route_info = new RouteInfo($info);
 
         $this->assertEquals('dummy', $route_info->getRouteName());
-        $this->assertEquals('\dummy\Controller', $route_info->getControllerClass());
         $this->assertEquals('testAction', $route_info->getAction());
         $this->assertEquals(array(), $route_info->getParams());
 
@@ -41,12 +39,6 @@ class RouteInfoTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('dummy', $route_info->getRouteName());
     }
 
-    public function testSetControllerClass()
-    {
-        $route_info = new RouteInfo();
-        $route_info->setControllerClass('dummy');
-        $this->assertEquals('dummy', $route_info->getControllerClass());
-    }
 
     public function testSetAction()
     {

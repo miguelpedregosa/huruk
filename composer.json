@@ -18,11 +18,11 @@
         "psr/log": "1.*"
     },
     "require-dev": {
-        "ext-curl" : "*",
         "phpunit/phpunit": "4.*",
         "phpunit/phpunit-mock-objects": "2.*",
         "phpunit/phpunit-story": "dev-master",
-        "mockery/mockery": "dev-master"
+        "mockery/mockery": "dev-master",
+        "phpspec/phpspec": "2.0.*@dev"
     },
     "autoload": {
         "psr-4": {

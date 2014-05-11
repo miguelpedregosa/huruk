@@ -16,7 +16,6 @@ class ClosureStorage implements \ArrayAccess
     private $storage = array();
     use Singleton;
 
-
     public function offsetExists($offset)
     {
         return isset($this->storage[$offset]);
