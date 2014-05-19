@@ -50,33 +50,6 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testRedirectionResponse()
-    {
-//        $response = ResponseFactory::makeRedirectResponse('http://foo.bar');
-//        $this->assertEquals('', $response->getContent());
-//
-//        /** @var Header $header */
-//        $header = iterator_to_array($response->getHeaders())[0];
-//        $this->assertEquals(302, $header->getHttpResponseCode());
-//        $this->assertFalse($response->mustSendContent());
-//
-//        $response = ResponseFactory::makeRedirectResponse('http://foo.bar', 301);
-//        $this->assertEquals('', $response->getContent());
-//
-//        /** @var Header $header */
-//        $header = iterator_to_array($response->getHeaders())[0];
-//        $this->assertEquals(301, $header->getHttpResponseCode());
-//        $this->assertFalse($response->mustSendContent());
-//
-//        $response = ResponseFactory::makeRedirectResponse('http://foo.bar', 303);
-//        $this->assertEquals('', $response->getContent());
-//
-//        /** @var Header $header */
-//        $header = iterator_to_array($response->getHeaders())[0];
-//        $this->assertEquals(303, $header->getHttpResponseCode());
-//        $this->assertFalse($response->mustSendContent());
-
-    }
 
     public function testSend()
     {
