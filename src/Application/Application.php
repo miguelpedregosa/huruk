@@ -4,11 +4,11 @@ namespace Huruk\Application;
 
 use Huruk\Dispatcher\ClosureStorage;
 use Huruk\Dispatcher\Dispatcher;
+use Huruk\Dispatcher\Html5Response;
 use Huruk\Dispatcher\Response;
 use Huruk\EventDispatcher\Event;
 use Huruk\EventDispatcher\EventDispatcher;
 use Huruk\Exception\PageNotFoundException;
-use Huruk\Layout\Html5Layout;
 use Huruk\Routing\RouteInfo;
 use Huruk\Routing\Router;
 use Huruk\Services\ServicesContainer;
@@ -209,12 +209,12 @@ abstract class Application
      */
     protected static function handlePageNotFound(PageNotFoundException $exception)
     {
-        $htmlLayout = new Html5Layout();
-        $htmlLayout->setTitle('Huruk µFramework - Not Found')
+        $response = new Html5Response('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>', 404);
+        $response->getHtmlLayout()
+            ->setTitle('Huruk µFramework - Not Found')
             ->setApplicationName('Huruk µFramework')
             ->setCharset(Charset::CHARSET_UTF8);
-        $html = $htmlLayout->render('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>');
-        return new Response($html, 404);
+        return $response;
     }
 
     /**
@@ -223,12 +223,12 @@ abstract class Application
      */
     protected static function handleException(\Exception $exception)
     {
-        $htmlLayout = new Html5Layout();
-        $htmlLayout->setTitle('Huruk µFramework - Error')
+        $response = new Html5Response('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>', 500);
+        $response->getHtmlLayout()
+            ->setTitle('Huruk µFramework - Error')
             ->setApplicationName('Huruk µFramework')
             ->setCharset(Charset::CHARSET_UTF8);
-        $html = $htmlLayout->render('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>');
-        return new Response($html, 500);
+        return $response;
     }
 
     /**
