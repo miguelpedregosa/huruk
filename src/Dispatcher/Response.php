@@ -1,24 +1,13 @@
 <?php
 namespace Huruk\Dispatcher;
 
-use Huruk\Util\StablePriorityQueue;
 
 /**
  * Class Response
  * @package Huruk\Dispatcher
  */
-class Response
+class Response extends \Symfony\Component\HttpFoundation\Response
 {
-    const PRIORITY_HIGH = 3;
-    const PRIORITY_MEDIUM = 2;
-    const PRIORITY_LOW = 1;
-
-    /** @var StablePriorityQueue */
-    private $headers = null;
-
-    /** @var string */
-    private $content = '';
-
     /**
      * Indica si se debe enviar el contenido o solo los header al navegador
      * @var bool
@@ -32,28 +21,21 @@ class Response
     private $sendHeaders = true;
 
 
-    public function __construct($content = '')
-    {
-        $this->setContent($content);
-    }
-
     /**
-     * @param Header $header
-     * @param int $priority
+     * @param $key
+     * @param $values
+     * @param bool $replace
      */
-    public function addHeader(Header $header, $priority = self::PRIORITY_LOW)
+    public function addHeader($key, $values, $replace = true)
     {
-        $this->getHeaders()->insert($header, $priority);
+        $this->headers->set($key, $values, $replace);
     }
 
     /**
-     * @return StablePriorityQueue
+     * @return \Symfony\Component\HttpFoundation\ResponseHeaderBag
      */
     public function getHeaders()
     {
-        if (!$this->headers) {
-            $this->headers = new StablePriorityQueue();
-        }
         return $this->headers;
     }
 
@@ -62,34 +44,10 @@ class Response
         $this->sendContent = false;
     }
 
-    /**
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * @param $content
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-    }
-
 
     public function enableSendContent()
     {
         $this->sendContent = true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function mustSendContent()
-    {
-        return $this->sendContent;
     }
 
     public function enableSendHeaders()
@@ -102,29 +60,38 @@ class Response
         $this->sendHeaders = false;
     }
 
+    /**
+     * @return $this|\Symfony\Component\HttpFoundation\Response
+     */
+    public function sendHeaders()
+    {
+        if ($this->mustSendHeaders()) {
+            return parent::sendHeaders();
+        }
+        return $this;
+    }
+
     public function mustSendHeaders()
     {
         return $this->sendHeaders;
     }
 
     /**
-     * Send the response to the client
+     * @return $this|\Symfony\Component\HttpFoundation\Response
      */
     public function send()
     {
-        //Send the headers
-        if ($this->mustSendHeaders()) {
-            while (!$this->getHeaders()->isEmpty()) {
-                /** @var $header Header */
-                $header = $this->getHeaders()->extract();
-                $header->send();
-            }
-        }
-
-        //Send the content
         if ($this->mustSendContent()) {
-            echo $this->getContent();
+            return parent::send();
         }
+        return $this;
+    }
 
+    /**
+     * @return bool
+     */
+    public function mustSendContent()
+    {
+        return $this->sendContent;
     }
 }

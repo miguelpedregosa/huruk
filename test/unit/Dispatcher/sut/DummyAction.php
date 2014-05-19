@@ -11,7 +11,6 @@ namespace unit\Dispatcher\sut;
 
 use Huruk\Action\Action;
 use Huruk\Dispatcher\Response;
-use Huruk\Dispatcher\ResponseFactory;
 use Huruk\Routing\RouteInfo;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -25,7 +24,7 @@ class DummyAction implements Action
      */
     public function execute(Request $request, RouteInfo $routeInfo)
     {
-        $response = ResponseFactory::make('foo:bar');
+        $response = new Response('foo:bar');
         $response->disableSendHeaders();
         return $response;
     }

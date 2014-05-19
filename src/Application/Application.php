@@ -5,7 +5,6 @@ namespace Huruk\Application;
 use Huruk\Dispatcher\ClosureStorage;
 use Huruk\Dispatcher\Dispatcher;
 use Huruk\Dispatcher\Response;
-use Huruk\Dispatcher\ResponseFactory;
 use Huruk\EventDispatcher\Event;
 use Huruk\EventDispatcher\EventDispatcher;
 use Huruk\Exception\PageNotFoundException;
@@ -200,6 +199,7 @@ abstract class Application
         if (!$response instanceof Response) {
             throw new \Exception();
         }
+        $response->prepare($request);
         $response->send();
     }
 
@@ -214,7 +214,7 @@ abstract class Application
             ->setApplicationName('Huruk µFramework')
             ->setCharset(Charset::CHARSET_UTF8);
         $html = $htmlLayout->render('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>');
-        return ResponseFactory::make($html, 404);
+        return new Response($html, 404);
     }
 
     /**
@@ -228,7 +228,7 @@ abstract class Application
             ->setApplicationName('Huruk µFramework')
             ->setCharset(Charset::CHARSET_UTF8);
         $html = $htmlLayout->render('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>');
-        return ResponseFactory::make($html, 500);
+        return new Response($html, 500);
     }
 
     /**

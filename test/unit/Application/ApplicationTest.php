@@ -10,7 +10,7 @@ namespace unit\src\Huruk\Application;
 
 
 use Huruk\Application\Application;
-use Huruk\Dispatcher\ResponseFactory;
+use Huruk\Dispatcher\Response;
 use Huruk\Routing\RouteInfo;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
@@ -100,7 +100,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testStaticGet()
     {
         $closure = function () {
-            $response = ResponseFactory::make('foo:bar');
+            $response = new Response('foo:bar');
             $response->disableSendHeaders();
             return $response;
         };
@@ -116,7 +116,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testGet()
     {
         $closure = function () {
-            $response = ResponseFactory::make('foo:bar');
+            $response = new Response('foo:bar');
             $response->disableSendHeaders();
             return $response;
         };
@@ -132,7 +132,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testStaticPost()
     {
         $closure = function () {
-            $response = ResponseFactory::make('One->Two');
+            $response = new Response('One->Two');
             $response->disableSendHeaders();
             return $response;
         };
@@ -148,7 +148,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testPost()
     {
         $closure = function () {
-            $response = ResponseFactory::make('One->Two');
+            $response = new Response('One->Two');
             $response->disableSendHeaders();
             return $response;
         };

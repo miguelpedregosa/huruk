@@ -10,7 +10,7 @@ namespace unit\Application\sut;
 
 
 use Huruk\Application\Application;
-use Huruk\Dispatcher\ResponseFactory;
+use Huruk\Dispatcher\Response;
 use Huruk\Exception\PageNotFoundException;
 use Huruk\Routing\RouteInfo;
 use Symfony\Component\Routing\Route;
@@ -36,7 +36,7 @@ class DummyApplication extends Application
 
     protected static function handlePageNotFound(PageNotFoundException $exception)
     {
-        $response = ResponseFactory::make('Not Found');
+        $response = new Response('Not Found');
         $response->disableSendHeaders();
         return $response;
     }
