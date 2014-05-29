@@ -9,13 +9,13 @@
 namespace unit\src\Huruk\Application;
 
 
-use Huruk\Application\Application;
-use Huruk\Dispatcher\Response;
+use Huruk\Application\Huruk;
+use Huruk\Dispatcher\Responder;
 use Huruk\Routing\RouteInfo;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use unit\Application\sut\DummyApplication;
+use unit\Application\sut\DummyHuruk;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,7 +31,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             '\Huruk\EventDispatcher\EventDispatcher',
-            Application::getService(Application::EVENT_DISPATCHER_SERVICE)
+            Huruk::getService(Huruk::EVENT_DISPATCHER_SERVICE)
         );
     }
 
@@ -42,12 +42,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $function = function () use ($value) {
             $this->assertEquals(5, $value);
         };
-        Application::listen(
+        Huruk::listen(
             'foo',
             $function
         );
 
-        Application::trigger('foo');
+        Huruk::trigger('foo');
     }
 
     public function testStaticRun()
@@ -63,10 +63,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        Application::setRouteCollection($collection);
+        Huruk::setRouteCollection($collection);
         $request = Request::create('http://example.com/foo');
         ob_start();
-        Application::run($request);
+        Huruk::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertEquals('foo:bar', $output);
@@ -77,7 +77,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('http://example.com/foo');
 
         ob_start();
-        DummyApplication::run($request);
+        DummyHuruk::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertEquals('foo:bar', $output);
@@ -89,7 +89,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $request = Request::create('http://example.com/not_setted_route');
 
         ob_start();
-        DummyApplication::run($request);
+        DummyHuruk::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertNotContains('foo:bar', $output);
@@ -100,14 +100,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testStaticGet()
     {
         $closure = function () {
-            $response = new Response('foo:bar');
+            $response = new Responder('foo:bar');
             $response->disableSendHeaders();
             return $response;
         };
         $request = Request::create('http://example.com/get_route');
         ob_start();
-        Application::get('/get_route', $closure);
-        Application::run($request);
+        Huruk::get('/get_route', $closure);
+        Huruk::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertContains('foo:bar', $output);
@@ -116,14 +116,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testGet()
     {
         $closure = function () {
-            $response = new Response('foo:bar');
+            $response = new Responder('foo:bar');
             $response->disableSendHeaders();
             return $response;
         };
         $request = Request::create('http://example.com/get_route');
         ob_start();
-        DummyApplication::get('/get_route', $closure);
-        DummyApplication::run($request);
+        DummyHuruk::get('/get_route', $closure);
+        DummyHuruk::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertContains('foo:bar', $output);
@@ -132,14 +132,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testStaticPost()
     {
         $closure = function () {
-            $response = new Response('One->Two');
+            $response = new Responder('One->Two');
             $response->disableSendHeaders();
             return $response;
         };
         $request = Request::create('http://example.com/post_route', 'POST');
         ob_start();
-        Application::post('/post_route', $closure);
-        Application::run($request);
+        Huruk::post('/post_route', $closure);
+        Huruk::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertContains('One->Two', $output);
@@ -148,14 +148,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testPost()
     {
         $closure = function () {
-            $response = new Response('One->Two');
+            $response = new Responder('One->Two');
             $response->disableSendHeaders();
             return $response;
         };
         $request = Request::create('http://example.com/post_route', 'POST');
         ob_start();
-        DummyApplication::post('/post_route', $closure);
-        DummyApplication::run($request);
+        DummyHuruk::post('/post_route', $closure);
+        DummyHuruk::run($request);
         $output = ob_get_contents();
         ob_end_clean();
         $this->assertContains('One->Two', $output);

@@ -9,13 +9,13 @@
 namespace unit\Dispatcher;
 
 
-use Huruk\Dispatcher\Html5Response;
+use Huruk\Dispatcher\Html5Responder;
 
 class Html5ResponseTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
-        $response = new Html5Response('<p>foo:bar</p>');
+        $response = new Html5Responder('<p>foo:bar</p>');
         $response->getHtmlLayout()->setTitle('Test');
         $response->disableSendHeaders();
         ob_start();

@@ -1,7 +1,7 @@
 <?php
 namespace Huruk\Routing;
 
-use Huruk\Application\Application;
+use Huruk\Application\Huruk;
 use Huruk\EventDispatcher\Event;
 use Huruk\Exception\PageNotFoundException;
 use Psr\Log\LoggerInterface;
@@ -47,7 +47,7 @@ class Router
             $routeParams = $this->getRouter()->match($pathInfo);
             $routeInfo = new RouteInfo($routeParams);
         } catch (\Exception $e) {
-            Application::trigger(self::EVENT_ROUTE_DONT_MATCH, new Event(array($pathInfo)));
+            Huruk::trigger(self::EVENT_ROUTE_DONT_MATCH, new Event(array($pathInfo)));
             throw new PageNotFoundException('Resource not found!!');
         }
         return $routeInfo;

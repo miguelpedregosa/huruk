@@ -4,8 +4,8 @@ namespace Huruk\Application;
 
 use Huruk\Dispatcher\ClosureStorage;
 use Huruk\Dispatcher\Dispatcher;
-use Huruk\Dispatcher\Html5Response;
-use Huruk\Dispatcher\Response;
+use Huruk\Dispatcher\Html5Responder;
+use Huruk\Dispatcher\Responder;
 use Huruk\EventDispatcher\Event;
 use Huruk\EventDispatcher\EventDispatcher;
 use Huruk\Exception\PageNotFoundException;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-abstract class Application
+abstract class Huruk
 {
     const EVENT_DISPATCHER_SERVICE = 'event_dispatcher';
     const LOGGER_SERVICE = 'logger';
@@ -51,14 +51,14 @@ abstract class Application
 
             //Common services
             self::$servicesContainer->registerService(
-                Application::EVENT_DISPATCHER_SERVICE,
+                self::EVENT_DISPATCHER_SERVICE,
                 function () {
                     return new EventDispatcher();
                 }
             );
 
             self::$servicesContainer->registerService(
-                Application::ROUTER_SERVICE,
+                self::ROUTER_SERVICE,
                 function () {
                     return new Router();
                 }
@@ -171,11 +171,11 @@ abstract class Application
             $requestContext->fromRequest($request);
 
             //Logger
-            $logger = self::getService(Application::LOGGER_SERVICE);
+            $logger = self::getService(self::LOGGER_SERVICE);
 
             //Router
             /** @var Router $router */
-            $router = self::getService(Application::ROUTER_SERVICE);
+            $router = self::getService(self::ROUTER_SERVICE);
             $router->setRouteCollection(static::getRoutes())
                 ->setRequestContext($requestContext);
             if ($logger instanceof LoggerInterface) {
@@ -196,7 +196,7 @@ abstract class Application
         }
 
         //Deal with it!!
-        if (!$response instanceof Response) {
+        if (!$response instanceof Responder) {
             throw new \Exception();
         }
         $response->prepare($request);
@@ -205,11 +205,11 @@ abstract class Application
 
     /**
      * @param PageNotFoundException $exception
-     * @return \Huruk\Dispatcher\Response
+     * @return \Huruk\Dispatcher\Responder
      */
     protected static function handlePageNotFound(PageNotFoundException $exception)
     {
-        $response = new Html5Response('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>', 404);
+        $response = new Html5Responder('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>', 404);
         $response->getHtmlLayout()
             ->setTitle('Huruk µFramework - Not Found')
             ->setApplicationName('Huruk µFramework')
@@ -219,11 +219,11 @@ abstract class Application
 
     /**
      * @param \Exception $exception
-     * @return \Huruk\Dispatcher\Response
+     * @return \Huruk\Dispatcher\Responder
      */
     protected static function handleException(\Exception $exception)
     {
-        $response = new Html5Response('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>', 500);
+        $response = new Html5Responder('<h1>Not found</h1><code>' . $exception->getMessage() . '</code>', 500);
         $response->getHtmlLayout()
             ->setTitle('Huruk µFramework - Error')
             ->setApplicationName('Huruk µFramework')

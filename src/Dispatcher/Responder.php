@@ -1,12 +1,13 @@
 <?php
 namespace Huruk\Dispatcher;
 
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class Response
  * @package Huruk\Dispatcher
  */
-class Response extends \Symfony\Component\HttpFoundation\Response
+class Responder extends Response
 {
     /**
      * Indica si se debe enviar el contenido o solo los header al navegador
@@ -61,7 +62,7 @@ class Response extends \Symfony\Component\HttpFoundation\Response
     }
 
     /**
-     * @return $this|\Symfony\Component\HttpFoundation\Response
+     * @return $this|Response
      */
     public function sendHeaders()
     {
@@ -77,7 +78,7 @@ class Response extends \Symfony\Component\HttpFoundation\Response
     }
 
     /**
-     * @return $this|\Symfony\Component\HttpFoundation\Response
+     * @return $this|Response
      */
     public function send()
     {

@@ -2,7 +2,7 @@
 namespace Huruk\Dispatcher;
 
 use Huruk\Action\Action;
-use Huruk\Application\Application;
+use Huruk\Application\Huruk;
 use Huruk\EventDispatcher\Event;
 use Huruk\Routing\RouteInfo;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ class Dispatcher
      * Handle a Request and return the Response to the app
      * @param Request $request
      * @param RouteInfo $routeInfo
-     * @return Response|mixed|null
+     * @return Responder|mixed|null
      * @throws \Exception
      */
     public function handleRequest(Request $request, RouteInfo $routeInfo)
@@ -57,7 +57,7 @@ class Dispatcher
      */
     private function triggerPreActionEvent(RouteInfo $routeInfo)
     {
-        Application::trigger(
+        Huruk::trigger(
             self::EVENT_PREACTION,
             new Event(
                 array(
@@ -72,7 +72,7 @@ class Dispatcher
      */
     private function triggerPostActionEvent(RouteInfo $routeInfo)
     {
-        Application::trigger(
+        Huruk::trigger(
             self::EVENT_POSTACTION,
             new Event(
                 array(
@@ -85,7 +85,7 @@ class Dispatcher
     /**
      * @param RouteInfo $routeInfo
      * @param Request $request
-     * @return Response
+     * @return Responder
      * @throws \Exception
      */
     private function handleUsingAction(Request $request, RouteInfo $routeInfo)
@@ -111,14 +111,14 @@ class Dispatcher
 
     /**
      * @param $response
-     * @return Response
+     * @return Responder
      * @throws \Exception
      */
     private function normalizeResponse($response)
     {
-        if (!$response instanceof Response) {
+        if (!$response instanceof Responder) {
             if (is_string($response)) {
-                $response = ResponseFactory::make($response);
+                $response = new Responder($response);
             } else {
                 throw new \Exception('Expected Response Object');
             }

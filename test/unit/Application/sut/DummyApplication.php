@@ -9,14 +9,14 @@
 namespace unit\Application\sut;
 
 
-use Huruk\Application\Application;
-use Huruk\Dispatcher\Response;
+use Huruk\Application\Huruk;
+use Huruk\Dispatcher\Responder;
 use Huruk\Exception\PageNotFoundException;
 use Huruk\Routing\RouteInfo;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class DummyApplication extends Application
+class DummyHuruk extends Huruk
 {
     public static function getRouteCollection()
     {
@@ -36,7 +36,7 @@ class DummyApplication extends Application
 
     protected static function handlePageNotFound(PageNotFoundException $exception)
     {
-        $response = new Response('Not Found');
+        $response = new Responder('Not Found');
         $response->disableSendHeaders();
         return $response;
     }

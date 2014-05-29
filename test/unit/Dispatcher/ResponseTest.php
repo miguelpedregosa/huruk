@@ -9,22 +9,22 @@
 namespace unit\src\Huruk\Dispatcher;
 
 
-use Huruk\Dispatcher\Response;
+use Huruk\Dispatcher\Responder;
 
 class ResponseTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var null|Response  */
+    /** @var null|Responder  */
     private $response = null;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->response = new Response();
+        $this->response = new Responder();
     }
 
     public function testConstructor()
     {
-        $response = new Response('foo:bar');
+        $response = new Responder('foo:bar');
         $this->assertEquals('foo:bar', $response->getContent());
     }
 
@@ -53,7 +53,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testSend()
     {
-        $response = new Response('foo:bar');
+        $response = new Responder('foo:bar');
         $response->disableSendHeaders();
         ob_start();
         $response->send();

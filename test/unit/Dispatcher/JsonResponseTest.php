@@ -9,14 +9,14 @@
 namespace unit\Dispatcher;
 
 
-use Huruk\Dispatcher\JsonResponse;
+use Huruk\Dispatcher\JsonResponder;
 
 class JsonResponseTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
         $data = array('foo' => 'bar');
-        $response = new JsonResponse($data);
+        $response = new JsonResponder($data);
         $response->disableSendHeaders();
         ob_start();
         $response->send();

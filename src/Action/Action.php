@@ -9,7 +9,7 @@
 namespace Huruk\Action;
 
 
-use Huruk\Dispatcher\Response;
+use Huruk\Dispatcher\Responder;
 use Huruk\Routing\RouteInfo;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,7 +18,7 @@ interface Action
     /**
      * @param Request $request
      * @param RouteInfo $routeInfo
-     * @return Response
+     * @return Responder
      */
     public function execute(Request $request, RouteInfo $routeInfo);
 }

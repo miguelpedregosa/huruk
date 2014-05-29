@@ -11,7 +11,7 @@ namespace Huruk\Dispatcher;
 
 use Huruk\Layout\Html5Layout;
 
-class Html5Response extends Response
+class Html5Responder extends Responder
 {
     /** @var Html5Layout */
     private $htmlLayout;

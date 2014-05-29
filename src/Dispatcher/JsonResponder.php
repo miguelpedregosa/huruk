@@ -9,7 +9,7 @@
 namespace Huruk\Dispatcher;
 
 
-class JsonResponse extends Response
+class JsonResponder extends Responder
 {
 
     public function __construct($content = '')
