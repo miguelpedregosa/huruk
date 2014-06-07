@@ -53,6 +53,14 @@ class Html5LayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('<html lang="en">', $html);
     }
 
+    public function testHtmlAttributes()
+    {
+        $this->layout->setHtmlAttribute('foo', 'bar');
+        $this->layout->setHtmlAttribute('ng-app', 'MyApp');
+
+        $this->assertContains('<html foo="bar" ng-app="MyApp"', $this->layout->render());
+    }
+
     public function testSetCharset()
     {
         $this->layout->setCharset('utf-8');

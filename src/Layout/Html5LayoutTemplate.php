@@ -24,14 +24,12 @@ class Html5LayoutTemplate
     /**
      * @param array $context
      */
-    private function doDisplay(array $context)
+    private function doDisplay(array &$context)
     {
         echo "<!DOCTYPE html>\n";
-        if (isset($context['language']) && $language = $context['language']) {
-            echo "<html lang=\"$language\">\n";
-        } else {
-            echo "<html>\n";
-        }
+        //Html tag
+        $this->displayHtmlTag($context);
+
         //Head and Title
         echo "<head>\n";
         if (isset($context['title']) && $title = $context['title']) {
@@ -58,27 +56,15 @@ class Html5LayoutTemplate
     /**
      * @param array $context
      */
-    private function displayBody(array &$context)
+    private function displayHtmlTag(array &$context)
     {
-        echo "<body";
-        if (isset($context['body_attributes']) && $bodyAtributtes = $context['body_attributes']) {
-            foreach ($bodyAtributtes as $name => $value) {
+        echo "<html";
+        if (isset($context['html_attributes']) && $htmlAtributtes = $context['html_attributes']) {
+            foreach ($htmlAtributtes as $name => $value) {
                 echo " $name=\"$value\"";
             }
         }
         echo ">\n";
-        if (isset($context['body'])) {
-            $body = $context['body'];
-            echo $body;
-            echo "\n";
-        }
-        //Js Scripts
-        if (isset($context['js_files'])) {
-            foreach ($context['js_files'] as $jsSrc) {
-                echo "<script src=\"$jsSrc\"></script>\n";
-            }
-        }
-        echo "</body>\n";
     }
 
     /**
@@ -150,5 +136,31 @@ class Html5LayoutTemplate
             echo " sizes=\"$sizes\"";
         }
         echo ">\n";
+    }
+
+    /**
+     * @param array $context
+     */
+    private function displayBody(array &$context)
+    {
+        echo "<body";
+        if (isset($context['body_attributes']) && $bodyAtributtes = $context['body_attributes']) {
+            foreach ($bodyAtributtes as $name => $value) {
+                echo " $name=\"$value\"";
+            }
+        }
+        echo ">\n";
+        if (isset($context['body'])) {
+            $body = $context['body'];
+            echo $body;
+            echo "\n";
+        }
+        //Js Scripts
+        if (isset($context['js_files'])) {
+            foreach ($context['js_files'] as $jsSrc) {
+                echo "<script src=\"$jsSrc\"></script>\n";
+            }
+        }
+        echo "</body>\n";
     }
 }

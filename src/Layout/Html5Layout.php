@@ -51,6 +51,8 @@ class Html5Layout implements LayoutInterface
     /** @var array */
     private $bodyAttributes = array();
 
+    private $htmlAttributes = array();
+
     /** @var  StablePriorityQueue */
     private $jsAssets;
     /** @var  StablePriorityQueue */
@@ -126,6 +128,27 @@ class Html5Layout implements LayoutInterface
     }
 
     /**
+     * @param $name
+     * @return $this
+     */
+    public function unsetHtmlAttribute($name)
+    {
+        if (isset($this->htmlAttributes[$name])) {
+            unset ($this->htmlAttributes[$name]);
+        }
+        return $this;
+    }
+
+    /**
+     * @return Html5Layout
+     */
+    public function cleanHtmlAttributes()
+    {
+        $this->htmlAttributes = array();
+        return $this;
+    }
+
+    /**
      * Renderiza un documento Html 5 con el contenido del body que se le pasa
      * @param $body_contents
      * @return string
@@ -144,8 +167,12 @@ class Html5Layout implements LayoutInterface
         //Archivos Css a incluir en el documento
         $this->processCssAssets();
 
+        if ($this->language) {
+            $this->setHtmlAttribute('lang', $this->language);
+        }
+
         $context = array(
-            'language' => $this->language,
+            'html_attributes' => $this->htmlAttributes,
             'title' => $this->title,
             'metas' => $this->metas,
             'links' => $this->links,
@@ -157,6 +184,8 @@ class Html5Layout implements LayoutInterface
         $template = new Html5LayoutTemplate();
         return $template->render($context);
     }
+
+
 
     private function addCommonMetaTags()
     {
@@ -213,7 +242,6 @@ class Html5Layout implements LayoutInterface
         }
     }
 
-
     /**
      * Procesa los recursos CSS a incluir en el documento
      */
@@ -232,7 +260,6 @@ class Html5Layout implements LayoutInterface
         }
     }
 
-
     /**
      * @param Link $link
      * @param int $priority
@@ -241,6 +268,17 @@ class Html5Layout implements LayoutInterface
     public function addLink(Link $link, $priority = self::PRIORITY_LOW)
     {
         $this->links->insert($link, $priority);
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     * @return $this
+     */
+    public function setHtmlAttribute($name, $value)
+    {
+        $this->htmlAttributes[$name] = $value;
         return $this;
     }
 
